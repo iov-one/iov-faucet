@@ -9,7 +9,7 @@ import { bnsCodec, bnsConnector } from "@iov/bns";
 import { liskCodec, liskConnector } from "@iov/lisk";
 
 import { RecipientId, SendTx, TokenTicker, TransactionKind } from "@iov/bcp-types";
-import { ChainId, PublicKeyBundle  } from "@iov/tendermint-types";
+import { ChainId, PublicKeyBundle } from "@iov/tendermint-types";
 
 import { MultiChainSigner } from "@iov/core";
 import { Bip39, Random } from "@iov/crypto";
@@ -135,7 +135,6 @@ function main(): void {
     }
 
     switch (action) {
-
         case "init":
         if (fs.existsSync(filename)) {
             throw Error("File already exists on disk, did you mean to -load- your profile?");
@@ -169,25 +168,27 @@ function main(): void {
           };
           break;
         case "/getTokens":
-          if (!context.request.body) {
+          // TODO: Allow requests using GET + query params
+          if (context.request.method === "GET") {
             // tslint:disable-next-line:no-object-mutation
-            context.response.body = "Post not get :)";
+            context.response.body = "This endpoint requires a POST request, with fields: address, chainId and ticker.";
             break;
           }
 
+          // TODO: Better error handling on request body being empty?
           const {ticker, chainId, address} = context.request.body;
           if (address) {
             console.log("Got address: " + address);
           } else {
             // tslint:disable-next-line:no-object-mutation
-            context.response.body = "Empty address";
+            context.response.body = "Empty address.";
+            break;
           }
 
-          if (chainId) {
-            console.log("Got chainId: " + chainId);
-          } else {
+          if (signer.chainIds().indexOf(chainId) === -1) {
             // tslint:disable-next-line:no-object-mutation
-            context.response.body = "Empty chainId";
+            context.response.body = "Empty or invalid chainId. Valid chainIds are: " + signer.chainIds();
+            break;
           }
 
           if (ticker) {
@@ -202,6 +203,7 @@ function main(): void {
           } else {
             // tslint:disable-next-line:no-object-mutation
             context.response.body = "Empty chainId";
+            break;
           }
 
           let sendTx;
