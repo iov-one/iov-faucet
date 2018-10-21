@@ -12,7 +12,7 @@ import levelup from "levelup";
 import { bnsCodec, bnsConnector } from "@iov/bns";
 import { liskCodec, liskConnector } from "@iov/lisk";
 
-import { RecipientId, SendTx, TransactionKind, TokenTicker } from "@iov/bcp-types";
+import { RecipientId, SendTx, TokenTicker, TransactionKind } from "@iov/bcp-types";
 import { ChainId, PublicKeyBundle  } from "@iov/tendermint-types";
 
 import { MultiChainSigner } from "@iov/core";
@@ -40,7 +40,6 @@ async function addKeyAndIdentity(mnemonic: string): Promise<void> {
     profile.addEntry(Ed25519HdWallet.fromMnemonic(mnemonic));
     await addIdentities();
   } catch (e) {
-    console.log(e);
     throw Error(e);
   }
 }
@@ -52,7 +51,6 @@ async function addIdentities(): Promise<void> {
       await profile.createIdentity(wallet.id, HdPaths.simpleAddress(i));
     }
   } catch (e) {
-    console.log(e);
     throw Error(e);
   }
 }
@@ -72,7 +70,6 @@ function getAddresses(codec: string): ReadonlyArray<string> {
     }
     console.log("Got addresses: " + addresses);
   } catch (e) {
-    console.log(e);
     throw Error(e);
   }
   return addresses;
@@ -93,6 +90,8 @@ async function loadProfile(filename: string, password: string): Promise<void> {
       await signer.addChain(bnsConnector("wss://bov.friendnet-fast.iov.one"));
       await signer.addChain(bnsConnector("wss://bov.friendnet-slow.iov.one"));
       await signer.addChain(liskConnector("https://testnet.lisk.io"));
+      console.log("Connected to networks: " + signer.chainIds());
+      console.log("Ready to go!");
   } catch (e) {
     throw Error(e);
   } finally {
