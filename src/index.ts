@@ -12,7 +12,7 @@ import levelup from "levelup";
 import { bnsCodec, bnsConnector } from "@iov/bns";
 import { liskCodec, liskConnector } from "@iov/lisk";
 
-import { RecipientId, SendTx, TransactionKind } from "@iov/bcp-types";
+import { RecipientId, SendTx, TransactionKind, TokenTicker } from "@iov/bcp-types";
 import { ChainId, PublicKeyBundle  } from "@iov/tendermint-types";
 
 import { MultiChainSigner } from "@iov/core";
@@ -100,21 +100,11 @@ async function loadProfile(filename: string, password: string): Promise<void> {
   }
 }
 
-async function sendTransaction(address: string, chainId: string): Promise<SendTx> {
-  let ticker;
-
+async function sendTransaction(address: string, chainId: string, ticker: string): Promise<SendTx> {
   const wallet = profile.wallets.value[0];
   const mainIdentity = profile.getIdentities(wallet.id)[Math.floor(Math.random() * Math.floor(20))];
 
   // TODO: Add validation of address for requested chain
-
-  if (chainId === ("chain-friendnet-fast" || "chain-friendnet-slow")) {
-    ticker = "IOV";
-  }
-
-  if (chainId === "da3ed6a45429278bac2666961289ca17ad86595d33b31037615d4b8e8f158bba") {
-    ticker = "LSK";
-  }
 
   console.log("Address: ", signer.keyToAddress(chainId, mainIdentity.pubkey));
   const sendTx: SendTx = {
@@ -126,7 +116,7 @@ async function sendTransaction(address: string, chainId: string): Promise<SendTx
     amount: {
       whole: 1,
       fractional: 44550000,
-      tokenTicker: ticker,
+      tokenTicker: ticker as TokenTicker,
     },
   };
   try {
@@ -190,17 +180,30 @@ function main(): void {
             break;
           }
 
-          if (context.request.body.address) {
-            console.log("Got address: " + context.request.body.address);
+          const {ticker, chainId, address} = context.request.body;
+          if (address) {
+            console.log("Got address: " + address);
           } else {
             // tslint:disable-next-line:no-object-mutation
             context.response.body = "Empty address";
           }
 
-          if (context.request.body.chainId) {
-            console.log("Got chainId: " + context.request.body.chainId);
+          if (chainId) {
+            console.log("Got chainId: " + chainId);
+          } else {
             // tslint:disable-next-line:no-object-mutation
-            context.response.body = signer.chainIds();
+            context.response.body = "Empty chainId";
+          }
+
+          if (ticker) {
+            console.log("Got ticker: " + ticker);
+            const tickers = await signer.connection(chainId).getAllTickers();
+            const networkTickers = tickers.data.map((token) => token.tokenTicker);
+            if (networkTickers.indexOf(ticker) === -1) {
+              // tslint:disable-next-line:no-object-mutation
+              context.response.body = "Invalid Ticker. Valid tickers are: " + JSON.stringify(networkTickers);
+              break;
+            }
           } else {
             // tslint:disable-next-line:no-object-mutation
             context.response.body = "Empty chainId";
@@ -208,7 +211,7 @@ function main(): void {
 
           let sendTx;
           try {
-            sendTx = await sendTransaction(context.request.body.address, context.request.body.chainId);
+            sendTx = await sendTransaction(address, chainId, ticker);
           } catch (e) {
             console.log(e);
             // tslint:disable-next-line:no-object-mutation
