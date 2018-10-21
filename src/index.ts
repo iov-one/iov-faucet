@@ -1,7 +1,3 @@
-// #!/usr/bin/env node
-// const path = require("path");
-// // attempt to call in main file....
-// const cli = require(path.join(__dirname, "..", "build", "cli.js"));
 import fs from "fs";
 import ip from "ip";
 import Koa from "koa";
