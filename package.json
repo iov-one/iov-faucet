@@ -10,7 +10,7 @@
     "lint": "tslint -t verbose --project .",
     "prebuild": "yarn format && yarn lint",
     "build": "tsc",
-    "dev-init": "rm -rf db/test.db/ && node build/index.js initialize db/test.db password bns",
+    "dev-init": "rm -rf db/test.db/ && node build/index.js initialize db/test.db password bns \"degree tackle suggest window test behind mesh extra cover prepare oak script\"",
     "dev-start": "node build/index.js start db/test.db password bns \"ws://localhost:22345\""
   },
   "devDependencies": {
