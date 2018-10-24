@@ -20,8 +20,8 @@
     "typescript": "^3.1.3"
   },
   "dependencies": {
-    "@iov/core": "^0.7.0-alpha.1",
-    "@iov/lisk": "^0.7.0-alpha.1",
+    "@iov/core": "^0.7.0",
+    "@iov/lisk": "^0.7.0",
     "ip": "^1.1.5",
     "koa": "^2.5.3",
     "koa-bodyparser": "^4.2.1",

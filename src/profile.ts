@@ -13,9 +13,8 @@ export async function setSecretAndCreateIdentities(profile: UserProfile, mnemoni
     throw new Error("Profile already contains wallets");
   }
 
-  profile.addEntry(Ed25519HdWallet.fromMnemonic(mnemonic));
+  const wallet = profile.addWallet(Ed25519HdWallet.fromMnemonic(mnemonic));
 
-  const wallet = profile.wallets.value[0];
   for (let i = 0; i < concurrency; i++) {
     await profile.createIdentity(wallet.id, HdPaths.simpleAddress(i));
   }

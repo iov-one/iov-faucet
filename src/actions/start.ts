@@ -3,7 +3,7 @@ import ip from "ip";
 import Koa from "koa";
 import bodyParser from "koa-bodyparser";
 
-import { RecipientId, SendTx, TokenTicker, TransactionKind } from "@iov/bcp-types";
+import { BcpConnection, RecipientId, SendTx, TokenTicker, TransactionKind } from "@iov/bcp-types";
 import { bnsConnector } from "@iov/bns";
 import { MultiChainSigner } from "@iov/core";
 import { liskConnector } from "@iov/lisk";
@@ -56,20 +56,21 @@ export async function start(
     throw Error("File does not exist on disk, did you mean to -initialize- your profile?");
   }
   const profile = await loadProfile(filename, password);
-
   const signer = new MultiChainSigner(profile);
+
+  let connection: BcpConnection;
   switch (codec) {
     case Codec.Bns:
-      await signer.addChain(bnsConnector(blockchainBaseUrl));
+      connection = (await signer.addChain(bnsConnector(blockchainBaseUrl))).connection;
       break;
     case Codec.Lisk:
-      await signer.addChain(liskConnector(blockchainBaseUrl));
+      connection = (await signer.addChain(liskConnector(blockchainBaseUrl))).connection;
       break;
     default:
       throw new Error("No connector for this codec defined");
   }
-  // TODO: get chain ID from signer.addChain after next @iov/core update
-  const connectedChainId = signer.chainIds()[0];
+
+  const connectedChainId = connection.chainId();
   console.log(`Connected to network: ${connectedChainId}`);
 
   const api = new Koa();
