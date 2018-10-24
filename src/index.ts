@@ -2,8 +2,6 @@ import fs from "fs";
 import ip from "ip";
 import Koa from "koa";
 import bodyParser from "koa-bodyparser";
-import leveldown from "leveldown";
-import levelup from "levelup";
 
 import { RecipientId, SendTx, TokenTicker, TransactionKind } from "@iov/bcp-types";
 import { bnsCodec, bnsConnector } from "@iov/bns";
@@ -14,7 +12,7 @@ import { liskCodec, liskConnector } from "@iov/lisk";
 import { ChainId, PublicKeyBundle } from "@iov/tendermint-types";
 
 import { Codec, codecFromString } from "./codec";
-import { setSecretAndCreateIdentities, storeProfile } from "./profile";
+import { loadProfile, setSecretAndCreateIdentities, storeProfile } from "./profile";
 
 let profile; // Bad global var, I don't know what else to do...
 let signer;
@@ -41,24 +39,6 @@ function getAddresses(codec: Codec): ReadonlyArray<string> {
   console.log("Got addresses: " + addresses);
 
   return addresses;
-}
-
-async function loadProfile(filename: string, password: string): Promise<void> {
-  const db = levelup(leveldown(filename));
-  try {
-    profile = await UserProfile.loadFrom(db, password);
-    console.log("Profile Loaded from disk");
-    signer = new MultiChainSigner(profile);
-    await signer.addChain(bnsConnector("wss://bov.friendnet-fast.iov.one"));
-    await signer.addChain(bnsConnector("wss://bov.friendnet-slow.iov.one"));
-    await signer.addChain(liskConnector("https://testnet.lisk.io"));
-    console.log("Connected to networks: " + signer.chainIds());
-    console.log("Ready to go!");
-  } catch (e) {
-    throw Error(e);
-  } finally {
-    await db.close();
-  }
 }
 
 async function sendTransaction(address: string, chainId: string, ticker: string): Promise<SendTx> {
@@ -106,7 +86,13 @@ async function start(filename: string, password: string, port: number): Promise<
   if (!fs.existsSync(filename)) {
     throw Error("File does not exist on disk, did you mean to -initialize- your profile?");
   }
-  await loadProfile(filename, password);
+  profile = await loadProfile(filename, password);
+
+  signer = new MultiChainSigner(profile);
+  await signer.addChain(bnsConnector("wss://bov.friendnet-fast.iov.one"));
+  await signer.addChain(bnsConnector("wss://bov.friendnet-slow.iov.one"));
+  await signer.addChain(liskConnector("https://testnet.lisk.io"));
+  console.log("Connected to networks: " + signer.chainIds());
 
   const api = new Koa();
   api.use(bodyParser());

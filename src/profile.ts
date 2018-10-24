@@ -22,3 +22,16 @@ export async function storeProfile(profile: UserProfile, filename: string, passw
   const db = levelup(leveldown(filename));
   await profile.storeIn(db, password);
 }
+
+export async function loadProfile(filename: string, password: string): Promise<UserProfile> {
+  const db = levelup(leveldown(filename));
+  try {
+    const profile = await UserProfile.loadFrom(db, password);
+    console.log("Profile Loaded from disk");
+    return profile;
+  } catch (e) {
+    throw Error(e);
+  } finally {
+    await db.close();
+  }
+}
