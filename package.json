@@ -6,13 +6,15 @@
   "author": "Isabella Dell <isabella@iov.one>",
   "license": "Apache-2.0",
   "scripts": {
+    "format": "prettier --write --loglevel warn \"./src/**/*.ts\"",
     "lint": "tslint -t verbose --project .",
-    "prebuild": "yarn lint",
+    "prebuild": "yarn format && yarn lint",
     "build": "tsc",
     "start": "tsc && node build/index.js start db/test.db password bns",
     "init": "tsc && rm -rf db/test.db/ && node build/index.js init db/test.db password bns"
   },
   "devDependencies": {
+    "prettier": "^1.14.3",
     "tslint": "^5.11.0",
     "tslint-immutable": "^4.8.0",
     "typescript": "^3.1.3"
