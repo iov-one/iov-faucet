@@ -131,36 +131,11 @@ async function initialize(
   await storeProfile(filename, password);
 }
 
-function main(args: ReadonlyArray<string>): void {
-  if (args.length < 4) {
-    throw Error("Not enough arguments. See documentation on github for arguments");
+async function start(filename: string, password: string): Promise<void> {
+  if (!fs.existsSync(filename)) {
+    throw Error("File does not exist on disk, did you mean to -initialize- your profile?");
   }
-
-  const action = args[0];
-  const filename = args[1];
-  const password = args[2];
-  const codec = args[3];
-  const userMnemonic: string | undefined = args[4];
-
-  if (codec !== "bns" && codec !== "lisk") {
-    throw Error("Invalid codec. Valid codecs are: lisk, bns");
-  }
-
-  switch (action) {
-    case "initialize":
-      initialize(filename, password, userMnemonic).catch(error => {
-        console.error(error);
-      });
-      break;
-    case "start":
-      if (!fs.existsSync(filename)) {
-        throw Error("File does not exist on disk, did you mean to -initialize- your profile?");
-      }
-      loadProfile(filename, password);
-      break;
-    default:
-      throw new Error("Unexpected action argument");
-  }
+  await loadProfile(filename, password);
 
   const api = new Koa();
   api.use(bodyParser());
@@ -236,6 +211,37 @@ function main(args: ReadonlyArray<string>): void {
   });
   api.listen(8000);
   console.log("Started Koa Listener");
+}
+
+function main(args: ReadonlyArray<string>): void {
+  if (args.length < 4) {
+    throw Error("Not enough arguments. See documentation on github for arguments");
+  }
+
+  const action = args[0];
+  const filename = args[1];
+  const password = args[2];
+  const codec = args[3];
+  const userMnemonic: string | undefined = args[4];
+
+  if (codec !== "bns" && codec !== "lisk") {
+    throw Error("Invalid codec. Valid codecs are: lisk, bns");
+  }
+
+  switch (action) {
+    case "initialize":
+      initialize(filename, password, userMnemonic).catch(error => {
+        console.error(error);
+      });
+      break;
+    case "start":
+      start(filename, password).catch(error => {
+        console.error(error);
+      });
+      break;
+    default:
+      throw new Error("Unexpected action argument");
+  }
 }
 
 main(process.argv.slice(2));
