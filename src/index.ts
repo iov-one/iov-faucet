@@ -20,6 +20,9 @@ function main(args: ReadonlyArray<string>): void {
       });
       break;
     case "start":
+      if (args.length < 5) {
+        throw Error(`Not enough arguments for action '${action}'. See README for arguments`);
+      }
       const blockchainBaseUrl: string = args[4];
       start(filename, password, codec, blockchainBaseUrl, constants.port).catch(error => {
         console.error(error);

@@ -68,8 +68,9 @@ export async function start(
     default:
       throw new Error("No connector for this codec defined");
   }
-
-  console.log("Connected to networks: " + signer.chainIds());
+  // TODO: get chain ID from signer.addChain after next @iov/core update
+  const connectedChainId = signer.chainIds()[0];
+  console.log(`Connected to network: ${connectedChainId}`);
 
   const api = new Koa();
   api.use(bodyParser());
@@ -81,9 +82,8 @@ export async function start(
         context.response.body = {
           status: "ok",
           nodeUrl: ip.address(),
-          chainId: signer.chainIds(),
-          bnsAddresses: getAddresses(profile, Codec.Bns),
-          liskAddresses: getAddresses(profile, Codec.Lisk),
+          chainId: connectedChainId,
+          addresses: getAddresses(profile, codec),
         };
         break;
       case "/getTokens":
