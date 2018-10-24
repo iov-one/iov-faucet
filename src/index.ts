@@ -5,15 +5,13 @@ import bodyParser from "koa-bodyparser";
 import leveldown from "leveldown";
 import levelup from "levelup";
 
-import { bnsCodec, bnsConnector } from "@iov/bns";
-import { liskCodec, liskConnector } from "@iov/lisk";
-
 import { RecipientId, SendTx, TokenTicker, TransactionKind } from "@iov/bcp-types";
-import { ChainId, PublicKeyBundle } from "@iov/tendermint-types";
-
+import { bnsCodec, bnsConnector } from "@iov/bns";
 import { MultiChainSigner } from "@iov/core";
 import { Bip39, Random } from "@iov/crypto";
 import { Ed25519HdWallet, HdPaths, UserProfile } from "@iov/keycontrol";
+import { liskCodec, liskConnector } from "@iov/lisk";
+import { ChainId, PublicKeyBundle } from "@iov/tendermint-types";
 
 import { Codec, codecFromString } from "./codec";
 
