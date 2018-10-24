@@ -3,7 +3,7 @@ import ip from "ip";
 import Koa from "koa";
 import bodyParser from "koa-bodyparser";
 
-import { BcpConnection, RecipientId, SendTx, TokenTicker, TransactionKind } from "@iov/bcp-types";
+import { BcpCoin, BcpConnection, RecipientId, SendTx, TokenTicker, TransactionKind } from "@iov/bcp-types";
 import { bnsConnector } from "@iov/bns";
 import { MultiChainSigner } from "@iov/core";
 import { liskConnector } from "@iov/lisk";
@@ -12,6 +12,7 @@ import { ChainId, PublicKeyBundle } from "@iov/tendermint-types";
 import { Codec } from "../codec";
 import { identityInfosOfFirstChain } from "../multichainhelpers";
 import { loadProfile } from "../profile";
+import { debugBalance } from "../debugging";
 
 async function sendTransaction(
   signer: MultiChainSigner,
@@ -77,7 +78,7 @@ export async function start(
   // Don't wait for result. Just print when it is there
   identityInfosOfFirstChain(signer)
     .then(result => {
-      console.log("Identities:\n" + result.map(r => `  ${r.address}: [${r.balance}]`).join("\n"));
+      console.log("Identities:\n" + result.map(r => `  ${r.address}: ${debugBalance(r.balance)}`).join("\n"));
     })
     .catch(error => {
       console.error("Error getting identity infos:", error);
