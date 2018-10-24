@@ -27,42 +27,31 @@ async function createPassphrase(entropy: number = 16): Promise<string> {
 }
 
 async function addKeyAndIdentity(mnemonic: string): Promise<void> {
-  try {
-    profile.addEntry(Ed25519HdWallet.fromMnemonic(mnemonic));
-    await addIdentities();
-  } catch (e) {
-    throw Error(e);
-  }
+  profile.addEntry(Ed25519HdWallet.fromMnemonic(mnemonic));
+  await addIdentities();
 }
 
 async function addIdentities(): Promise<void> {
-  try {
-    const wallet = profile.wallets.value[0];
-    for (let i = 0; i < concurrency; i++) {
-      await profile.createIdentity(wallet.id, HdPaths.simpleAddress(i));
-    }
-  } catch (e) {
-    throw Error(e);
+  const wallet = profile.wallets.value[0];
+  for (let i = 0; i < concurrency; i++) {
+    await profile.createIdentity(wallet.id, HdPaths.simpleAddress(i));
   }
 }
 
 function getAddresses(codec: Codec): ReadonlyArray<string> {
   let addresses;
-  try {
-    const wallet = profile.wallets.value[0];
-    const id1 = profile.getIdentities(wallet.id);
-    switch (codec) {
-      case Codec.Bns:
-        addresses = id1.map(count => bnsCodec.keyToAddress(count.pubkey));
-        break;
-      case Codec.Lisk:
-        addresses = id1.map(count => liskCodec.keyToAddress(count.pubkey));
-        break;
-    }
-    console.log("Got addresses: " + addresses);
-  } catch (e) {
-    throw Error(e);
+  const wallet = profile.wallets.value[0];
+  const id1 = profile.getIdentities(wallet.id);
+  switch (codec) {
+    case Codec.Bns:
+      addresses = id1.map(count => bnsCodec.keyToAddress(count.pubkey));
+      break;
+    case Codec.Lisk:
+      addresses = id1.map(count => liskCodec.keyToAddress(count.pubkey));
+      break;
   }
+  console.log("Got addresses: " + addresses);
+
   return addresses;
 }
 
