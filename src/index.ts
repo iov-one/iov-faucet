@@ -76,7 +76,6 @@ async function loadProfile(filename: string, password: string): Promise<void> {
   try {
     profile = await UserProfile.loadFrom(db, password);
     console.log("Profile Loaded from disk");
-    await addIdentities();
     signer = new MultiChainSigner(profile);
     await signer.addChain(bnsConnector("wss://bov.friendnet-fast.iov.one"));
     await signer.addChain(bnsConnector("wss://bov.friendnet-slow.iov.one"));
