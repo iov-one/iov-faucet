@@ -15,6 +15,8 @@ import { MultiChainSigner } from "@iov/core";
 import { Bip39, Random } from "@iov/crypto";
 import { Ed25519HdWallet, HdPaths, UserProfile } from "@iov/keycontrol";
 
+import { Codec, codecFromString } from "./codec";
+
 const concurrency: number = 20;
 let profile; // Bad global var, I don't know what else to do...
 let signer;
@@ -46,16 +48,16 @@ async function addIdentities(): Promise<void> {
   }
 }
 
-function getAddresses(codec: string): ReadonlyArray<string> {
+function getAddresses(codec: Codec): ReadonlyArray<string> {
   let addresses;
   try {
     const wallet = profile.wallets.value[0];
     const id1 = profile.getIdentities(wallet.id);
     switch (codec) {
-      case "bns":
+      case Codec.Bns:
         addresses = id1.map(count => bnsCodec.keyToAddress(count.pubkey));
         break;
-      case "lisk":
+      case Codec.Lisk:
         addresses = id1.map(count => liskCodec.keyToAddress(count.pubkey));
         break;
     }
@@ -147,8 +149,8 @@ async function start(filename: string, password: string, port: number): Promise<
           status: "ok",
           nodeUrl: ip.address(),
           chainId: signer.chainIds(),
-          bnsAddresses: getAddresses("bns"),
-          liskAddresses: getAddresses("lisk"),
+          bnsAddresses: getAddresses(Codec.Bns),
+          liskAddresses: getAddresses(Codec.Lisk),
         };
         break;
       case "/getTokens":
@@ -220,12 +222,8 @@ function main(args: ReadonlyArray<string>): void {
   const action = args[0];
   const filename = args[1];
   const password = args[2];
-  const codec = args[3];
+  const codec: Codec = codecFromString(args[3]);
   const userMnemonic: string | undefined = args[4];
-
-  if (codec !== "bns" && codec !== "lisk") {
-    throw Error("Invalid codec. Valid codecs are: lisk, bns");
-  }
 
   switch (action) {
     case "initialize":
