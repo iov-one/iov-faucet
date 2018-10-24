@@ -50,6 +50,19 @@ start       Starts the faucet
              4  Node base URL, e.g. wss://bov.friendnet-fast.iov.one
 ```
 
+### Development
+
+The yarn scripts `dev-init` and `dev-start` call `initialize` and `start` with
+a set of default options for local development. It uses a weak password,
+the BNS codec and the node `ws://localhost:22345`.
+
+```
+yarn install
+yarn build
+yarn dev-init
+yarn dev-start
+```
+
 ### Using the faucet
 
 Now that the faucet has been started up, you can send credit requests to it. This can be done with a simple http POST request. These commands assume the faucet is running locally, be sure to change it from `localhost` if your situation is different.
