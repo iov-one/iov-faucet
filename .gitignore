@@ -19,7 +19,9 @@ node_modules/
 tmp/
 
 # Working dirs
-db/
 build/
 dist/
 docs/
+
+# Database dirs
+db/*/
