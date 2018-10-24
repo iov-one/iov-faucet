@@ -4,15 +4,15 @@ import Koa from "koa";
 import bodyParser from "koa-bodyparser";
 
 import { RecipientId, SendTx, TokenTicker, TransactionKind } from "@iov/bcp-types";
-import { bnsCodec, bnsConnector } from "@iov/bns";
+import { bnsConnector } from "@iov/bns";
 import { MultiChainSigner } from "@iov/core";
 import { Bip39, Random } from "@iov/crypto";
 import { UserProfile } from "@iov/keycontrol";
-import { liskCodec, liskConnector } from "@iov/lisk";
+import { liskConnector } from "@iov/lisk";
 import { ChainId, PublicKeyBundle } from "@iov/tendermint-types";
 
 import { Codec, codecFromString } from "./codec";
-import { loadProfile, setSecretAndCreateIdentities, storeProfile } from "./profile";
+import { getAddresses, loadProfile, setSecretAndCreateIdentities, storeProfile } from "./profile";
 
 let profile; // Bad global var, I don't know what else to do...
 let signer;
@@ -22,23 +22,6 @@ async function createPassphrase(entropy: number = 16): Promise<string> {
   const mnemonic: string = Bip39.encode(randomBytes).asString();
   console.log("Faucet master passphrase: " + mnemonic);
   return mnemonic;
-}
-
-function getAddresses(codec: Codec): ReadonlyArray<string> {
-  let addresses;
-  const wallet = profile.wallets.value[0];
-  const id1 = profile.getIdentities(wallet.id);
-  switch (codec) {
-    case Codec.Bns:
-      addresses = id1.map(count => bnsCodec.keyToAddress(count.pubkey));
-      break;
-    case Codec.Lisk:
-      addresses = id1.map(count => liskCodec.keyToAddress(count.pubkey));
-      break;
-  }
-  console.log("Got addresses: " + addresses);
-
-  return addresses;
 }
 
 async function sendTransaction(address: string, chainId: string, ticker: string): Promise<SendTx> {
@@ -105,8 +88,8 @@ async function start(filename: string, password: string, port: number): Promise<
           status: "ok",
           nodeUrl: ip.address(),
           chainId: signer.chainIds(),
-          bnsAddresses: getAddresses(Codec.Bns),
-          liskAddresses: getAddresses(Codec.Lisk),
+          bnsAddresses: getAddresses(profile, Codec.Bns),
+          liskAddresses: getAddresses(profile, Codec.Lisk),
         };
         break;
       case "/getTokens":

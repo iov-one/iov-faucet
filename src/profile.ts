@@ -1,8 +1,11 @@
 import leveldown from "leveldown";
 import levelup from "levelup";
 
+import { bnsCodec } from "@iov/bns";
 import { Ed25519HdWallet, HdPaths, UserProfile } from "@iov/core";
+import { liskCodec } from "@iov/lisk";
 
+import { Codec } from "./codec";
 import { concurrency } from "./constants";
 
 export async function setSecretAndCreateIdentities(profile: UserProfile, mnemonic: string): Promise<void> {
@@ -33,5 +36,16 @@ export async function loadProfile(filename: string, password: string): Promise<U
     throw Error(e);
   } finally {
     await db.close();
+  }
+}
+
+export function getAddresses(profile: UserProfile, codec: Codec): ReadonlyArray<string> {
+  const wallet = profile.wallets.value[0];
+  const identities = profile.getIdentities(wallet.id);
+  switch (codec) {
+    case Codec.Bns:
+      return identities.map(identity => bnsCodec.keyToAddress(identity.pubkey));
+    case Codec.Lisk:
+      return identities.map(identity => liskCodec.keyToAddress(identity.pubkey));
   }
 }
