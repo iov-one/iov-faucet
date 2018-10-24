@@ -4,12 +4,14 @@ The usage of this faucet is very simple, to install it, run:
 
 ```
 yarn install
+yarn build
 ```
 
 Then start it up using:
 
 ```
 yarn initialize
+yarn start
 ```
 
 Make sure to take note of the passphrase used, as this is the only time it will be displayed.
@@ -17,6 +19,7 @@ Make sure to take note of the passphrase used, as this is the only time it will 
 Advanced users that want to provide their own passphrase can do so like this:
 
 ```
+yarn install
 yarn build
 node build/index.js initialize db/<dbname> <db password> <codec> "<passphrase goes here>"
 ```

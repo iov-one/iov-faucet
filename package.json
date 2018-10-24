@@ -10,8 +10,8 @@
     "lint": "tslint -t verbose --project .",
     "prebuild": "yarn format && yarn lint",
     "build": "tsc",
-    "start": "yarn build && node build/index.js start db/test.db password bns",
-    "initialize": "yarn build && rm -rf db/test.db/ && node build/index.js initialize db/test.db password bns"
+    "start": "node build/index.js start db/test.db password bns",
+    "initialize": "rm -rf db/test.db/ && node build/index.js initialize db/test.db password bns"
   },
   "devDependencies": {
     "prettier": "^1.14.3",
