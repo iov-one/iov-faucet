@@ -9,7 +9,7 @@ yarn install
 Then start it up using:
 
 ```
-yarn run init
+yarn initialize
 ```
 
 Make sure to take note of the passphrase used, as this is the only time it will be displayed.
@@ -17,8 +17,8 @@ Make sure to take note of the passphrase used, as this is the only time it will 
 Advanced users that want to provide their own passphrase can do so like this:
 
 ```
-yarn run build
-node build/index.js init db/<dbname> <db password> <codec> "<passphrase goes here>"
+yarn build
+node build/index.js initialize db/<dbname> <db password> <codec> "<passphrase goes here>"
 ```
 
 Ensure that the db is not there, otherwise the application will throw. This is to prevent overwriting existing databases.

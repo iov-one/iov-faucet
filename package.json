@@ -11,7 +11,7 @@
     "prebuild": "yarn format && yarn lint",
     "build": "tsc",
     "start": "tsc && node build/index.js start db/test.db password bns",
-    "init": "tsc && rm -rf db/test.db/ && node build/index.js init db/test.db password bns"
+    "initialize": "tsc && rm -rf db/test.db/ && node build/index.js initialize db/test.db password bns"
   },
   "devDependencies": {
     "prettier": "^1.14.3",

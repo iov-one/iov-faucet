@@ -133,7 +133,7 @@ function main(args: ReadonlyArray<string>): void {
   }
 
   switch (action) {
-    case "init":
+    case "initialize":
       if (fs.existsSync(filename)) {
         throw Error("File already exists on disk, did you mean to -load- your profile?");
       }
@@ -146,7 +146,7 @@ function main(args: ReadonlyArray<string>): void {
 
     case "start":
       if (!fs.existsSync(filename)) {
-        throw Error("File does not exist on disk, did you mean to -init- your profile?");
+        throw Error("File does not exist on disk, did you mean to -initialize- your profile?");
       }
       loadProfile(filename, password);
       break;
