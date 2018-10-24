@@ -26,6 +26,29 @@ node build/index.js initialize db/<dbname> <db password> <codec> "<passphrase go
 
 Ensure that the db is not there, otherwise the application will throw. This is to prevent overwriting existing databases.
 
+## Usage
+
+```
+Usage: action [arguments...]
+
+Positional arguments per action are listed below. Arguments in parentheses are optional.
+
+help        Shows a help text and exists
+
+version     Prints the version and exists
+
+initialize  Initialized the faucet and exists
+             1  Database file path
+             2  Database encryption password
+             3  Codec
+            (4) custom mnemonic
+
+start       Starts the faucet
+             1  Database file path
+             2  Database encryption password
+             3  Codec
+             4  Node base URL, e.g. wss://bov.friendnet-fast.iov.one
+```
 
 ### Using the faucet
 

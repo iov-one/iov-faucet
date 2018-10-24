@@ -50,6 +50,7 @@ async function sendTransaction(
 async function initialize(
   filename: string,
   password: string,
+  codec: Codec,
   userMnemonic: string | undefined,
 ): Promise<void> {
   if (fs.existsSync(filename)) {
@@ -70,16 +71,30 @@ async function initialize(
   await storeProfile(profile, filename, password);
 }
 
-async function start(filename: string, password: string, port: number): Promise<void> {
+async function start(
+  filename: string,
+  password: string,
+  codec: Codec,
+  blockchainBaseUrl: string,
+  port: number,
+): Promise<void> {
   if (!fs.existsSync(filename)) {
     throw Error("File does not exist on disk, did you mean to -initialize- your profile?");
   }
   const profile = await loadProfile(filename, password);
 
   const signer = new MultiChainSigner(profile);
-  await signer.addChain(bnsConnector("wss://bov.friendnet-fast.iov.one"));
-  await signer.addChain(bnsConnector("wss://bov.friendnet-slow.iov.one"));
-  await signer.addChain(liskConnector("https://testnet.lisk.io"));
+  switch (codec) {
+    case Codec.Bns:
+      await signer.addChain(bnsConnector(blockchainBaseUrl));
+      break;
+    case Codec.Lisk:
+      await signer.addChain(liskConnector(blockchainBaseUrl));
+      break;
+    default:
+      throw new Error("No connector for this codec defined");
+  }
+
   console.log("Connected to networks: " + signer.chainIds());
 
   const api = new Koa();
@@ -166,17 +181,18 @@ function main(args: ReadonlyArray<string>): void {
   const action = args[0];
   const filename = args[1];
   const password = args[2];
-  const codec: Codec = codecFromString(args[3]);
-  const userMnemonic: string | undefined = args[4];
+  const codec = codecFromString(args[3]);
 
   switch (action) {
     case "initialize":
-      initialize(filename, password, userMnemonic).catch(error => {
+      const userMnemonic: string | undefined = args[4];
+      initialize(filename, password, codec, userMnemonic).catch(error => {
         console.error(error);
       });
       break;
     case "start":
-      start(filename, password, 8000).catch(error => {
+      const blockchainBaseUrl: string = args[4];
+      start(filename, password, codec, blockchainBaseUrl, 8000).catch(error => {
         console.error(error);
       });
       break;
