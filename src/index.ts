@@ -9,13 +9,13 @@ import { RecipientId, SendTx, TokenTicker, TransactionKind } from "@iov/bcp-type
 import { bnsCodec, bnsConnector } from "@iov/bns";
 import { MultiChainSigner } from "@iov/core";
 import { Bip39, Random } from "@iov/crypto";
-import { Ed25519HdWallet, HdPaths, UserProfile } from "@iov/keycontrol";
+import { UserProfile } from "@iov/keycontrol";
 import { liskCodec, liskConnector } from "@iov/lisk";
 import { ChainId, PublicKeyBundle } from "@iov/tendermint-types";
 
 import { Codec, codecFromString } from "./codec";
+import { setSecretAndCreateIdentities, storeProfile } from "./profile";
 
-const concurrency: number = 20;
 let profile; // Bad global var, I don't know what else to do...
 let signer;
 
@@ -24,18 +24,6 @@ async function createPassphrase(entropy: number = 16): Promise<string> {
   const mnemonic: string = Bip39.encode(randomBytes).asString();
   console.log("Faucet master passphrase: " + mnemonic);
   return mnemonic;
-}
-
-async function addKeyAndIdentity(mnemonic: string): Promise<void> {
-  profile.addEntry(Ed25519HdWallet.fromMnemonic(mnemonic));
-  await addIdentities();
-}
-
-async function addIdentities(): Promise<void> {
-  const wallet = profile.wallets.value[0];
-  for (let i = 0; i < concurrency; i++) {
-    await profile.createIdentity(wallet.id, HdPaths.simpleAddress(i));
-  }
 }
 
 function getAddresses(codec: Codec): ReadonlyArray<string> {
@@ -53,11 +41,6 @@ function getAddresses(codec: Codec): ReadonlyArray<string> {
   console.log("Got addresses: " + addresses);
 
   return addresses;
-}
-
-async function storeProfile(filename: string, password: string): Promise<void> {
-  const db = levelup(leveldown(filename));
-  await profile.storeIn(db, password);
 }
 
 async function loadProfile(filename: string, password: string): Promise<void> {
@@ -115,8 +98,8 @@ async function initialize(
   }
   profile = new UserProfile();
   const mnemonic = await createPassphrase();
-  await addKeyAndIdentity(userMnemonic ? userMnemonic : mnemonic);
-  await storeProfile(filename, password);
+  await setSecretAndCreateIdentities(profile, userMnemonic ? userMnemonic : mnemonic);
+  await storeProfile(profile, filename, password);
 }
 
 async function start(filename: string, password: string, port: number): Promise<void> {
