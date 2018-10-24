@@ -117,6 +117,20 @@ async function sendTransaction(address: string, chainId: string, ticker: string)
   return sendTx;
 }
 
+async function initialize(
+  filename: string,
+  password: string,
+  userMnemonic: string | undefined,
+): Promise<void> {
+  if (fs.existsSync(filename)) {
+    throw Error("File already exists on disk, did you mean to -load- your profile?");
+  }
+  profile = new UserProfile();
+  const mnemonic = await createPassphrase();
+  await addKeyAndIdentity(userMnemonic ? userMnemonic : mnemonic);
+  await storeProfile(filename, password);
+}
+
 function main(args: ReadonlyArray<string>): void {
   if (args.length < 4) {
     throw Error("Not enough arguments. See documentation on github for arguments");
@@ -134,14 +148,9 @@ function main(args: ReadonlyArray<string>): void {
 
   switch (action) {
     case "initialize":
-      if (fs.existsSync(filename)) {
-        throw Error("File already exists on disk, did you mean to -load- your profile?");
-      }
-      profile = new UserProfile();
-      createPassphrase().then(mnemonic => {
-        addKeyAndIdentity(userMnemonic ? userMnemonic : mnemonic);
+      initialize(filename, password, userMnemonic).catch(error => {
+        console.error(error);
       });
-      storeProfile(filename, password);
       break;
 
     case "start":
