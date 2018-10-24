@@ -55,7 +55,7 @@ async function initialize(
   if (fs.existsSync(filename)) {
     throw Error("File already exists on disk, did you mean to -load- your profile?");
   }
-  const initProfile = new UserProfile();
+  const profile = new UserProfile();
 
   let mnemonic: string;
   if (userMnemonic) {
@@ -66,8 +66,8 @@ async function initialize(
     mnemonic = newMnemonic;
   }
 
-  await setSecretAndCreateIdentities(initProfile, mnemonic);
-  await storeProfile(initProfile, filename, password);
+  await setSecretAndCreateIdentities(profile, mnemonic);
+  await storeProfile(profile, filename, password);
 }
 
 async function start(filename: string, password: string, port: number): Promise<void> {
