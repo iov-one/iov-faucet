@@ -15,14 +15,9 @@ import { MultiChainSigner } from "@iov/core";
 import { Bip39, Random } from "@iov/crypto";
 import { Ed25519HdWallet, HdPaths, UserProfile } from "@iov/keycontrol";
 
-const args: ReadonlyArray<any> = process.argv.slice(2);
 const concurrency: number = 20;
 let profile; // Bad global var, I don't know what else to do...
 let signer;
-
-if (args.length < 4) {
-  throw Error("Not enough arguments. See documentation on github for arguments");
-}
 
 async function createPassphrase(entropy: number = 16): Promise<string> {
   const randomBytes = await Random.getBytes(entropy);
@@ -122,12 +117,16 @@ async function sendTransaction(address: string, chainId: string, ticker: string)
   return sendTx;
 }
 
-function main(): void {
+function main(args: ReadonlyArray<string>): void {
+  if (args.length < 4) {
+    throw Error("Not enough arguments. See documentation on github for arguments");
+  }
+
   const action = args[0];
   const filename = args[1];
   const password = args[2];
   const codec = args[3];
-  const userMnemonic = args[4];
+  const userMnemonic: string | undefined = args[4];
 
   if (codec !== "bns" && codec !== "lisk") {
     throw Error("Invalid codec. Valid codecs are: lisk, bns");
@@ -229,4 +228,4 @@ function main(): void {
   console.log("Started Koa Listener");
 }
 
-main();
+main(process.argv.slice(2));
