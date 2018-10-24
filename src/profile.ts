@@ -31,8 +31,6 @@ export async function loadProfile(filename: string, password: string): Promise<U
     const profile = await UserProfile.loadFrom(db, password);
     console.log("Profile Loaded from disk");
     return profile;
-  } catch (e) {
-    throw Error(e);
   } finally {
     await db.close();
   }
