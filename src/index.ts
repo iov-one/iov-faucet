@@ -130,7 +130,7 @@ async function initialize(
   await storeProfile(filename, password);
 }
 
-async function start(filename: string, password: string): Promise<void> {
+async function start(filename: string, password: string, port: number): Promise<void> {
   if (!fs.existsSync(filename)) {
     throw Error("File does not exist on disk, did you mean to -initialize- your profile?");
   }
@@ -208,8 +208,8 @@ async function start(filename: string, password: string): Promise<void> {
       // koa sends 404 by default
     }
   });
-  api.listen(8000);
-  console.log("Started Koa Listener");
+  console.log(`Started webserver on port ${port}`);
+  api.listen(port);
 }
 
 function main(args: ReadonlyArray<string>): void {
@@ -234,7 +234,7 @@ function main(args: ReadonlyArray<string>): void {
       });
       break;
     case "start":
-      start(filename, password).catch(error => {
+      start(filename, password, 8000).catch(error => {
         console.error(error);
       });
       break;
