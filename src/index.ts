@@ -152,13 +152,14 @@ function main(args: ReadonlyArray<string>): void {
         console.error(error);
       });
       break;
-
     case "start":
       if (!fs.existsSync(filename)) {
         throw Error("File does not exist on disk, did you mean to -initialize- your profile?");
       }
       loadProfile(filename, password);
       break;
+    default:
+      throw new Error("Unexpected action argument");
   }
 
   const api = new Koa();
