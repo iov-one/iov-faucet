@@ -10,7 +10,8 @@ import { liskConnector } from "@iov/lisk";
 import { ChainId, PublicKeyBundle } from "@iov/tendermint-types";
 
 import { Codec } from "../codec";
-import { getAddresses, loadProfile } from "../profile";
+import { identityInfosOfFirstChain } from "../multichainhelpers";
+import { loadProfile } from "../profile";
 
 async function sendTransaction(
   signer: MultiChainSigner,
@@ -73,6 +74,15 @@ export async function start(
   const connectedChainId = connection.chainId();
   console.log(`Connected to network: ${connectedChainId}`);
 
+  // Don't wait for result. Just print when it is there
+  identityInfosOfFirstChain(signer)
+    .then(result => {
+      console.log("Identities:\n" + result.map(r => `  ${r.address}: [${r.balance}]`).join("\n"));
+    })
+    .catch(error => {
+      console.error("Error getting identity infos:", error);
+    });
+
   const api = new Koa();
   api.use(bodyParser());
 
@@ -84,7 +94,7 @@ export async function start(
           status: "ok",
           nodeUrl: ip.address(),
           chainId: connectedChainId,
-          addresses: getAddresses(profile, codec),
+          identities: await identityInfosOfFirstChain(signer),
         };
         break;
       case "/getTokens":
