@@ -13,6 +13,7 @@ import { ChainId, PublicKeyBundle } from "@iov/tendermint-types";
 import { Codec, codecFromString } from "./codec";
 import { generateRandomMnemonic } from "./crypto";
 import { getAddresses, loadProfile, setSecretAndCreateIdentities, storeProfile } from "./profile";
+import * as constants from "./constants";
 
 async function sendTransaction(
   signer: MultiChainSigner,
@@ -192,7 +193,7 @@ function main(args: ReadonlyArray<string>): void {
       break;
     case "start":
       const blockchainBaseUrl: string = args[4];
-      start(filename, password, codec, blockchainBaseUrl, 8000).catch(error => {
+      start(filename, password, codec, blockchainBaseUrl, constants.port).catch(error => {
         console.error(error);
       });
       break;
