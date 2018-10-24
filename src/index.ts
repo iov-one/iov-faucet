@@ -14,9 +14,6 @@ import { ChainId, PublicKeyBundle } from "@iov/tendermint-types";
 import { Codec, codecFromString } from "./codec";
 import { getAddresses, loadProfile, setSecretAndCreateIdentities, storeProfile } from "./profile";
 
-let profile; // Bad global var, I don't know what else to do...
-let signer;
-
 async function createPassphrase(entropy: number = 16): Promise<string> {
   const randomBytes = await Random.getBytes(entropy);
   const mnemonic: string = Bip39.encode(randomBytes).asString();
@@ -24,17 +21,23 @@ async function createPassphrase(entropy: number = 16): Promise<string> {
   return mnemonic;
 }
 
-async function sendTransaction(address: string, chainId: string, ticker: string): Promise<SendTx> {
-  const wallet = profile.wallets.value[0];
-  const mainIdentity = profile.getIdentities(wallet.id)[Math.floor(Math.random() * Math.floor(20))];
+async function sendTransaction(
+  signer: MultiChainSigner,
+  address: string,
+  chainId: ChainId,
+  ticker: string,
+): Promise<SendTx> {
+  const wallet = signer.profile.wallets.value[0];
+  const identities = signer.profile.getIdentities(wallet.id);
+  const sender = identities[Math.floor(Math.random() * Math.floor(20))];
 
   // TODO: Add validation of address for requested chain
 
-  console.log("Address: ", signer.keyToAddress(chainId, mainIdentity.pubkey));
+  console.log("Sender address: ", signer.keyToAddress(chainId, sender.pubkey));
   const sendTx: SendTx = {
     kind: TransactionKind.Send,
     chainId: chainId as ChainId,
-    signer: mainIdentity.pubkey as PublicKeyBundle,
+    signer: sender.pubkey as PublicKeyBundle,
     recipient: address as RecipientId,
     memo: "We ❤️ developers – iov.one",
     amount: {
@@ -69,9 +72,9 @@ async function start(filename: string, password: string, port: number): Promise<
   if (!fs.existsSync(filename)) {
     throw Error("File does not exist on disk, did you mean to -initialize- your profile?");
   }
-  profile = await loadProfile(filename, password);
+  const profile = await loadProfile(filename, password);
 
-  signer = new MultiChainSigner(profile);
+  const signer = new MultiChainSigner(profile);
   await signer.addChain(bnsConnector("wss://bov.friendnet-fast.iov.one"));
   await signer.addChain(bnsConnector("wss://bov.friendnet-slow.iov.one"));
   await signer.addChain(liskConnector("https://testnet.lisk.io"));
@@ -134,7 +137,7 @@ async function start(filename: string, password: string, port: number): Promise<
 
         let sendTx;
         try {
-          sendTx = await sendTransaction(address, chainId, ticker);
+          sendTx = await sendTransaction(signer, address, chainId, ticker);
         } catch (e) {
           console.log(e);
           // tslint:disable-next-line:no-object-mutation
