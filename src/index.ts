@@ -6,20 +6,13 @@ import bodyParser from "koa-bodyparser";
 import { RecipientId, SendTx, TokenTicker, TransactionKind } from "@iov/bcp-types";
 import { bnsConnector } from "@iov/bns";
 import { MultiChainSigner } from "@iov/core";
-import { Bip39, Random } from "@iov/crypto";
 import { UserProfile } from "@iov/keycontrol";
 import { liskConnector } from "@iov/lisk";
 import { ChainId, PublicKeyBundle } from "@iov/tendermint-types";
 
 import { Codec, codecFromString } from "./codec";
+import { generateRandomMnemonic } from "./crypto";
 import { getAddresses, loadProfile, setSecretAndCreateIdentities, storeProfile } from "./profile";
-
-async function createPassphrase(entropy: number = 16): Promise<string> {
-  const randomBytes = await Random.getBytes(entropy);
-  const mnemonic: string = Bip39.encode(randomBytes).asString();
-  console.log("Faucet master passphrase: " + mnemonic);
-  return mnemonic;
-}
 
 async function sendTransaction(
   signer: MultiChainSigner,
@@ -63,8 +56,17 @@ async function initialize(
     throw Error("File already exists on disk, did you mean to -load- your profile?");
   }
   const initProfile = new UserProfile();
-  const mnemonic = await createPassphrase();
-  await setSecretAndCreateIdentities(initProfile, userMnemonic ? userMnemonic : mnemonic);
+
+  let mnemonic: string;
+  if (userMnemonic) {
+    mnemonic = userMnemonic;
+  } else {
+    const newMnemonic = await generateRandomMnemonic();
+    console.log("Faucet master passphrase: " + newMnemonic);
+    mnemonic = newMnemonic;
+  }
+
+  await setSecretAndCreateIdentities(initProfile, mnemonic);
   await storeProfile(initProfile, filename, password);
 }
 
