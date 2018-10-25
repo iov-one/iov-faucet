@@ -68,6 +68,10 @@ export async function start(args: ReadonlyArray<string>): Promise<void> {
       console.error("Error getting identity infos:", error);
     });
 
+  const chainTickers = (await signer.connection(connectedChainId).getAllTickers()).data.map(
+    token => token.tokenTicker,
+  );
+
   console.log("Creating webserver ...");
   const api = new Koa();
   api.use(bodyParser());
@@ -75,12 +79,15 @@ export async function start(args: ReadonlyArray<string>): Promise<void> {
   api.use(async context => {
     switch (context.path) {
       case "/state":
+        const identities = await identityInfosOfFirstChain(signer);
         // tslint:disable-next-line:no-object-mutation
         context.response.body = {
           status: "ok",
           nodeUrl: ip.address(),
           chainId: connectedChainId,
-          identities: await identityInfosOfFirstChain(signer),
+          chainTickers: chainTickers,
+          holder: identities[0],
+          distributors: identities.slice(1),
         };
         break;
       case "/getTokens":
@@ -105,11 +112,9 @@ export async function start(args: ReadonlyArray<string>): Promise<void> {
           break;
         }
 
-        const tickers = await signer.connection(connectedChainId).getAllTickers();
-        const networkTickers = tickers.data.map(token => token.tokenTicker);
-        if (networkTickers.indexOf(ticker) === -1) {
+        if (chainTickers.indexOf(ticker) === -1) {
           // tslint:disable-next-line:no-object-mutation
-          context.response.body = "Invalid Ticker. Valid tickers are: " + JSON.stringify(networkTickers);
+          context.response.body = "Invalid Ticker. Valid tickers are: " + JSON.stringify(chainTickers);
           break;
         }
 
