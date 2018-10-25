@@ -65,6 +65,7 @@ export async function start(args: ReadonlyArray<string>): Promise<void> {
   const profile = await loadProfile(filename, password);
   const signer = new MultiChainSigner(profile);
 
+  console.log("Connecting to blockchain ...");
   let connection: BcpConnection;
   switch (codec) {
     case Codec.Bns:
@@ -89,6 +90,7 @@ export async function start(args: ReadonlyArray<string>): Promise<void> {
       console.error("Error getting identity infos:", error);
     });
 
+  console.log("Creating webserver ...");
   const api = new Koa();
   api.use(bodyParser());
 
