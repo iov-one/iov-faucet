@@ -1,4 +1,5 @@
 import { init, start } from "./actions";
+import { version } from "./actions/version";
 
 function main(args: ReadonlyArray<string>): void {
   if (args.length < 1) {
@@ -9,6 +10,12 @@ function main(args: ReadonlyArray<string>): void {
   const restArgs = args.slice(1);
 
   switch (action) {
+    case "version":
+      version().catch(error => {
+        console.error(error);
+        process.exit(1);
+      });
+      break;
     case "init":
       init(restArgs).catch(error => {
         console.error(error);
