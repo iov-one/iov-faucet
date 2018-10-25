@@ -8,18 +8,15 @@ export function identitiesOfFirstChain(signer: MultiChainSigner): ReadonlyArray<
   return signer.profile.getIdentities(wallet.id);
 }
 
-export function addressesOfFirstChain(signer: MultiChainSigner): ReadonlyArray<Address> {
+export function identityToAddress(signer: MultiChainSigner, identity: PublicIdentity): Address {
   const chainId = signer.chainIds()[0];
-  const addresses = identitiesOfFirstChain(signer).map(identity =>
-    signer.keyToAddress(chainId, identity.pubkey),
-  );
-  return addresses;
+  return signer.keyToAddress(chainId, identity.pubkey);
 }
 
 export async function identityInfosOfFirstChain(
   signer: MultiChainSigner,
 ): Promise<ReadonlyArray<BcpAccount>> {
-  const addresses = addressesOfFirstChain(signer);
+  const addresses = identitiesOfFirstChain(signer).map(identity => identityToAddress(signer, identity));
   const chainId = signer.chainIds()[0];
 
   // tslint:disable-next-line:readonly-array

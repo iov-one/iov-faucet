@@ -70,8 +70,8 @@ Now that the faucet has been started up, you can send credit requests to it. Thi
 ```
 curl --header "Content-Type: application/json" \
   --request POST \
-  --data '{"chainId":"chain-friendnet-fast","address":"8F0414C68C316C74765DBDC3B515D79D7CEA094B"}' \
-http://localhost:8000/getTokens
+  --data '{"ticker":"CASH","address":"tiov1k898u78hgs36uqw68dg7va5nfkgstu5z0fhz3f"}' \
+  http://localhost:8000/getTokens
 ```
 
 Applicable chainIds:

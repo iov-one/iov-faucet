@@ -11,8 +11,20 @@ import { liskConnector } from "@iov/lisk";
 import { Codec, codecFromString } from "../codec";
 import * as constants from "../constants";
 import { debugBalance } from "../debugging";
-import { identityInfosOfFirstChain, SendJob, sendOnFirstChain } from "../multichainhelpers";
+import {
+  identityInfosOfFirstChain,
+  identityToAddress,
+  SendJob,
+  sendOnFirstChain,
+} from "../multichainhelpers";
 import { loadProfile } from "../profile";
+
+let count = 0;
+
+/** returns an integer >= 0 that increments and is unique in module scope */
+function getCount(): number {
+  return count++;
+}
 
 export async function start(args: ReadonlyArray<string>): Promise<void> {
   if (args.length < 4) {
@@ -75,45 +87,35 @@ export async function start(args: ReadonlyArray<string>): Promise<void> {
         // TODO: Allow requests using GET + query params
         if (context.request.method === "GET") {
           // tslint:disable-next-line:no-object-mutation
-          context.response.body =
-            "This endpoint requires a POST request, with fields: address, chainId and ticker.";
+          context.response.body = "This endpoint requires a POST request, with fields: address and ticker.";
           break;
         }
 
         // TODO: Better error handling on request body being empty?
-        const { ticker, chainId, address } = context.request.body;
-        if (address) {
-          console.log("Got address: " + address);
-        } else {
+        const { ticker, address } = context.request.body;
+        if (!address) {
           // tslint:disable-next-line:no-object-mutation
           context.response.body = "Empty address.";
           break;
         }
 
-        if (signer.chainIds().indexOf(chainId) === -1) {
+        if (!ticker) {
           // tslint:disable-next-line:no-object-mutation
-          context.response.body = "Empty or invalid chainId. Valid chainIds are: " + signer.chainIds();
+          context.response.body = "Empty ticker";
           break;
         }
 
-        if (ticker) {
-          console.log("Got ticker: " + ticker);
-          const tickers = await signer.connection(chainId).getAllTickers();
-          const networkTickers = tickers.data.map(token => token.tokenTicker);
-          if (networkTickers.indexOf(ticker) === -1) {
-            // tslint:disable-next-line:no-object-mutation
-            context.response.body = "Invalid Ticker. Valid tickers are: " + JSON.stringify(networkTickers);
-            break;
-          }
-        } else {
+        const tickers = await signer.connection(connectedChainId).getAllTickers();
+        const networkTickers = tickers.data.map(token => token.tokenTicker);
+        if (networkTickers.indexOf(ticker) === -1) {
           // tslint:disable-next-line:no-object-mutation
-          context.response.body = "Empty chainId";
+          context.response.body = "Invalid Ticker. Valid tickers are: " + JSON.stringify(networkTickers);
           break;
         }
 
         const wallet = signer.profile.wallets.value[0];
         const distibutors = signer.profile.getIdentities(wallet.id).slice(1);
-        const sender = distibutors[Math.floor(Math.random() * Math.floor(distibutors.length))];
+        const sender = distibutors[getCount() % distibutors.length];
 
         try {
           // TODO: Add validation of address for requested chain
@@ -123,6 +125,11 @@ export async function start(args: ReadonlyArray<string>): Promise<void> {
             amount: 1,
             tokenTicker: ticker,
           };
+          console.log(
+            `Sending ${job.tokenTicker} from ${identityToAddress(signer, job.sender)} to ${
+              job.recipient
+            } ...`,
+          );
           await sendOnFirstChain(signer, job);
         } catch (e) {
           console.log(e);
