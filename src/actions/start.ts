@@ -10,10 +10,10 @@ import { liskConnector } from "@iov/lisk";
 
 import { Codec, codecFromString } from "../codec";
 import * as constants from "../constants";
-import { debugBalance } from "../debugging";
+import { debugAccount } from "../debugging";
 import {
+  accountsOfFirstChain,
   identitiesOfFirstChain,
-  identityInfosOfFirstChain,
   identityToAddress,
   SendJob,
   sendOnFirstChain,
@@ -61,12 +61,12 @@ export async function start(args: ReadonlyArray<string>): Promise<void> {
   console.log(`Connected to network: ${connectedChainId}`);
 
   // Don't wait for result. Just print when it is there
-  identityInfosOfFirstChain(signer)
-    .then(result => {
-      console.log("Identities:\n" + result.map(r => `  ${r.address}: ${debugBalance(r.balance)}`).join("\n"));
+  accountsOfFirstChain(signer)
+    .then(accounts => {
+      console.log("Accounts:\n" + accounts.map(a => `  ${debugAccount(a)}`).join("\n"));
     })
     .catch(error => {
-      console.error("Error getting identity infos:", error);
+      console.error("Error getting accounts:", error);
     });
 
   const chainTickers = (await signer.connection(connectedChainId).getAllTickers()).data.map(
@@ -81,15 +81,15 @@ export async function start(args: ReadonlyArray<string>): Promise<void> {
   api.use(async context => {
     switch (context.path) {
       case "/state":
-        const identities = await identityInfosOfFirstChain(signer);
+        const accounts = await accountsOfFirstChain(signer);
         // tslint:disable-next-line:no-object-mutation
         context.response.body = {
           status: "ok",
           nodeUrl: ip.address(),
           chainId: connectedChainId,
           chainTickers: chainTickers,
-          holder: identities[0],
-          distributors: identities.slice(1),
+          holder: accounts[0],
+          distributors: accounts.slice(1),
         };
         break;
       case "/getTokens":

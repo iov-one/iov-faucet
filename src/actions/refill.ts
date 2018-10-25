@@ -9,8 +9,8 @@ import { Codec, codecFromString } from "../codec";
 import * as constants from "../constants";
 import { debugAccount } from "../debugging";
 import {
+  accountsOfFirstChain,
   identitiesOfFirstChain,
-  identityInfosOfFirstChain,
   SendJob,
   sendOnFirstChain,
 } from "../multichainhelpers";
@@ -64,19 +64,19 @@ export async function refill(args: ReadonlyArray<string>): Promise<void> {
 
   const holderIdentity = identitiesOfFirstChain(signer)[0];
 
-  const accounts = await identityInfosOfFirstChain(signer);
+  const accounts = await accountsOfFirstChain(signer);
   logAccountsState(accounts);
-  const holder = accounts[0];
-  const distributors = accounts.slice(1);
+  const holderAccount = accounts[0];
+  const distributorAccounts = accounts.slice(1);
 
-  const availableTokens = holder.balance.map(coin => coin.tokenTicker);
+  const availableTokens = holderAccount.balance.map(coin => coin.tokenTicker);
   console.log("Available tokens:", availableTokens);
 
   // tslint:disable-next-line:readonly-array
   const jobs: SendJob[] = [];
 
   for (const token of availableTokens) {
-    const refillDistibutors = distributors.filter(account => needsRefill(account, token));
+    const refillDistibutors = distributorAccounts.filter(account => needsRefill(account, token));
     console.log(`Refilling ${token} of:`);
     console.log(
       refillDistibutors.length ? refillDistibutors.map(r => `  ${debugAccount(r)}`).join("\n") : "  none",
@@ -96,7 +96,7 @@ export async function refill(args: ReadonlyArray<string>): Promise<void> {
   }
 
   console.log("Done refilling accounts.");
-  logAccountsState(await identityInfosOfFirstChain(signer));
+  logAccountsState(await accountsOfFirstChain(signer));
 
   // shut down
   signer.chainIds().map(chainId => signer.connection(chainId).disconnect());

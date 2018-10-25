@@ -13,9 +13,7 @@ export function identityToAddress(signer: MultiChainSigner, identity: PublicIden
   return signer.keyToAddress(chainId, identity.pubkey);
 }
 
-export async function identityInfosOfFirstChain(
-  signer: MultiChainSigner,
-): Promise<ReadonlyArray<BcpAccount>> {
+export async function accountsOfFirstChain(signer: MultiChainSigner): Promise<ReadonlyArray<BcpAccount>> {
   const addresses = identitiesOfFirstChain(signer).map(identity => identityToAddress(signer, identity));
   const chainId = signer.chainIds()[0];
 
