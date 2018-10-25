@@ -3,16 +3,16 @@ import ip from "ip";
 import Koa from "koa";
 import bodyParser from "koa-bodyparser";
 
-import { BcpCoin, BcpConnection, RecipientId, SendTx, TokenTicker, TransactionKind } from "@iov/bcp-types";
+import { BcpConnection, RecipientId, SendTx, TokenTicker, TransactionKind } from "@iov/bcp-types";
 import { bnsConnector } from "@iov/bns";
 import { MultiChainSigner } from "@iov/core";
 import { liskConnector } from "@iov/lisk";
 import { ChainId, PublicKeyBundle } from "@iov/tendermint-types";
 
 import { Codec } from "../codec";
+import { debugBalance } from "../debugging";
 import { identityInfosOfFirstChain } from "../multichainhelpers";
 import { loadProfile } from "../profile";
-import { debugBalance } from "../debugging";
 
 async function sendTransaction(
   signer: MultiChainSigner,
