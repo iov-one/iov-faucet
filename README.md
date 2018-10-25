@@ -55,6 +55,11 @@ refill    Fills all distribution accounts from the holder account and exits.
            2  Database encryption password
            3  Codec
            4  Node base URL, e.g. wss://bov.friendnet-fast.iov.one
+
+Environment variables
+
+FAUCET_CONCURRENCY    Number of distributor accounts. Defaults to 5.
+FAUCET_PORT           Port of the webserver. Defaults to 8000.
 ```
 
 ### Development
