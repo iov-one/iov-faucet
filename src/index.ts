@@ -1,4 +1,4 @@
-import { initialize, start } from "./actions";
+import { init, start } from "./actions";
 import { codecFromString } from "./codec";
 import * as constants from "./constants";
 
@@ -13,9 +13,9 @@ function main(args: ReadonlyArray<string>): void {
   const codec = codecFromString(args[3]);
 
   switch (action) {
-    case "initialize":
+    case "init":
       const userMnemonic: string | undefined = args[4];
-      initialize(filename, password, codec, userMnemonic).catch(error => {
+      init(filename, password, codec, userMnemonic).catch(error => {
         console.error(error);
       });
       break;

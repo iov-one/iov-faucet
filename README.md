@@ -10,8 +10,8 @@ yarn build
 Then start it up using:
 
 ```
-yarn initialize
-yarn start
+yarn dev-init
+yarn dev-start
 ```
 
 Make sure to take note of the passphrase used, as this is the only time it will be displayed.
@@ -21,7 +21,7 @@ Advanced users that want to provide their own passphrase can do so like this:
 ```
 yarn install
 yarn build
-node build/index.js initialize db/<dbname> <db password> <codec> "<passphrase goes here>"
+node build/index.js init db/<dbname> <db password> <codec> "<passphrase goes here>"
 ```
 
 Ensure that the db is not there, otherwise the application will throw. This is to prevent overwriting existing databases.
@@ -37,7 +37,7 @@ help        Shows a help text and exists
 
 version     Prints the version and exists
 
-initialize  Initialized the faucet and exists
+init        Initializes the faucet and exists
              1  Database file path
              2  Database encryption password
              3  Codec
@@ -52,7 +52,7 @@ start       Starts the faucet
 
 ### Development
 
-The yarn scripts `dev-init` and `dev-start` call `initialize` and `start` with
+The yarn scripts `dev-init` and `dev-start` call `init` and `start` with
 a set of default options for local development. It uses a weak password,
 the BNS codec and the node `ws://localhost:22345`.
 

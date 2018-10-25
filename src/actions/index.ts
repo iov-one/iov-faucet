@@ -1,2 +1,2 @@
-export { initialize } from "./initialize";
+export { init } from "./init";
 export { start } from "./start";

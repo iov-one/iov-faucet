@@ -55,7 +55,7 @@ export async function start(
   port: number,
 ): Promise<void> {
   if (!fs.existsSync(filename)) {
-    throw Error("File does not exist on disk, did you mean to -initialize- your profile?");
+    throw Error("File does not exist on disk, did you mean to -init- your profile?");
   }
   const profile = await loadProfile(filename, password);
   const signer = new MultiChainSigner(profile);

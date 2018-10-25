@@ -6,7 +6,7 @@ import { Codec } from "../codec";
 import { generateRandomMnemonic } from "../crypto";
 import { setSecretAndCreateIdentities, storeProfile } from "../profile";
 
-export async function initialize(
+export async function init(
   filename: string,
   password: string,
   codec: Codec,
