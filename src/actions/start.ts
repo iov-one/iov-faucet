@@ -111,9 +111,13 @@ export async function start(args: ReadonlyArray<string>): Promise<void> {
           break;
         }
 
+        const wallet = signer.profile.wallets.value[0];
+        const distibutors = signer.profile.getIdentities(wallet.id).slice(1);
+        const sender = distibutors[Math.floor(Math.random() * Math.floor(distibutors.length))];
+
         let sendTx;
         try {
-          sendTx = await sendTransaction(signer, address, chainId, ticker);
+          sendTx = await sendTransaction(signer, chainId, sender, address, ticker, 1);
         } catch (e) {
           console.log(e);
           // tslint:disable-next-line:no-object-mutation

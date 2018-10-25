@@ -1,4 +1,4 @@
-import { init, start } from "./actions";
+import { init, refill, start } from "./actions";
 import { version } from "./actions/version";
 
 function main(args: ReadonlyArray<string>): void {
@@ -24,6 +24,12 @@ function main(args: ReadonlyArray<string>): void {
       break;
     case "start":
       start(restArgs).catch(error => {
+        console.error(error);
+        process.exit(1);
+      });
+      break;
+    case "refill":
+      refill(restArgs).catch(error => {
         console.error(error);
         process.exit(1);
       });

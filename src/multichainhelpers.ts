@@ -1,14 +1,18 @@
-import { BcpAccount, RecipientId, SendTx, TokenTicker, TransactionKind } from "@iov/bcp-types";
+import { BcpAccount, SendTx, TokenTicker, TransactionKind } from "@iov/bcp-types";
 import { Address, MultiChainSigner } from "@iov/core";
+import { PublicIdentity } from "@iov/keycontrol";
 import { ChainId, PublicKeyBundle } from "@iov/tendermint-types";
 
-function addressesOfFirstChain(signer: MultiChainSigner): ReadonlyArray<Address> {
+export function identitiesOfFirstChain(signer: MultiChainSigner): ReadonlyArray<PublicIdentity> {
   const wallet = signer.profile.wallets.value[0];
-  const chainId = signer.chainIds()[0];
+  return signer.profile.getIdentities(wallet.id);
+}
 
-  const addresses = signer.profile
-    .getIdentities(wallet.id)
-    .map(identity => signer.keyToAddress(chainId, identity.pubkey));
+export function addressesOfFirstChain(signer: MultiChainSigner): ReadonlyArray<Address> {
+  const chainId = signer.chainIds()[0];
+  const addresses = identitiesOfFirstChain(signer).map(identity =>
+    signer.keyToAddress(chainId, identity.pubkey),
+  );
   return addresses;
 }
 
@@ -47,13 +51,13 @@ export async function identityInfosOfFirstChain(
 
 export async function sendTransaction(
   signer: MultiChainSigner,
-  address: string,
   chainId: ChainId,
+  sender: PublicIdentity,
+  recipient: Address,
   ticker: string,
+  amount: number,
 ): Promise<SendTx> {
   const wallet = signer.profile.wallets.value[0];
-  const identities = signer.profile.getIdentities(wallet.id);
-  const sender = identities[Math.floor(Math.random() * Math.floor(20))];
 
   // TODO: Add validation of address for requested chain
 
@@ -62,11 +66,11 @@ export async function sendTransaction(
     kind: TransactionKind.Send,
     chainId: chainId as ChainId,
     signer: sender.pubkey as PublicKeyBundle,
-    recipient: address as RecipientId,
+    recipient: recipient,
     memo: "We ❤️ developers – iov.one",
     amount: {
-      whole: 1,
-      fractional: 44550000,
+      whole: Math.floor(amount),
+      fractional: 0,
       tokenTicker: ticker as TokenTicker,
     },
   };
