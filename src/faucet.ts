@@ -1,6 +1,6 @@
 import { help, init, refill, start, version } from "./actions";
 
-function main(args: ReadonlyArray<string>): void {
+export function main(args: ReadonlyArray<string>): void {
   if (args.length < 1) {
     throw Error("Not enough arguments. See documentation on github for arguments");
   }
@@ -40,5 +40,3 @@ function main(args: ReadonlyArray<string>): void {
       throw new Error("Unexpected action argument");
   }
 }
-
-main(process.argv.slice(2));
