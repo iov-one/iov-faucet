@@ -1,5 +1,4 @@
-import { init, refill, start } from "./actions";
-import { version } from "./actions/version";
+import { init, refill, start, version } from "./actions";
 
 function main(args: ReadonlyArray<string>): void {
   if (args.length < 1) {

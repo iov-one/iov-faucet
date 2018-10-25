@@ -1,3 +1,4 @@
 export { init } from "./init";
-export { start } from "./start";
 export { refill } from "./refill";
+export { start } from "./start";
+export { version } from "./version";
