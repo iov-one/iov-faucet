@@ -12,6 +12,7 @@ import { Codec, codecFromString } from "../codec";
 import * as constants from "../constants";
 import { debugBalance } from "../debugging";
 import {
+  identitiesOfFirstChain,
   identityInfosOfFirstChain,
   identityToAddress,
   SendJob,
@@ -71,6 +72,7 @@ export async function start(args: ReadonlyArray<string>): Promise<void> {
   const chainTickers = (await signer.connection(connectedChainId).getAllTickers()).data.map(
     token => token.tokenTicker,
   );
+  const distibutorIdentities = identitiesOfFirstChain(signer).slice(1);
 
   console.log("Creating webserver ...");
   const api = new Koa();
@@ -118,9 +120,7 @@ export async function start(args: ReadonlyArray<string>): Promise<void> {
           break;
         }
 
-        const wallet = signer.profile.wallets.value[0];
-        const distibutors = signer.profile.getIdentities(wallet.id).slice(1);
-        const sender = distibutors[getCount() % distibutors.length];
+        const sender = distibutorIdentities[getCount() % distibutorIdentities.length];
 
         try {
           // TODO: Add validation of address for requested chain
