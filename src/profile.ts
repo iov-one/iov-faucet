@@ -3,7 +3,7 @@ import levelup from "levelup";
 
 import { Ed25519HdWallet, HdPaths, UserProfile } from "@iov/core";
 
-import { concurrency } from "./constants";
+import * as constants from "./constants";
 
 export async function setSecretAndCreateIdentities(profile: UserProfile, mnemonic: string): Promise<void> {
   if (profile.wallets.value.length !== 0) {
@@ -12,7 +12,9 @@ export async function setSecretAndCreateIdentities(profile: UserProfile, mnemoni
 
   const wallet = profile.addWallet(Ed25519HdWallet.fromMnemonic(mnemonic));
 
-  for (let i = 0; i < concurrency; i++) {
+  // first account is the token holder
+  const numberOfIdentities = 1 + constants.concurrency;
+  for (let i = 0; i < numberOfIdentities; i++) {
     await profile.createIdentity(wallet.id, HdPaths.simpleAddress(i));
   }
 }
