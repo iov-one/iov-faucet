@@ -9,7 +9,8 @@ import { MultiChainSigner } from "@iov/core";
 import { liskConnector } from "@iov/lisk";
 import { ChainId, PublicKeyBundle } from "@iov/tendermint-types";
 
-import { Codec } from "../codec";
+import { Codec, codecFromString } from "../codec";
+import * as constants from "../constants";
 import { debugBalance } from "../debugging";
 import { identityInfosOfFirstChain } from "../multichainhelpers";
 import { loadProfile } from "../profile";
@@ -47,13 +48,17 @@ async function sendTransaction(
   return sendTx;
 }
 
-export async function start(
-  filename: string,
-  password: string,
-  codec: Codec,
-  blockchainBaseUrl: string,
-  port: number,
-): Promise<void> {
+export async function start(args: ReadonlyArray<string>): Promise<void> {
+  if (args.length < 4) {
+    throw Error(`Not enough arguments for action 'start'. See README for arguments`);
+  }
+  const filename = args[0];
+  const password = args[1];
+  const codec = codecFromString(args[2]);
+  const blockchainBaseUrl: string = args[3];
+
+  const port = constants.port;
+
   if (!fs.existsSync(filename)) {
     throw Error("File does not exist on disk, did you mean to -init- your profile?");
   }

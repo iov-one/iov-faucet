@@ -2,16 +2,20 @@ import fs from "fs";
 
 import { UserProfile } from "@iov/keycontrol";
 
-import { Codec } from "../codec";
+import { codecFromString } from "../codec";
 import { generateRandomMnemonic } from "../crypto";
 import { setSecretAndCreateIdentities, storeProfile } from "../profile";
 
-export async function init(
-  filename: string,
-  password: string,
-  codec: Codec,
-  userMnemonic: string | undefined,
-): Promise<void> {
+export async function init(args: ReadonlyArray<string>): Promise<void> {
+  if (args.length < 3) {
+    throw Error(`Not enough arguments for action 'start'. See README for arguments`);
+  }
+  const filename = args[0];
+  const password = args[1];
+  const codec = codecFromString(args[2]);
+  // optional args
+  const userMnemonic: string | undefined = args[3];
+
   if (fs.existsSync(filename)) {
     throw Error("File already exists on disk, did you mean to -load- your profile?");
   }
