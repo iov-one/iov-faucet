@@ -1,4 +1,4 @@
-import { init, refill, start, version } from "./actions";
+import { help, init, refill, start, version } from "./actions";
 
 function main(args: ReadonlyArray<string>): void {
   if (args.length < 1) {
@@ -9,6 +9,9 @@ function main(args: ReadonlyArray<string>): void {
   const restArgs = args.slice(1);
 
   switch (action) {
+    case "help":
+      help();
+      break;
     case "version":
       version().catch(error => {
         console.error(error);
