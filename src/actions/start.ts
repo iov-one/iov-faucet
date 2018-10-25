@@ -3,50 +3,16 @@ import ip from "ip";
 import Koa from "koa";
 import bodyParser from "koa-bodyparser";
 
-import { BcpConnection, RecipientId, SendTx, TokenTicker, TransactionKind } from "@iov/bcp-types";
+import { BcpConnection } from "@iov/bcp-types";
 import { bnsConnector } from "@iov/bns";
 import { MultiChainSigner } from "@iov/core";
 import { liskConnector } from "@iov/lisk";
-import { ChainId, PublicKeyBundle } from "@iov/tendermint-types";
 
 import { Codec, codecFromString } from "../codec";
 import * as constants from "../constants";
 import { debugBalance } from "../debugging";
-import { identityInfosOfFirstChain } from "../multichainhelpers";
+import { identityInfosOfFirstChain, sendTransaction } from "../multichainhelpers";
 import { loadProfile } from "../profile";
-
-async function sendTransaction(
-  signer: MultiChainSigner,
-  address: string,
-  chainId: ChainId,
-  ticker: string,
-): Promise<SendTx> {
-  const wallet = signer.profile.wallets.value[0];
-  const identities = signer.profile.getIdentities(wallet.id);
-  const sender = identities[Math.floor(Math.random() * Math.floor(20))];
-
-  // TODO: Add validation of address for requested chain
-
-  console.log("Sender address: ", signer.keyToAddress(chainId, sender.pubkey));
-  const sendTx: SendTx = {
-    kind: TransactionKind.Send,
-    chainId: chainId as ChainId,
-    signer: sender.pubkey as PublicKeyBundle,
-    recipient: address as RecipientId,
-    memo: "We ❤️ developers – iov.one",
-    amount: {
-      whole: 1,
-      fractional: 44550000,
-      tokenTicker: ticker as TokenTicker,
-    },
-  };
-  try {
-    await signer.signAndCommit(sendTx, wallet.id);
-  } catch (e) {
-    console.log(e);
-  }
-  return sendTx;
-}
 
 export async function start(args: ReadonlyArray<string>): Promise<void> {
   if (args.length < 4) {
