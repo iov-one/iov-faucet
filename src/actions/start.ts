@@ -11,7 +11,7 @@ import { liskConnector } from "@iov/lisk";
 import { Codec, codecFromString } from "../codec";
 import * as constants from "../constants";
 import { debugBalance } from "../debugging";
-import { identityInfosOfFirstChain, sendTransaction } from "../multichainhelpers";
+import { identityInfosOfFirstChain, SendJob, sendOnFirstChain } from "../multichainhelpers";
 import { loadProfile } from "../profile";
 
 export async function start(args: ReadonlyArray<string>): Promise<void> {
@@ -115,9 +115,15 @@ export async function start(args: ReadonlyArray<string>): Promise<void> {
         const distibutors = signer.profile.getIdentities(wallet.id).slice(1);
         const sender = distibutors[Math.floor(Math.random() * Math.floor(distibutors.length))];
 
-        let sendTx;
         try {
-          sendTx = await sendTransaction(signer, chainId, sender, address, ticker, 1);
+          // TODO: Add validation of address for requested chain
+          const job: SendJob = {
+            sender: sender,
+            recipient: address,
+            amount: 1,
+            tokenTicker: ticker,
+          };
+          await sendOnFirstChain(signer, job);
         } catch (e) {
           console.log(e);
           // tslint:disable-next-line:no-object-mutation
@@ -126,7 +132,7 @@ export async function start(args: ReadonlyArray<string>): Promise<void> {
         }
 
         // tslint:disable-next-line:no-object-mutation
-        context.response.body = "Would have sent " + JSON.stringify(sendTx);
+        context.response.body = "ok";
         break;
       default:
       // koa sends 404 by default

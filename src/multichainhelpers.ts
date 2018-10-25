@@ -49,35 +49,28 @@ export async function identityInfosOfFirstChain(
   return out;
 }
 
-export async function sendTransaction(
-  signer: MultiChainSigner,
-  chainId: ChainId,
-  sender: PublicIdentity,
-  recipient: Address,
-  ticker: string,
-  amount: number,
-): Promise<SendTx> {
+export interface SendJob {
+  readonly sender: PublicIdentity;
+  readonly recipient: Address;
+  readonly tokenTicker: TokenTicker;
+  readonly amount: number; // whole numbers only
+}
+
+export async function sendOnFirstChain(signer: MultiChainSigner, job: SendJob): Promise<void> {
+  const chainId = signer.chainIds()[0];
   const wallet = signer.profile.wallets.value[0];
-
-  // TODO: Add validation of address for requested chain
-
-  console.log("Sender address: ", signer.keyToAddress(chainId, sender.pubkey));
   const sendTx: SendTx = {
     kind: TransactionKind.Send,
     chainId: chainId as ChainId,
-    signer: sender.pubkey as PublicKeyBundle,
-    recipient: recipient,
+    signer: job.sender.pubkey as PublicKeyBundle,
+    recipient: job.recipient,
     memo: "We ❤️ developers – iov.one",
     amount: {
-      whole: Math.floor(amount),
+      whole: Math.floor(job.amount),
       fractional: 0,
-      tokenTicker: ticker as TokenTicker,
+      tokenTicker: job.tokenTicker,
     },
   };
-  try {
-    await signer.signAndCommit(sendTx, wallet.id);
-  } catch (e) {
-    console.log(e);
-  }
-  return sendTx;
+
+  await signer.signAndCommit(sendTx, wallet.id);
 }

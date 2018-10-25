@@ -3,13 +3,17 @@ import fs from "fs";
 import { Address, BcpAccount, BcpConnection, TokenTicker } from "@iov/bcp-types";
 import { bnsConnector } from "@iov/bns";
 import { MultiChainSigner } from "@iov/core";
-import { PublicIdentity } from "@iov/keycontrol";
 import { liskConnector } from "@iov/lisk";
 
 import { Codec, codecFromString } from "../codec";
 import * as constants from "../constants";
 import { debugAccount } from "../debugging";
-import { identitiesOfFirstChain, identityInfosOfFirstChain, sendTransaction } from "../multichainhelpers";
+import {
+  identitiesOfFirstChain,
+  identityInfosOfFirstChain,
+  SendJob,
+  sendOnFirstChain,
+} from "../multichainhelpers";
 import { loadProfile } from "../profile";
 
 function needsRefill(account: BcpAccount, token: TokenTicker): boolean {
@@ -25,13 +29,6 @@ function logAccountsState(accounts: ReadonlyArray<BcpAccount>): void {
   const distributors = accounts.slice(1);
   console.log("Holder:\n" + `  ${debugAccount(holder)}`);
   console.log("Distributors:\n" + distributors.map(r => `  ${debugAccount(r)}`).join("\n"));
-}
-
-interface RefillJob {
-  readonly sender: PublicIdentity;
-  readonly recipient: Address;
-  readonly token: TokenTicker;
-  readonly amount: number; // whole numbers only
 }
 
 export async function refill(args: ReadonlyArray<string>): Promise<void> {
@@ -76,26 +73,29 @@ export async function refill(args: ReadonlyArray<string>): Promise<void> {
   console.log("Available tokens:", availableTokens);
 
   // tslint:disable-next-line:readonly-array
-  const jobs: RefillJob[] = [];
+  const jobs: SendJob[] = [];
 
   for (const token of availableTokens) {
     const refillDistibutors = distributors.filter(account => needsRefill(account, token));
-    console.log(`Refilling ${token} of:\n` + refillDistibutors.map(r => `  ${debugAccount(r)}`).join("\n"));
+    console.log(`Refilling ${token} of:`);
+    console.log(
+      refillDistibutors.length ? refillDistibutors.map(r => `  ${debugAccount(r)}`).join("\n") : "  none",
+    );
     for (const refillDistibutor of refillDistibutors) {
       jobs.push({
         sender: holderIdentity,
         recipient: refillDistibutor.address,
-        token: token,
+        tokenTicker: token,
         amount: constants.creditAmounts.get(token) * constants.refillAmount,
       });
     }
   }
 
   for (const job of jobs) {
-    await sendTransaction(signer, connectedChainId, job.sender, job.recipient, job.token, job.amount);
+    await sendOnFirstChain(signer, job);
   }
 
-  console.log("Done refilling accounts. New balances:");
+  console.log("Done refilling accounts.");
   logAccountsState(await identityInfosOfFirstChain(signer));
 
   // shut down
