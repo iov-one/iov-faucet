@@ -17,6 +17,7 @@ import {
   identityToAddress,
   SendJob,
   sendOnFirstChain,
+  tickersOfFirstChain,
 } from "../multichainhelpers";
 import { loadProfile } from "../profile";
 
@@ -69,9 +70,7 @@ export async function start(args: ReadonlyArray<string>): Promise<void> {
       console.error("Error getting accounts:", error);
     });
 
-  const chainTickers = (await signer.connection(connectedChainId).getAllTickers()).data.map(
-    token => token.tokenTicker,
-  );
+  const chainTickers = await tickersOfFirstChain(signer);
   const distibutorIdentities = identitiesOfFirstChain(signer).slice(1);
 
   console.log("Creating webserver ...");
