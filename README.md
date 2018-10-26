@@ -29,7 +29,7 @@ Ensure that the db is not there, otherwise the application will throw. This is t
 ## Usage
 
 ```
-Usage: action [arguments...]
+Usage: iov-faucet action [arguments...]
 
 Positional arguments per action are listed below. Arguments in parentheses are optional.
 

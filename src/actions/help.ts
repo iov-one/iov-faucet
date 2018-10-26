@@ -1,6 +1,6 @@
 export function help(): void {
   const out = `
-Usage: action [arguments...]
+Usage: iov-faucet action [arguments...]
 
 Positional arguments per action are listed below. Arguments in parentheses are optional.
 
