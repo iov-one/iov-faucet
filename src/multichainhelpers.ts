@@ -44,7 +44,9 @@ export async function accountsOfFirstChain(signer: MultiChainSigner): Promise<Re
   return out;
 }
 
-export async function tickersOfFirstChain(signer: MultiChainSigner): Promise<ReadonlyArray<TokenTicker>> {
+export async function tokenTickersOfFirstChain(
+  signer: MultiChainSigner,
+): Promise<ReadonlyArray<TokenTicker>> {
   const chainId = signer.chainIds()[0];
   return (await signer.connection(chainId).getAllTickers()).data.map(token => token.tokenTicker);
 }

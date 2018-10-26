@@ -17,7 +17,7 @@ import {
   identityToAddress,
   SendJob,
   sendOnFirstChain,
-  tickersOfFirstChain,
+  tokenTickersOfFirstChain,
 } from "../multichainhelpers";
 import { loadProfile } from "../profile";
 
@@ -61,12 +61,16 @@ export async function start(args: ReadonlyArray<string>): Promise<void> {
   const connectedChainId = connection.chainId();
   console.log(`Connected to network: ${connectedChainId}`);
 
-  // Don't wait for result. Just print when it is there
-  accountsOfFirstChain(signer)
-    .then(accounts => logAccountsState(accounts))
-    .catch(error => console.error("Error getting accounts:", error));
+  const accounts = await accountsOfFirstChain(signer);
+  logAccountsState(accounts);
+  const holderAccount = accounts[0];
 
-  const chainTickers = await tickersOfFirstChain(signer);
+  const chainTokens = await tokenTickersOfFirstChain(signer);
+  console.log("Chain tokens:", chainTokens);
+
+  const availableTokens = holderAccount.balance.map(coin => coin.tokenTicker);
+  console.log("Available tokens:", availableTokens);
+
   const distibutorIdentities = identitiesOfFirstChain(signer).slice(1);
 
   console.log("Creating webserver ...");
@@ -76,15 +80,17 @@ export async function start(args: ReadonlyArray<string>): Promise<void> {
   api.use(async context => {
     switch (context.path) {
       case "/state":
-        const accounts = await accountsOfFirstChain(signer);
+        const updatedAccounts = await accountsOfFirstChain(signer);
+        const updatedAvailableTokens = updatedAccounts[0].balance.map(coin => coin.tokenTicker);
         // tslint:disable-next-line:no-object-mutation
         context.response.body = {
           status: "ok",
           nodeUrl: ip.address(),
           chainId: connectedChainId,
-          chainTickers: chainTickers,
-          holder: accounts[0],
-          distributors: accounts.slice(1),
+          chainTokens: chainTokens,
+          availableTokens: updatedAvailableTokens,
+          holder: updatedAccounts[0],
+          distributors: updatedAccounts.slice(1),
         };
         break;
       case "/getTokens":
@@ -109,9 +115,9 @@ export async function start(args: ReadonlyArray<string>): Promise<void> {
           break;
         }
 
-        if (chainTickers.indexOf(ticker) === -1) {
+        if (chainTokens.indexOf(ticker) === -1) {
           // tslint:disable-next-line:no-object-mutation
-          context.response.body = "Invalid Ticker. Valid tickers are: " + JSON.stringify(chainTickers);
+          context.response.body = "Invalid Ticker. Valid tickers are: " + JSON.stringify(chainTokens);
           break;
         }
 

@@ -13,7 +13,7 @@ import {
   identitiesOfFirstChain,
   SendJob,
   sendOnFirstChain,
-  tickersOfFirstChain,
+  tokenTickersOfFirstChain,
 } from "../multichainhelpers";
 import { loadProfile } from "../profile";
 
@@ -59,7 +59,7 @@ export async function refill(args: ReadonlyArray<string>): Promise<void> {
 
   const connectedChainId = connection.chainId();
   console.log(`Connected to network: ${connectedChainId}`);
-  console.log(`Tickers on network: ${(await tickersOfFirstChain(signer)).join(", ")}`);
+  console.log(`Tokens on network: ${(await tokenTickersOfFirstChain(signer)).join(", ")}`);
 
   const holderIdentity = identitiesOfFirstChain(signer)[0];
 
