@@ -1,10 +1,11 @@
 import fs from "fs";
 
+import { Encoding } from "@iov/encoding";
 import { UserProfile } from "@iov/keycontrol";
 
-import { codecFromString } from "../codec";
+import { codecFromString, codecImplementation } from "../codec";
 import { generateRandomMnemonic } from "../crypto";
-import { setSecretAndCreateIdentities, storeProfile } from "../profile";
+import { holderIdentity, setSecretAndCreateIdentities, storeProfile } from "../profile";
 
 export async function init(args: ReadonlyArray<string>): Promise<void> {
   if (args.length < 3) {
@@ -32,4 +33,9 @@ export async function init(args: ReadonlyArray<string>): Promise<void> {
 
   await setSecretAndCreateIdentities(profile, mnemonic);
   await storeProfile(profile, filename, password);
+
+  const holder = holderIdentity(profile);
+  const holderAddress = codecImplementation(codec).keyToAddress(holder.pubkey);
+  console.log(`Token holder pubkey: ${Encoding.toHex(holder.pubkey.data)}`);
+  console.log(`Token holder address: ${holderAddress}`);
 }

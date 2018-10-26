@@ -2,6 +2,7 @@ import leveldown from "leveldown";
 import levelup from "levelup";
 
 import { Ed25519HdWallet, HdPaths, UserProfile } from "@iov/core";
+import { LocalIdentity } from "@iov/keycontrol";
 
 import * as constants from "./constants";
 
@@ -33,4 +34,14 @@ export async function loadProfile(filename: string, password: string): Promise<U
   } finally {
     await db.close();
   }
+}
+
+export function holderIdentity(profile: UserProfile): LocalIdentity {
+  const wallet = profile.wallets.value[0];
+  return profile.getIdentities(wallet.id)[0];
+}
+
+export function distributorIdentities(profile: UserProfile): ReadonlyArray<LocalIdentity> {
+  const wallet = profile.wallets.value[0];
+  return profile.getIdentities(wallet.id).slice(1);
 }
