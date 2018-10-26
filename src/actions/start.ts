@@ -79,7 +79,7 @@ export async function start(args: ReadonlyArray<string>): Promise<void> {
 
   api.use(async context => {
     switch (context.path) {
-      case "/state":
+      case "/status":
         const updatedAccounts = await accountsOfFirstChain(signer);
         const updatedAvailableTokens = updatedAccounts[0].balance.map(coin => coin.tokenTicker);
         // tslint:disable-next-line:no-object-mutation

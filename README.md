@@ -125,7 +125,7 @@ da3ed6a45429278bac2666961289ca17ad86595d33b31037615d4b8e8f158bba
 The faucet provides a simple status check in the form of an http GET request. As above, make sure to adjust the URL as necessary.
 
 ```
-curl http://localhost:8000/state
+curl http://localhost:8000/status
 ```
 
 ### Future Support
