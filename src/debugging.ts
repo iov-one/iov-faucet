@@ -14,3 +14,10 @@ export function debugBalance(data: ReadonlyArray<BcpCoin>): string {
 export function debugAccount(account: BcpAccount): string {
   return `${account.address}: ${debugBalance(account.balance)}`;
 }
+
+export function logAccountsState(accounts: ReadonlyArray<BcpAccount>): void {
+  const holder = accounts[0];
+  const distributors = accounts.slice(1);
+  console.log("Holder:\n" + `  ${debugAccount(holder)}`);
+  console.log("Distributors:\n" + distributors.map(r => `  ${debugAccount(r)}`).join("\n"));
+}

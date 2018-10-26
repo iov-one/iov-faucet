@@ -10,7 +10,7 @@ import { liskConnector } from "@iov/lisk";
 
 import { Codec, codecFromString } from "../codec";
 import * as constants from "../constants";
-import { debugAccount } from "../debugging";
+import { debugAccount, logAccountsState } from "../debugging";
 import {
   accountsOfFirstChain,
   identitiesOfFirstChain,
@@ -63,12 +63,8 @@ export async function start(args: ReadonlyArray<string>): Promise<void> {
 
   // Don't wait for result. Just print when it is there
   accountsOfFirstChain(signer)
-    .then(accounts => {
-      console.log("Accounts:\n" + accounts.map(a => `  ${debugAccount(a)}`).join("\n"));
-    })
-    .catch(error => {
-      console.error("Error getting accounts:", error);
-    });
+    .then(accounts => logAccountsState(accounts))
+    .catch(error => console.error("Error getting accounts:", error));
 
   const chainTickers = await tickersOfFirstChain(signer);
   const distibutorIdentities = identitiesOfFirstChain(signer).slice(1);

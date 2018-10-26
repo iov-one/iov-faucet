@@ -7,7 +7,7 @@ import { liskConnector } from "@iov/lisk";
 
 import { Codec, codecFromString } from "../codec";
 import * as constants from "../constants";
-import { debugAccount } from "../debugging";
+import { debugAccount, logAccountsState } from "../debugging";
 import {
   accountsOfFirstChain,
   identitiesOfFirstChain,
@@ -27,13 +27,6 @@ function needsRefill(account: BcpAccount, token: TokenTicker): boolean {
   const tokenBalance = coin ? coin.whole : 0; // truncates fractional
 
   return tokenBalance < creditAmount(token) * constants.refillThreshold;
-}
-
-function logAccountsState(accounts: ReadonlyArray<BcpAccount>): void {
-  const holder = accounts[0];
-  const distributors = accounts.slice(1);
-  console.log("Holder:\n" + `  ${debugAccount(holder)}`);
-  console.log("Distributors:\n" + distributors.map(r => `  ${debugAccount(r)}`).join("\n"));
 }
 
 export async function refill(args: ReadonlyArray<string>): Promise<void> {
