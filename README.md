@@ -22,7 +22,7 @@ Advanced users that want to provide their own passphrase can do so like this:
 ```
 yarn install
 yarn build
-node build/index.js init db/<dbname> <db password> <codec> "<passphrase goes here>"
+./bin/iov-faucet init db/<dbname> <db password> <codec> "<passphrase goes here>"
 ```
 
 Ensure that the db is not there, otherwise the application will throw. This is to prevent overwriting existing databases.
