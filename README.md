@@ -58,6 +58,8 @@ refill    Fills all distribution accounts from the holder account and exits.
 
 Environment variables
 
+FAUCET_COIN_TYPE      Coin type of the faucet (see README). Defaults to 1.
+FAUCET_INSTANCE       Instance number of the faucet for load balancing. Defaults to 0.
 FAUCET_CONCURRENCY    Number of distributor accounts. Defaults to 5.
 FAUCET_PORT           Port of the webserver. Defaults to 8000.
 ```
@@ -74,6 +76,27 @@ yarn build
 yarn dev-init
 yarn dev-start
 ```
+
+### Faucet HD wallet
+
+One instance of the faucet can serve multiple tokens on a single blockchain. Multiple
+instances can be created for load balaning. The faucet is powered by a SLIP-0010 wallet
+such that all chains and all instances can use a single secret mnemonic.
+The BIP43 compliant HD derivation path of faucet is
+
+```
+m / purpose' / coin_type' / instance_index' / account_index'
+```
+
+with
+
+* `purpose`: 1229936198 (big endian of ascii "IOVF")
+* `coin_type`: from SLIP-0044 or custom value. This describes the blockchain, not
+  the token. All tokens in one instance are served from a single coin type. Note that
+  SLIP-0044 suggests value `1` for all testnets.
+* `instance_index`: 0-based index of the instance
+* `account_index`: 0-based index of the account. Account 0 is the token holder and
+   account 1...FAUCET_CONCURRENCY are the distributor accounts.
 
 ### Using the faucet
 
