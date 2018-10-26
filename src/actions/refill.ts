@@ -97,12 +97,16 @@ export async function refill(args: ReadonlyArray<string>): Promise<void> {
     }
   }
 
-  for (const job of jobs) {
-    await sendOnFirstChain(signer, job);
-  }
+  if (jobs.length > 0) {
+    for (const job of jobs) {
+      await sendOnFirstChain(signer, job);
+    }
 
-  console.log("Done refilling accounts.");
-  logAccountsState(await accountsOfFirstChain(signer));
+    console.log("Done refilling accounts.");
+    logAccountsState(await accountsOfFirstChain(signer));
+  } else {
+    console.log("Nothing to be done. Anyways, thanks for checking.");
+  }
 
   // shut down
   signer.chainIds().map(chainId => signer.connection(chainId).disconnect());
