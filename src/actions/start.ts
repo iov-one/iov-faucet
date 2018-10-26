@@ -7,7 +7,7 @@ import { bnsConnector } from "@iov/bns";
 import { MultiChainSigner } from "@iov/core";
 import { liskConnector } from "@iov/lisk";
 
-import { Codec, codecFromString } from "../codec";
+import { Codec, codecFromString, codecImplementation } from "../codec";
 import * as constants from "../constants";
 import { debugAccount, logAccountsState } from "../debugging";
 import {
@@ -102,9 +102,16 @@ export async function start(args: ReadonlyArray<string>): Promise<void> {
 
         // TODO: Better error handling on request body being empty?
         const { ticker, address } = context.request.body;
+
         if (!address) {
           // tslint:disable-next-line:no-object-mutation
           context.response.body = "Empty address.";
+          break;
+        }
+
+        if (!codecImplementation(codec).isValidAddress(address)) {
+          // tslint:disable-next-line:no-object-mutation
+          context.response.body = "Address is not in the expected format for this chain.";
           break;
         }
 
@@ -124,7 +131,6 @@ export async function start(args: ReadonlyArray<string>): Promise<void> {
         const sender = distibutorIdentities[getCount() % distibutorIdentities.length];
 
         try {
-          // TODO: Add validation of address for requested chain
           const job: SendJob = {
             sender: sender,
             recipient: address,
