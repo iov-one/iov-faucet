@@ -109,17 +109,6 @@ curl --header "Content-Type: application/json" \
   http://localhost:8000/getTokens
 ```
 
-Applicable chainIds:
-
-```
-IOV Related
-chain-friendnet-fast
-chain-friendnet-slow
-
-Lisk
-da3ed6a45429278bac2666961289ca17ad86595d33b31037615d4b8e8f158bba
-```
-
 ### Checking the faucets status
 
 The faucet provides a simple status check in the form of an http GET request. As above, make sure to adjust the URL as necessary.
