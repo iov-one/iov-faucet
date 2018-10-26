@@ -67,6 +67,7 @@ export async function start(args: ReadonlyArray<string>): Promise<void> {
   const chainTokens = await tokenTickersOfFirstChain(signer);
   console.log("Chain tokens:", chainTokens);
 
+  // TODO: availableTokens value is never updated during runtime of the server
   const availableTokens = holderAccount.balance.map(coin => coin.tokenTicker);
   console.log("Available tokens:", availableTokens);
 
@@ -80,14 +81,13 @@ export async function start(args: ReadonlyArray<string>): Promise<void> {
     switch (context.path) {
       case "/status":
         const updatedAccounts = await accountsOfFirstChain(signer);
-        const updatedAvailableTokens = updatedAccounts[0].balance.map(coin => coin.tokenTicker);
         // tslint:disable-next-line:no-object-mutation
         context.response.body = {
           status: "ok",
           nodeUrl: blockchainBaseUrl,
           chainId: connectedChainId,
           chainTokens: chainTokens,
-          availableTokens: updatedAvailableTokens,
+          availableTokens: availableTokens,
           holder: updatedAccounts[0],
           distributors: updatedAccounts.slice(1),
         };
@@ -114,9 +114,10 @@ export async function start(args: ReadonlyArray<string>): Promise<void> {
           break;
         }
 
-        if (chainTokens.indexOf(ticker) === -1) {
+        if (availableTokens.indexOf(ticker) === -1) {
           // tslint:disable-next-line:no-object-mutation
-          context.response.body = "Invalid Ticker. Valid tickers are: " + JSON.stringify(chainTokens);
+          context.response.body =
+            "Token is not available. Available tokens are: " + JSON.stringify(availableTokens);
           break;
         }
 
