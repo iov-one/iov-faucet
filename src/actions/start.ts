@@ -1,5 +1,4 @@
 import fs from "fs";
-import ip from "ip";
 import Koa from "koa";
 import bodyParser from "koa-bodyparser";
 
@@ -85,7 +84,7 @@ export async function start(args: ReadonlyArray<string>): Promise<void> {
         // tslint:disable-next-line:no-object-mutation
         context.response.body = {
           status: "ok",
-          nodeUrl: ip.address(),
+          nodeUrl: blockchainBaseUrl,
           chainId: connectedChainId,
           chainTokens: chainTokens,
           availableTokens: updatedAvailableTokens,

@@ -25,7 +25,6 @@
   "dependencies": {
     "@iov/core": "^0.7.0",
     "@iov/lisk": "^0.7.0",
-    "ip": "^1.1.5",
     "koa": "^2.5.3",
     "koa-bodyparser": "^4.2.1",
     "leveldown": "^4.0.1",
