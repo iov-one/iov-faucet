@@ -9,6 +9,9 @@ export const port: number = Number.parseInt(process.env.FAUCET_PORT || "", 10) |
 
 export const creditAmountDefault = 10;
 // defaults to creditAmountDefault if ticker is not listed
-export const creditAmounts: Map<TokenTicker, number> = new Map([["CASH" as TokenTicker, 20]]);
+export const creditAmounts: Map<TokenTicker, number> = new Map([
+  ["CASH" as TokenTicker, 20],
+  ["LSK" as TokenTicker, 1],
+]);
 export const refillThreshold = 8; // refill when balance gets below `n` times credit amount
 export const refillAmount = 20; // Send `n` times credit amount on refilling
