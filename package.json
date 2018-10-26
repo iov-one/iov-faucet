@@ -9,6 +9,7 @@
     "lint": "tslint -t verbose --project .",
     "prebuild": "yarn format && yarn lint",
     "build": "tsc",
+    "test": "echo \"No tests yet\"",
     "dev-init": "rm -rf db/test.db/ && ./bin/iov-faucet init db/test.db password bns \"degree tackle suggest window test behind mesh extra cover prepare oak script\"",
     "dev-start": "./bin/iov-faucet start db/test.db password bns \"ws://localhost:22345\"",
     "dev-refill": "./bin/iov-faucet refill db/test.db password bns \"ws://localhost:22345\"",
