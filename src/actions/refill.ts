@@ -17,12 +17,16 @@ import {
 } from "../multichainhelpers";
 import { loadProfile } from "../profile";
 
+function creditAmount(token: TokenTicker): number {
+  return constants.creditAmounts.get(token) || constants.creditAmountDefault;
+}
+
 function needsRefill(account: BcpAccount, token: TokenTicker): boolean {
   const coin = account.balance.find(balance => balance.tokenTicker === token);
 
   const tokenBalance = coin ? coin.whole : 0; // truncates fractional
 
-  return tokenBalance < constants.creditAmounts.get(token) * constants.refillThreshold;
+  return tokenBalance < creditAmount(token) * constants.refillThreshold;
 }
 
 function logAccountsState(accounts: ReadonlyArray<BcpAccount>): void {
@@ -88,7 +92,7 @@ export async function refill(args: ReadonlyArray<string>): Promise<void> {
         sender: holderIdentity,
         recipient: refillDistibutor.address,
         tokenTicker: token,
-        amount: constants.creditAmounts.get(token) * constants.refillAmount,
+        amount: creditAmount(token) * constants.refillAmount,
       });
     }
   }
