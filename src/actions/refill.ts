@@ -62,7 +62,7 @@ export async function refill(args: ReadonlyArray<string>): Promise<void> {
 
   const connectedChainId = connection.chainId();
   console.log(`Connected to network: ${connectedChainId}`);
-  console.log(`Tickers on network: ${await tickersOfFirstChain(signer)}`);
+  console.log(`Tickers on network: ${(await tickersOfFirstChain(signer)).join(", ")}`);
 
   const holderIdentity = identitiesOfFirstChain(signer)[0];
 
