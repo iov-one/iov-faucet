@@ -7,10 +7,11 @@ yarn install
 yarn build
 ```
 
-Then start it up using:
+Then start it for a IOV development blockchain using:
 
 ```
 yarn dev-init
+yarn dev-refill
 yarn dev-start
 ```
 
