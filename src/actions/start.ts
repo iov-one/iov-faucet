@@ -93,11 +93,12 @@ export async function start(args: ReadonlyArray<string>): Promise<void> {
         };
         break;
       case "/credit":
-        // TODO: Allow requests using GET + query params
-        if (context.request.method === "GET") {
-          // tslint:disable-next-line:no-object-mutation
-          context.response.body = "This endpoint requires a POST request, with fields: address and ticker.";
-          break;
+        if (context.request.method !== "POST") {
+          context.throw(
+            405,
+            new Error("This endpoint requires a POST request, with fields: address and ticker."),
+          );
+          return;
         }
 
         // TODO: Better error handling on request body being empty?
