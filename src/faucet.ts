@@ -2,7 +2,9 @@ import { help, init, refill, start, version } from "./actions";
 
 export function main(args: ReadonlyArray<string>): void {
   if (args.length < 1) {
-    throw Error("Not enough arguments. See documentation on github for arguments");
+    help();
+    process.exit(1);
+    return;
   }
 
   const action = args[0];

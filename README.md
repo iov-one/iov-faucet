@@ -7,10 +7,11 @@ yarn install
 yarn build
 ```
 
-Then start it up using:
+Then start it for a IOV development blockchain using:
 
 ```
 yarn dev-init
+yarn dev-refill
 yarn dev-start
 ```
 
@@ -21,7 +22,7 @@ Advanced users that want to provide their own passphrase can do so like this:
 ```
 yarn install
 yarn build
-node build/index.js init db/<dbname> <db password> <codec> "<passphrase goes here>"
+./bin/iov-faucet init db/<dbname> <db password> <codec> "<passphrase goes here>"
 ```
 
 Ensure that the db is not there, otherwise the application will throw. This is to prevent overwriting existing databases.
@@ -29,7 +30,7 @@ Ensure that the db is not there, otherwise the application will throw. This is t
 ## Usage
 
 ```
-Usage: action [arguments...]
+Usage: iov-faucet action [arguments...]
 
 Positional arguments per action are listed below. Arguments in parentheses are optional.
 
@@ -107,17 +108,6 @@ curl --header "Content-Type: application/json" \
   --request POST \
   --data '{"ticker":"CASH","address":"tiov1k898u78hgs36uqw68dg7va5nfkgstu5z0fhz3f"}' \
   http://localhost:8000/getTokens
-```
-
-Applicable chainIds:
-
-```
-IOV Related
-chain-friendnet-fast
-chain-friendnet-slow
-
-Lisk
-da3ed6a45429278bac2666961289ca17ad86595d33b31037615d4b8e8f158bba
 ```
 
 ### Checking the faucets status
