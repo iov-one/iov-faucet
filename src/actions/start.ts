@@ -2,7 +2,7 @@ import fs from "fs";
 import Koa from "koa";
 import bodyParser from "koa-bodyparser";
 
-import { BcpConnection } from "@iov/bcp-types";
+import { Address, BcpConnection, TokenTicker } from "@iov/bcp-types";
 import { bnsConnector } from "@iov/bns";
 import { MultiChainSigner } from "@iov/core";
 import { liskConnector } from "@iov/lisk";
@@ -25,6 +25,33 @@ let count = 0;
 /** returns an integer >= 0 that increments and is unique in module scope */
 function getCount(): number {
   return count++;
+}
+
+export function parseCreditRequestBody(
+  body: any,
+): { readonly ticker: TokenTicker; readonly address: Address } {
+  const { address, ticker } = body;
+
+  if (typeof address !== "string") {
+    throw new Error("Property 'address' must be a string.");
+  }
+
+  if (address.length === 0) {
+    throw new Error("Property 'address' must not be empty.");
+  }
+
+  if (typeof ticker !== "string") {
+    throw new Error("Property 'ticker' must be a string");
+  }
+
+  if (ticker.length === 0) {
+    throw new Error("Property 'ticker' must not be empty.");
+  }
+
+  return {
+    address: address as Address,
+    ticker: ticker as TokenTicker,
+  };
 }
 
 export async function start(args: ReadonlyArray<string>): Promise<void> {
@@ -101,24 +128,20 @@ export async function start(args: ReadonlyArray<string>): Promise<void> {
           return;
         }
 
-        // TODO: Better error handling on request body being empty?
-        const { ticker, address } = context.request.body;
-
-        if (!address) {
-          // tslint:disable-next-line:no-object-mutation
-          context.response.body = "Empty address.";
-          break;
+        let ticker: TokenTicker;
+        let address: Address;
+        try {
+          const parsed = parseCreditRequestBody(context.request);
+          address = parsed.address;
+          ticker = parsed.ticker;
+        } catch (error) {
+          context.throw(400, error);
+          return;
         }
 
         if (!codecImplementation(codec).isValidAddress(address)) {
           // tslint:disable-next-line:no-object-mutation
           context.response.body = "Address is not in the expected format for this chain.";
-          break;
-        }
-
-        if (!ticker) {
-          // tslint:disable-next-line:no-object-mutation
-          context.response.body = "Empty ticker";
           break;
         }
 
