@@ -92,7 +92,7 @@ export async function start(args: ReadonlyArray<string>): Promise<void> {
           distributors: updatedAccounts.slice(1),
         };
         break;
-      case "/getTokens":
+      case "/credit":
         // TODO: Allow requests using GET + query params
         if (context.request.method === "GET") {
           // tslint:disable-next-line:no-object-mutation
