@@ -130,7 +130,7 @@ export async function start(args: ReadonlyArray<string>): Promise<void> {
           throw new HttpError(405, "This endpoint requires a POST request");
         }
 
-        const { address, ticker } = parseCreditRequestBody(context.request);
+        const { address, ticker } = parseCreditRequestBody(context.request.body);
 
         if (!codecImplementation(codec).isValidAddress(address)) {
           throw new HttpError(400, "Address is not in the expected format for this chain.");
