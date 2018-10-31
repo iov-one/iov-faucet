@@ -1,8 +1,23 @@
 import { expect } from "chai";
 
-import { parseCreditRequestBody } from "./start";
+import { HttpError, parseCreditRequestBody } from "./start";
 
 describe("start", () => {
+  it("can make http error", () => {
+    {
+      const error = new HttpError(400, "Invalid name field");
+      expect(error.message).to.eql("Invalid name field");
+      expect(error.status).to.eql(400);
+      expect(error.expose).to.eql(true);
+    }
+    {
+      const error = new HttpError(500, "Out of memory", false);
+      expect(error.message).to.eql("Out of memory");
+      expect(error.status).to.eql(500);
+      expect(error.expose).to.eql(false);
+    }
+  });
+
   it("can process valid credit request", () => {
     const body = { address: "abc", ticker: "CASH" };
     expect(parseCreditRequestBody(body)).to.eql({ address: "abc", ticker: "CASH" });

@@ -27,25 +27,31 @@ function getCount(): number {
   return count++;
 }
 
+export class HttpError extends Error {
+  constructor(public readonly status: number, text: string, public readonly expose: boolean = true) {
+    super(text);
+  }
+}
+
 export function parseCreditRequestBody(
   body: any,
 ): { readonly ticker: TokenTicker; readonly address: Address } {
   const { address, ticker } = body;
 
   if (typeof address !== "string") {
-    throw new Error("Property 'address' must be a string.");
+    throw new HttpError(400, "Property 'address' must be a string.");
   }
 
   if (address.length === 0) {
-    throw new Error("Property 'address' must not be empty.");
+    throw new HttpError(400, "Property 'address' must not be empty.");
   }
 
   if (typeof ticker !== "string") {
-    throw new Error("Property 'ticker' must be a string");
+    throw new HttpError(400, "Property 'ticker' must be a string");
   }
 
   if (ticker.length === 0) {
-    throw new Error("Property 'ticker' must not be empty.");
+    throw new HttpError(400, "Property 'ticker' must not be empty.");
   }
 
   return {
@@ -128,16 +134,7 @@ export async function start(args: ReadonlyArray<string>): Promise<void> {
           return;
         }
 
-        let ticker: TokenTicker;
-        let address: Address;
-        try {
-          const parsed = parseCreditRequestBody(context.request);
-          address = parsed.address;
-          ticker = parsed.ticker;
-        } catch (error) {
-          context.throw(400, error);
-          return;
-        }
+        const { address, ticker } = parseCreditRequestBody(context.request);
 
         if (!codecImplementation(codec).isValidAddress(address)) {
           // tslint:disable-next-line:no-object-mutation
