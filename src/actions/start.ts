@@ -127,26 +127,18 @@ export async function start(args: ReadonlyArray<string>): Promise<void> {
         break;
       case "/credit":
         if (context.request.method !== "POST") {
-          context.throw(
-            405,
-            new Error("This endpoint requires a POST request, with fields: address and ticker."),
-          );
-          return;
+          throw new HttpError(405, "This endpoint requires a POST request");
         }
 
         const { address, ticker } = parseCreditRequestBody(context.request);
 
         if (!codecImplementation(codec).isValidAddress(address)) {
-          // tslint:disable-next-line:no-object-mutation
-          context.response.body = "Address is not in the expected format for this chain.";
-          break;
+          throw new HttpError(400, "Address is not in the expected format for this chain.");
         }
 
         if (availableTokens.indexOf(ticker) === -1) {
-          // tslint:disable-next-line:no-object-mutation
-          context.response.body =
-            "Token is not available. Available tokens are: " + JSON.stringify(availableTokens);
-          break;
+          const tokens = JSON.stringify(availableTokens);
+          throw new HttpError(422, `Token is not available. Available tokens are: ${tokens}`);
         }
 
         const sender = distibutorIdentities[getCount() % distibutorIdentities.length];
@@ -166,9 +158,7 @@ export async function start(args: ReadonlyArray<string>): Promise<void> {
           await sendOnFirstChain(signer, job);
         } catch (e) {
           console.log(e);
-          // tslint:disable-next-line:no-object-mutation
-          context.response.body = "Send failed";
-          break;
+          throw new HttpError(500, "Sending tokens failed");
         }
 
         // tslint:disable-next-line:no-object-mutation
