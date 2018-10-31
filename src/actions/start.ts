@@ -130,6 +130,10 @@ export async function start(args: ReadonlyArray<string>): Promise<void> {
           throw new HttpError(405, "This endpoint requires a POST request");
         }
 
+        if (context.request.type !== "application/json") {
+          throw new HttpError(415, "Content-type application/json expected");
+        }
+
         const { address, ticker } = parseCreditRequestBody(context.request.body);
 
         if (!codecImplementation(codec).isValidAddress(address)) {
