@@ -267,12 +267,19 @@
   resolved "https://registry.yarnpkg.com/@types/keygrip/-/keygrip-1.0.1.tgz#ff540462d2fb4d0a88441ceaf27d287b01c3d878"
   integrity sha1-/1QEYtL7TQqIRBzq8n0oewHD2Hg=
 
+"@types/koa-bodyparser@^5.0.1":
+  version "5.0.1"
+  resolved "https://registry.yarnpkg.com/@types/koa-bodyparser/-/koa-bodyparser-5.0.1.tgz#c40c0a0b7903df128a4e0677c51b5bdcc8bfa025"
+  integrity sha512-nL9JGPAHTnFb7zDm9u0bdXEMsbTgCJWcyHJRRPTSCkErzDSyeuSum7IemS697NTpWDwQw+Y9d/CYzvWKlAsMRQ==
+  dependencies:
+    "@types/koa" "*"
+
 "@types/koa-compose@*":
   version "3.2.2"
   resolved "https://registry.yarnpkg.com/@types/koa-compose/-/koa-compose-3.2.2.tgz#dc106e000bbf92a3ac900f756df47344887ee847"
   integrity sha1-3BBuAAu/kqOskA91bfRzRIh+6Ec=
 
-"@types/koa@^2.0.46":
+"@types/koa@*", "@types/koa@^2.0.46":
   version "2.0.46"
   resolved "https://registry.yarnpkg.com/@types/koa/-/koa-2.0.46.tgz#24bc3cd405d10fcde81f876cd8285b44d4ddc3e9"
   integrity sha512-Dw10hYKv3exrc71GmH/Fqnc7dCLzdiP8bM1MLelPYjgIH5kQ6mPFreM3Z0uLK9EFaeCZZUYqsedDLCf3Urrysg==
