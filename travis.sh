@@ -53,3 +53,16 @@ fold_end
 fold_start "commandline-tests"
 yarn test
 fold_end
+
+#
+# Deploy
+#
+
+fold_start "docker-build"
+docker build -t iov-faucet:manual .
+fold_end
+
+fold_start "docker-run-tests"
+docker run --read-only --rm iov-faucet:manual version
+docker run --read-only --rm iov-faucet:manual help
+fold_end
