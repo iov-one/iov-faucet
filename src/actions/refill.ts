@@ -27,26 +27,10 @@ function needsRefill(account: BcpAccount, token: TokenTicker): boolean {
   return tokenBalance < creditAmount(token) * constants.refillThreshold;
 }
 
-export async function refill(args: ReadonlyArray<string>): Promise<void> {
-  if (args.length < 4) {
-    throw Error(`Not enough arguments for action 'refill'. See README for arguments`);
-  }
-  const filename = args[0];
-  const password = args[1];
-  const codec = codecFromString(args[2]);
-  const blockchainBaseUrl: string = args[3];
+async function refillFirstChain(signer: MultiChainSigner): Promise<void> {
+  const chainId = signer.chainIds()[0];
 
-  if (!fs.existsSync(filename)) {
-    throw Error("File does not exist on disk, did you mean to -init- your profile?");
-  }
-  const profile = await loadProfile(filename, password);
-  const signer = new MultiChainSigner(profile);
-
-  console.log("Connecting to blockchain ...");
-  const connection = (await signer.addChain(chainConnector(codec, blockchainBaseUrl))).connection;
-
-  const connectedChainId = connection.chainId();
-  console.log(`Connected to network: ${connectedChainId}`);
+  console.log(`Connected to network: ${chainId}`);
   console.log(`Tokens on network: ${(await tokenTickersOfFirstChain(signer)).join(", ")}`);
 
   const holderIdentity = identitiesOfFirstChain(signer)[0];
@@ -88,6 +72,27 @@ export async function refill(args: ReadonlyArray<string>): Promise<void> {
   } else {
     console.log("Nothing to be done. Anyways, thanks for checking.");
   }
+}
+
+export async function refill(args: ReadonlyArray<string>): Promise<void> {
+  if (args.length < 4) {
+    throw Error(`Not enough arguments for action 'refill'. See README for arguments`);
+  }
+  const filename = args[0];
+  const password = args[1];
+  const codec = codecFromString(args[2]);
+  const blockchainBaseUrl: string = args[3];
+
+  if (!fs.existsSync(filename)) {
+    throw Error("File does not exist on disk, did you mean to -init- your profile?");
+  }
+  const profile = await loadProfile(filename, password);
+  const signer = new MultiChainSigner(profile);
+
+  console.log("Connecting to blockchain ...");
+  await signer.addChain(chainConnector(codec, blockchainBaseUrl));
+
+  await refillFirstChain(signer);
 
   // shut down
   signer.chainIds().map(chainId => signer.connection(chainId).disconnect());
