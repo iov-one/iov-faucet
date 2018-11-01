@@ -99,6 +99,23 @@ with
 * `account_index`: 0-based index of the account. Account 0 is the token holder and
    account 1...FAUCET_CONCURRENCY are the distributor accounts.
 
+
+### Working with docker 
+* Build an artifact
+```bash
+docker build -t iov-faucet:manual .
+```
+
+* Init DB
+```bash
+docker run --read-only -v $(pwd)/tmp:/app/db --rm iov-faucet:manual init db/test.db password bns "degree tackle suggest window test behind mesh extra cover prepare oak script"
+```
+
+* Run faucet
+```bash
+docker run --read-only -v $(pwd)/tmp:/app/db -p 8000:8000 --rm iov-faucet:manual start db/test.db password bns wss://bov.friendnet-fast.iov.one
+```
+
 ### Using the faucet
 
 Now that the faucet has been started up, you can send credit requests to it. This can be done with a simple http POST request. These commands assume the faucet is running locally, be sure to change it from `localhost` if your situation is different.
