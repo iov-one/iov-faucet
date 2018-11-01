@@ -14,5 +14,5 @@ COPY --from=build-env /app/node_modules /app/node_modules
 WORKDIR /app
 
 EXPOSE 8000
-ENTRYPOINT [ "/app/bin/iov-faucet"]
+ENTRYPOINT ["/app/bin/iov-faucet"]
 CMD [""]
