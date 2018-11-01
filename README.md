@@ -107,6 +107,13 @@ with
 docker build -t iov-faucet:manual .
 ```
 
+* Version and help
+
+```bash
+docker run --read-only --rm iov-faucet:manual version
+docker run --read-only --rm iov-faucet:manual help
+```
+
 * Init DB
 
 ```bash
