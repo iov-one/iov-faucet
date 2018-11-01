@@ -1,4 +1,7 @@
 import { BcpAccount, BcpCoin } from "@iov/bcp-types";
+import { MultiChainSigner } from "@iov/core";
+
+import { identityToAddress, SendJob } from "./multichainhelpers";
 
 /** A string representation of a coin in a human-readable format that can change at any time */
 export function debugCoin(coin: BcpCoin): string {
@@ -20,4 +23,10 @@ export function logAccountsState(accounts: ReadonlyArray<BcpAccount>): void {
   const distributors = accounts.slice(1);
   console.log("Holder:\n" + `  ${debugAccount(holder)}`);
   console.log("Distributors:\n" + distributors.map(r => `  ${debugAccount(r)}`).join("\n"));
+}
+
+export function logSendJob(signer: MultiChainSigner, job: SendJob): void {
+  const from = identityToAddress(signer, job.sender);
+  const to = job.recipient;
+  console.log(`Sending ${job.tokenTicker} from ${from} to ${to} ...`);
 }

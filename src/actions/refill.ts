@@ -5,7 +5,7 @@ import { MultiChainSigner } from "@iov/core";
 
 import { chainConnector, codecFromString } from "../codec";
 import * as constants from "../constants";
-import { debugAccount, logAccountsState } from "../debugging";
+import { debugAccount, logAccountsState, logSendJob } from "../debugging";
 import {
   accountsOfFirstChain,
   identitiesOfFirstChain,
@@ -64,6 +64,7 @@ async function refillFirstChain(signer: MultiChainSigner): Promise<void> {
 
   if (jobs.length > 0) {
     for (const job of jobs) {
+      logSendJob(signer, job);
       await sendOnFirstChain(signer, job);
     }
 

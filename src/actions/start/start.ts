@@ -6,7 +6,7 @@ import { MultiChainSigner } from "@iov/core";
 
 import { chainConnector, codecFromString, codecImplementation } from "../../codec";
 import * as constants from "../../constants";
-import { debugAccount, logAccountsState } from "../../debugging";
+import { debugAccount, logAccountsState, logSendJob } from "../../debugging";
 import {
   accountsOfFirstChain,
   identitiesOfFirstChain,
@@ -110,11 +110,7 @@ export async function start(args: ReadonlyArray<string>): Promise<void> {
             amount: 1,
             tokenTicker: ticker,
           };
-          console.log(
-            `Sending ${job.tokenTicker} from ${identityToAddress(signer, job.sender)} to ${
-              job.recipient
-            } ...`,
-          );
+          logSendJob(signer, job);
           await sendOnFirstChain(signer, job);
         } catch (e) {
           console.log(e);
