@@ -2,12 +2,9 @@ import fs from "fs";
 import Koa from "koa";
 import bodyParser from "koa-bodyparser";
 
-import { BcpConnection } from "@iov/bcp-types";
-import { bnsConnector } from "@iov/bns";
 import { MultiChainSigner } from "@iov/core";
-import { liskConnector } from "@iov/lisk";
 
-import { Codec, codecFromString, codecImplementation } from "../../codec";
+import { chainConnector, codecFromString, codecImplementation } from "../../codec";
 import * as constants from "../../constants";
 import { debugAccount, logAccountsState } from "../../debugging";
 import {
@@ -47,17 +44,7 @@ export async function start(args: ReadonlyArray<string>): Promise<void> {
   const signer = new MultiChainSigner(profile);
 
   console.log("Connecting to blockchain ...");
-  let connection: BcpConnection;
-  switch (codec) {
-    case Codec.Bns:
-      connection = (await signer.addChain(bnsConnector(blockchainBaseUrl))).connection;
-      break;
-    case Codec.Lisk:
-      connection = (await signer.addChain(liskConnector(blockchainBaseUrl))).connection;
-      break;
-    default:
-      throw new Error("No connector for this codec defined");
-  }
+  const connection = (await signer.addChain(chainConnector(codec, blockchainBaseUrl))).connection;
 
   const connectedChainId = connection.chainId();
   console.log(`Connected to network: ${connectedChainId}`);

@@ -1,6 +1,6 @@
-import { TxCodec } from "@iov/bcp-types";
-import { bnsCodec } from "@iov/bns";
-import { liskCodec } from "@iov/lisk";
+import { ChainConnector, TxCodec } from "@iov/bcp-types";
+import { bnsCodec, bnsConnector } from "@iov/bns";
+import { liskCodec, liskConnector } from "@iov/lisk";
 
 export const enum Codec {
   Bns,
@@ -26,5 +26,16 @@ export function codecImplementation(codec: Codec): TxCodec {
       return liskCodec;
     default:
       throw new Error("No codec imlementation for this codec found");
+  }
+}
+
+export function chainConnector(codec: Codec, url: string): ChainConnector {
+  switch (codec) {
+    case Codec.Bns:
+      return bnsConnector(url);
+    case Codec.Lisk:
+      return liskConnector(url);
+    default:
+      throw new Error("No connector for this codec found");
   }
 }
