@@ -126,6 +126,6 @@ export async function start(args: ReadonlyArray<string>): Promise<void> {
       // koa sends 404 by default
     }
   });
-  console.log(`Started webserver on port ${port}`);
+  console.log(`Starting webserver on port ${port} ...`);
   api.listen(port);
 }
