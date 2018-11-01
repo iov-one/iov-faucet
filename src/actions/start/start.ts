@@ -2,7 +2,7 @@ import fs from "fs";
 import Koa from "koa";
 import bodyParser from "koa-bodyparser";
 
-import { Address, BcpConnection, TokenTicker } from "@iov/bcp-types";
+import { BcpConnection } from "@iov/bcp-types";
 import { bnsConnector } from "@iov/bns";
 import { MultiChainSigner } from "@iov/core";
 import { liskConnector } from "@iov/lisk";
@@ -19,45 +19,14 @@ import {
   tokenTickersOfFirstChain,
 } from "../../multichainhelpers";
 import { loadProfile } from "../../profile";
+import { HttpError } from "./httperror";
+import { RequestParser } from "./requestparser";
 
 let count = 0;
 
 /** returns an integer >= 0 that increments and is unique in module scope */
 function getCount(): number {
   return count++;
-}
-
-export class HttpError extends Error {
-  constructor(public readonly status: number, text: string, public readonly expose: boolean = true) {
-    super(text);
-  }
-}
-
-export function parseCreditRequestBody(
-  body: any,
-): { readonly ticker: TokenTicker; readonly address: Address } {
-  const { address, ticker } = body;
-
-  if (typeof address !== "string") {
-    throw new HttpError(400, "Property 'address' must be a string.");
-  }
-
-  if (address.length === 0) {
-    throw new HttpError(400, "Property 'address' must not be empty.");
-  }
-
-  if (typeof ticker !== "string") {
-    throw new HttpError(400, "Property 'ticker' must be a string");
-  }
-
-  if (ticker.length === 0) {
-    throw new HttpError(400, "Property 'ticker' must not be empty.");
-  }
-
-  return {
-    address: address as Address,
-    ticker: ticker as TokenTicker,
-  };
 }
 
 export async function start(args: ReadonlyArray<string>): Promise<void> {
@@ -134,7 +103,7 @@ export async function start(args: ReadonlyArray<string>): Promise<void> {
           throw new HttpError(415, "Content-type application/json expected");
         }
 
-        const { address, ticker } = parseCreditRequestBody(context.request.body);
+        const { address, ticker } = RequestParser.parseCreditBody(context.request.body);
 
         if (!codecImplementation(codec).isValidAddress(address)) {
           throw new HttpError(400, "Address is not in the expected format for this chain.");
