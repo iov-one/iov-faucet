@@ -7,9 +7,9 @@ import { bnsConnector } from "@iov/bns";
 import { MultiChainSigner } from "@iov/core";
 import { liskConnector } from "@iov/lisk";
 
-import { Codec, codecFromString, codecImplementation } from "../codec";
-import * as constants from "../constants";
-import { debugAccount, logAccountsState } from "../debugging";
+import { Codec, codecFromString, codecImplementation } from "../../codec";
+import * as constants from "../../constants";
+import { debugAccount, logAccountsState } from "../../debugging";
 import {
   accountsOfFirstChain,
   identitiesOfFirstChain,
@@ -17,8 +17,8 @@ import {
   SendJob,
   sendOnFirstChain,
   tokenTickersOfFirstChain,
-} from "../multichainhelpers";
-import { loadProfile } from "../profile";
+} from "../../multichainhelpers";
+import { loadProfile } from "../../profile";
 
 let count = 0;
 
