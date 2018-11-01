@@ -6,11 +6,11 @@ import { MultiChainSigner } from "@iov/core";
 
 import { chainConnector, codecFromString, codecImplementation } from "../../codec";
 import * as constants from "../../constants";
-import { debugAccount, logAccountsState, logSendJob } from "../../debugging";
+import { logAccountsState, logSendJob } from "../../debugging";
 import {
   accountsOfFirstChain,
   identitiesOfFirstChain,
-  identityToAddress,
+  refillFirstChain,
   SendJob,
   sendOnFirstChain,
   tokenTickersOfFirstChain,
@@ -61,6 +61,8 @@ export async function start(args: ReadonlyArray<string>): Promise<void> {
   console.log("Available tokens:", availableTokens);
 
   const distibutorIdentities = identitiesOfFirstChain(signer).slice(1);
+
+  await refillFirstChain(signer);
 
   console.log("Creating webserver ...");
   const api = new Koa();
