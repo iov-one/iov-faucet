@@ -19,6 +19,13 @@ function fold_end() {
 }
 
 #
+# Environment
+#
+
+TRAVIS_BUILD_VERSION=$(echo "${TRAVIS_COMMIT}" | cut -c 1-10)
+BUILD_VERSION=${TRAVIS_BUILD_VERSION:-manual}
+
+#
 # Install
 #
 
@@ -52,4 +59,17 @@ fold_end
 
 fold_start "commandline-tests"
 yarn test
+fold_end
+
+#
+# Deploy
+#
+
+fold_start "docker-build"
+docker build -t "iov-faucet:${BUILD_VERSION}" .
+fold_end
+
+fold_start "docker-run-tests"
+docker run --read-only --rm "iov-faucet:${BUILD_VERSION}" version
+docker run --read-only --rm "iov-faucet:${BUILD_VERSION}" help
 fold_end
