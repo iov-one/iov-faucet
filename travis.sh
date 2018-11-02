@@ -73,3 +73,23 @@ fold_start "docker-run-tests"
 docker run --read-only --rm "iov-faucet:${BUILD_VERSION}" version
 docker run --read-only --rm "iov-faucet:${BUILD_VERSION}" help
 fold_end
+
+fold_start "dockerhub-upload"
+if [[ "$TRAVIS_NODE_VERSION" == "10" && "$TRAVIS_OS_NAME" == "linux" ]]; then
+  # only run in one job of the build matrix
+
+  if [[ "$TRAVIS_BRANCH" == "master" ]] && [[ "$TRAVIS_TAG" == "" ]] && [[ "$TRAVIS_PULL_REQUEST_BRANCH" == "" ]]; then
+    docker login -u "$DOCKER_USERNAME" -p "$DOCKER_PASSWORD"
+    docker tag  "iov1/iov-faucet:${BUILD_VERSION}" "iov1/iov-faucet:latest"
+    docker push "iov1/iov-faucet:latest"
+    docker logout
+  fi
+
+  if [[ "$TRAVIS_TAG" != "" ]]; then
+    docker login -u "$DOCKER_USERNAME" -p "$DOCKER_PASSWORD"
+    docker tag  "iov1/iov-faucet:${BUILD_VERSION}" "iov1/iov-faucet:$TRAVIS_TAG"
+    docker push "iov1/iov-faucet:$TRAVIS_TAG"
+    docker logout
+  fi
+fi
+fold_end
