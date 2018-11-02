@@ -66,12 +66,12 @@ fold_end
 #
 
 fold_start "docker-build"
-docker build -t "iov-faucet:${BUILD_VERSION}" .
+docker build -t "iov1/iov-faucet:${BUILD_VERSION}" .
 fold_end
 
 fold_start "docker-run-tests"
-docker run --read-only --rm "iov-faucet:${BUILD_VERSION}" version
-docker run --read-only --rm "iov-faucet:${BUILD_VERSION}" help
+docker run --read-only --rm "iov1/iov-faucet:${BUILD_VERSION}" version
+docker run --read-only --rm "iov1/iov-faucet:${BUILD_VERSION}" help
 fold_end
 
 fold_start "dockerhub-upload"
