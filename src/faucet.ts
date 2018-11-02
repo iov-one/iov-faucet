@@ -1,4 +1,4 @@
-import { help, init, refill, start, version } from "./actions";
+import { help, init, start, version } from "./actions";
 
 export function main(args: ReadonlyArray<string>): void {
   if (args.length < 1) {
@@ -28,12 +28,6 @@ export function main(args: ReadonlyArray<string>): void {
       break;
     case "start":
       start(restArgs).catch(error => {
-        console.error(error);
-        process.exit(1);
-      });
-      break;
-    case "refill":
-      refill(restArgs).catch(error => {
         console.error(error);
         process.exit(1);
       });

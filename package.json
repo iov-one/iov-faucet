@@ -12,10 +12,8 @@
     "test": "mocha \"./build/**/*.spec.js\"",
     "dev-init": "rm -rf db/test.db/ && ./bin/iov-faucet init db/test.db password bns \"degree tackle suggest window test behind mesh extra cover prepare oak script\"",
     "dev-start": "./bin/iov-faucet start db/test.db password bns \"ws://localhost:22345\"",
-    "dev-refill": "./bin/iov-faucet refill db/test.db password bns \"ws://localhost:22345\"",
     "dev-lisk-init": "rm -rf db/dev-lisk.db/ && FAUCET_CONCURRENCY=2 ./bin/iov-faucet init db/dev-lisk.db password lisk \"wagon fashion notice rough dinosaur physical mind waste until gun glass mixed\"",
-    "dev-lisk-start": "./bin/iov-faucet start db/dev-lisk.db password lisk \"https://testnet.lisk.io\"",
-    "dev-lisk-refill": "./bin/iov-faucet refill db/dev-lisk.db password lisk \"https://testnet.lisk.io\""
+    "dev-lisk-start": "./bin/iov-faucet start db/dev-lisk.db password lisk \"https://testnet.lisk.io\""
   },
   "bin": {
     "iov-faucet": "bin/iov-faucet"

@@ -2,62 +2,28 @@ import fs from "fs";
 import Koa from "koa";
 import bodyParser from "koa-bodyparser";
 
-import { Address, BcpConnection, TokenTicker } from "@iov/bcp-types";
-import { bnsConnector } from "@iov/bns";
 import { MultiChainSigner } from "@iov/core";
-import { liskConnector } from "@iov/lisk";
 
-import { Codec, codecFromString, codecImplementation } from "../codec";
-import * as constants from "../constants";
-import { debugAccount, logAccountsState } from "../debugging";
+import { chainConnector, codecFromString, codecImplementation } from "../../codec";
+import * as constants from "../../constants";
+import { logAccountsState, logSendJob } from "../../debugging";
 import {
   accountsOfFirstChain,
   identitiesOfFirstChain,
-  identityToAddress,
+  refillFirstChain,
   SendJob,
   sendOnFirstChain,
   tokenTickersOfFirstChain,
-} from "../multichainhelpers";
-import { loadProfile } from "../profile";
+} from "../../multichainhelpers";
+import { loadProfile } from "../../profile";
+import { HttpError } from "./httperror";
+import { RequestParser } from "./requestparser";
 
 let count = 0;
 
 /** returns an integer >= 0 that increments and is unique in module scope */
 function getCount(): number {
   return count++;
-}
-
-export class HttpError extends Error {
-  constructor(public readonly status: number, text: string, public readonly expose: boolean = true) {
-    super(text);
-  }
-}
-
-export function parseCreditRequestBody(
-  body: any,
-): { readonly ticker: TokenTicker; readonly address: Address } {
-  const { address, ticker } = body;
-
-  if (typeof address !== "string") {
-    throw new HttpError(400, "Property 'address' must be a string.");
-  }
-
-  if (address.length === 0) {
-    throw new HttpError(400, "Property 'address' must not be empty.");
-  }
-
-  if (typeof ticker !== "string") {
-    throw new HttpError(400, "Property 'ticker' must be a string");
-  }
-
-  if (ticker.length === 0) {
-    throw new HttpError(400, "Property 'ticker' must not be empty.");
-  }
-
-  return {
-    address: address as Address,
-    ticker: ticker as TokenTicker,
-  };
 }
 
 export async function start(args: ReadonlyArray<string>): Promise<void> {
@@ -78,17 +44,7 @@ export async function start(args: ReadonlyArray<string>): Promise<void> {
   const signer = new MultiChainSigner(profile);
 
   console.log("Connecting to blockchain ...");
-  let connection: BcpConnection;
-  switch (codec) {
-    case Codec.Bns:
-      connection = (await signer.addChain(bnsConnector(blockchainBaseUrl))).connection;
-      break;
-    case Codec.Lisk:
-      connection = (await signer.addChain(liskConnector(blockchainBaseUrl))).connection;
-      break;
-    default:
-      throw new Error("No connector for this codec defined");
-  }
+  const connection = (await signer.addChain(chainConnector(codec, blockchainBaseUrl))).connection;
 
   const connectedChainId = connection.chainId();
   console.log(`Connected to network: ${connectedChainId}`);
@@ -105,6 +61,9 @@ export async function start(args: ReadonlyArray<string>): Promise<void> {
   console.log("Available tokens:", availableTokens);
 
   const distibutorIdentities = identitiesOfFirstChain(signer).slice(1);
+
+  await refillFirstChain(signer);
+  setInterval(() => refillFirstChain(signer), 60_000); // ever 60 seconds
 
   console.log("Creating webserver ...");
   const api = new Koa();
@@ -134,7 +93,7 @@ export async function start(args: ReadonlyArray<string>): Promise<void> {
           throw new HttpError(415, "Content-type application/json expected");
         }
 
-        const { address, ticker } = parseCreditRequestBody(context.request.body);
+        const { address, ticker } = RequestParser.parseCreditBody(context.request.body);
 
         if (!codecImplementation(codec).isValidAddress(address)) {
           throw new HttpError(400, "Address is not in the expected format for this chain.");
@@ -154,11 +113,7 @@ export async function start(args: ReadonlyArray<string>): Promise<void> {
             amount: 1,
             tokenTicker: ticker,
           };
-          console.log(
-            `Sending ${job.tokenTicker} from ${identityToAddress(signer, job.sender)} to ${
-              job.recipient
-            } ...`,
-          );
+          logSendJob(signer, job);
           await sendOnFirstChain(signer, job);
         } catch (e) {
           console.log(e);
@@ -172,6 +127,6 @@ export async function start(args: ReadonlyArray<string>): Promise<void> {
       // koa sends 404 by default
     }
   });
-  console.log(`Started webserver on port ${port}`);
+  console.log(`Starting webserver on port ${port} ...`);
   api.listen(port);
 }
