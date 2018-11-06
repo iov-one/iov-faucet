@@ -90,14 +90,14 @@ with
 * Build an artifact
 
 ```bash
-docker build -t iov-faucet:manual .
+docker build -t iov1/iov-faucet:manual .
 ```
 
 * Version and help
 
 ```bash
-docker run --read-only --rm iov-faucet:manual version
-docker run --read-only --rm iov-faucet:manual help
+docker run --read-only --rm iov1/iov-faucet:manual version
+docker run --read-only --rm iov1/iov-faucet:manual help
 ```
 
 * Run faucet
@@ -107,7 +107,7 @@ FAUCET_MNEMONIC="degree tackle suggest window test behind mesh extra cover prepa
   -v "$(pwd)/tmp":/app/db \
   -e FAUCET_MNEMONIC \
   -p 8000:8000 \
-  --rm iov-faucet:manual \
+  --rm iov1/iov-faucet:manual \
   start db/test.db password bns wss://bov.friendnet-fast.iov.one
 ```
 
