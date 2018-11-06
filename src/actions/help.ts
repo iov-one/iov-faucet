@@ -8,12 +8,6 @@ help      Shows a help text and exits
 
 version   Prints the version and exits
 
-init      Initializes the faucet and exits
-           1  Database file path
-           2  Database encryption password
-           3  Codec
-          (4) custom mnemonic
-
 start     Starts the faucet
            1  Database file path
            2  Database encryption password

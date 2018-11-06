@@ -23,13 +23,3 @@ export async function setSecretAndCreateIdentities(profile: UserProfile, mnemoni
     await profile.createIdentity(wallet.id, path);
   }
 }
-
-export function holderIdentity(profile: UserProfile): LocalIdentity {
-  const wallet = profile.wallets.value[0];
-  return profile.getIdentities(wallet.id)[0];
-}
-
-export function distributorIdentities(profile: UserProfile): ReadonlyArray<LocalIdentity> {
-  const wallet = profile.wallets.value[0];
-  return profile.getIdentities(wallet.id).slice(1);
-}
