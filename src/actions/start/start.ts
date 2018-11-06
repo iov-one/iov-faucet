@@ -71,6 +71,7 @@ export async function start(args: ReadonlyArray<string>): Promise<void> {
 
   api.use(async context => {
     switch (context.path) {
+      case "/healthz":
       case "/status":
         const updatedAccounts = await accountsOfFirstChain(signer);
         // tslint:disable-next-line:no-object-mutation
