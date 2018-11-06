@@ -23,8 +23,6 @@ yarn build
 FAUCET_MNEMONIC="<secret mnemonic>" ./bin/iov-faucet start db/<dbname> <db password> <codec> <chain url>
 ```
 
-Ensure that the db is not there, otherwise the application will throw. This is to prevent overwriting existing databases.
-
 ## Usage
 
 ```
@@ -104,7 +102,6 @@ docker run --read-only --rm iov1/iov-faucet:manual help
 
 ```bash
 FAUCET_MNEMONIC="degree tackle suggest window test behind mesh extra cover prepare oak script" docker run --read-only \
-  -v "$(pwd)/tmp":/app/db \
   -e FAUCET_MNEMONIC \
   -p 8000:8000 \
   --rm iov1/iov-faucet:manual \
