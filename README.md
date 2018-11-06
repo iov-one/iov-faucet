@@ -20,7 +20,7 @@ Advanced users that want to provide their own passphrase can do so like this:
 ```
 yarn install
 yarn build
-FAUCET_MNEMONIC="<secret mnemonic>" ./bin/iov-faucet start db/<dbname> <db password> <codec> <chain url>
+FAUCET_MNEMONIC="<secret mnemonic>" ./bin/iov-faucet start <codec> <chain url>
 ```
 
 ## Usage
@@ -35,10 +35,8 @@ help      Shows a help text and exits
 version   Prints the version and exits
 
 start     Starts the faucet
-           1  Database file path
-           2  Database encryption password
-           3  Codec
-           4  Node base URL, e.g. wss://bov.friendnet-fast.iov.one
+           1  Codec
+           2  Node base URL, e.g. wss://bov.friendnet-fast.iov.one
 
 Environment variables
 
@@ -105,7 +103,7 @@ FAUCET_MNEMONIC="degree tackle suggest window test behind mesh extra cover prepa
   -e FAUCET_MNEMONIC \
   -p 8000:8000 \
   --rm iov1/iov-faucet:manual \
-  start db/test.db password bns wss://bov.friendnet-fast.iov.one
+  start bns wss://bov.friendnet-fast.iov.one
 ```
 
 ### Using the faucet

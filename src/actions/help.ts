@@ -9,10 +9,8 @@ help      Shows a help text and exits
 version   Prints the version and exits
 
 start     Starts the faucet
-           1  Database file path
-           2  Database encryption password
-           3  Codec
-           4  Node base URL, e.g. wss://bov.friendnet-fast.iov.one
+           1  Codec
+           2  Node base URL, e.g. wss://bov.friendnet-fast.iov.one
 
 Environment variables
 
