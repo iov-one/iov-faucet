@@ -104,7 +104,7 @@ docker run --read-only --rm iov-faucet:manual help
 
 ```bash
 FAUCET_MNEMONIC="degree tackle suggest window test behind mesh extra cover prepare oak script" docker run --read-only \
-  -v $(pwd)/tmp:/app/db \
+  -v "$(pwd)/tmp":/app/db \
   -e FAUCET_MNEMONIC \
   -p 8000:8000 \
   --rm iov-faucet:manual \
