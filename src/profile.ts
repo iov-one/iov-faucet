@@ -1,6 +1,3 @@
-import leveldown from "leveldown";
-import levelup from "levelup";
-
 import { Ed25519HdWallet, UserProfile } from "@iov/core";
 import { LocalIdentity } from "@iov/keycontrol";
 
@@ -24,22 +21,6 @@ export async function setSecretAndCreateIdentities(profile: UserProfile, mnemoni
     console.log(`Creating identity m/${purpose}'/${coin}'/${instance}'/${i}' ...`);
     const path = faucetHdPath(purpose, coin, instance, i);
     await profile.createIdentity(wallet.id, path);
-  }
-}
-
-export async function storeProfile(profile: UserProfile, filename: string, password: string): Promise<void> {
-  const db = levelup(leveldown(filename));
-  await profile.storeIn(db, password);
-}
-
-export async function loadProfile(filename: string, password: string): Promise<UserProfile> {
-  const db = levelup(leveldown(filename));
-  try {
-    const profile = await UserProfile.loadFrom(db, password);
-    console.log("Profile Loaded from disk");
-    return profile;
-  } finally {
-    await db.close();
   }
 }
 

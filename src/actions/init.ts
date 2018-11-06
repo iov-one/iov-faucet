@@ -5,7 +5,7 @@ import { UserProfile } from "@iov/keycontrol";
 
 import { codecFromString, codecImplementation } from "../codec";
 import { generateRandomMnemonic } from "../crypto";
-import { holderIdentity, setSecretAndCreateIdentities, storeProfile } from "../profile";
+import { holderIdentity, setSecretAndCreateIdentities } from "../profile";
 
 export async function init(args: ReadonlyArray<string>): Promise<void> {
   if (args.length < 3) {
@@ -32,7 +32,6 @@ export async function init(args: ReadonlyArray<string>): Promise<void> {
   }
 
   await setSecretAndCreateIdentities(profile, mnemonic);
-  await storeProfile(profile, filename, password);
 
   const holder = holderIdentity(profile);
   const holderAddress = codecImplementation(codec).keyToAddress(holder.pubkey);
