@@ -1,6 +1,4 @@
 FROM node:10.12.0-alpine AS build-env
-# leveldown dependency requires python
-RUN apk --update --no-cache add python build-base
 
 ADD . /app
 WORKDIR /app
