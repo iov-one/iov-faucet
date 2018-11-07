@@ -10,7 +10,6 @@ yarn build
 Then start it for a IOV development blockchain using:
 
 ```
-yarn dev-init
 yarn dev-start
 ```
 
@@ -21,10 +20,8 @@ Advanced users that want to provide their own passphrase can do so like this:
 ```
 yarn install
 yarn build
-./bin/iov-faucet init db/<dbname> <db password> <codec> "<passphrase goes here>"
+FAUCET_MNEMONIC="<secret mnemonic>" ./bin/iov-faucet start <codec> <chain url>
 ```
-
-Ensure that the db is not there, otherwise the application will throw. This is to prevent overwriting existing databases.
 
 ## Usage
 
@@ -37,17 +34,9 @@ help      Shows a help text and exits
 
 version   Prints the version and exits
 
-init      Initializes the faucet and exits
-           1  Database file path
-           2  Database encryption password
-           3  Codec
-          (4) custom mnemonic
-
 start     Starts the faucet
-           1  Database file path
-           2  Database encryption password
-           3  Codec
-           4  Node base URL, e.g. wss://bov.friendnet-fast.iov.one
+           1  Codec
+           2  Node base URL, e.g. wss://bov.friendnet-fast.iov.one
 
 Environment variables
 
@@ -55,18 +44,19 @@ FAUCET_COIN_TYPE      Coin type of the faucet (see README). Defaults to 1.
 FAUCET_INSTANCE       Instance number of the faucet for load balancing. Defaults to 0.
 FAUCET_CONCURRENCY    Number of distributor accounts. Defaults to 5.
 FAUCET_PORT           Port of the webserver. Defaults to 8000.
+FAUCET_MNEMONIC       Secret mnemonic that serves as the base secret for the
+                      faucet HD accounts
 ```
 
 ### Development
 
-The yarn scripts `dev-init` and `dev-start` call `init` and `start` with
-a set of default options for local development. It uses a weak password,
+The yarn script `dev-start` calls `start` with
+a set of default options for local development. It uses a development mnemonic,
 the BNS codec and the node `ws://localhost:22345`.
 
 ```
 yarn install
 yarn build
-yarn dev-init
 yarn dev-start
 ```
 
@@ -96,26 +86,24 @@ with
 * Build an artifact
 
 ```bash
-docker build -t iov-faucet:manual .
+docker build -t iov1/iov-faucet:manual .
 ```
 
 * Version and help
 
 ```bash
-docker run --read-only --rm iov-faucet:manual version
-docker run --read-only --rm iov-faucet:manual help
-```
-
-* Init DB
-
-```bash
-docker run --read-only -v $(pwd)/tmp:/app/db --rm iov-faucet:manual init db/test.db password bns "degree tackle suggest window test behind mesh extra cover prepare oak script"
+docker run --read-only --rm iov1/iov-faucet:manual version
+docker run --read-only --rm iov1/iov-faucet:manual help
 ```
 
 * Run faucet
 
 ```bash
-docker run --read-only -v $(pwd)/tmp:/app/db -p 8000:8000 --rm iov-faucet:manual start db/test.db password bns wss://bov.friendnet-fast.iov.one
+FAUCET_MNEMONIC="degree tackle suggest window test behind mesh extra cover prepare oak script" docker run --read-only \
+  -e FAUCET_MNEMONIC \
+  -p 8000:8000 \
+  --rm iov1/iov-faucet:manual \
+  start bns wss://bov.friendnet-fast.iov.one
 ```
 
 ### Using the faucet

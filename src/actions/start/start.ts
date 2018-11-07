@@ -1,8 +1,7 @@
-import fs from "fs";
 import Koa from "koa";
 import bodyParser from "koa-bodyparser";
 
-import { MultiChainSigner } from "@iov/core";
+import { MultiChainSigner, UserProfile } from "@iov/core";
 
 import { chainConnector, codecFromString, codecImplementation } from "../../codec";
 import * as constants from "../../constants";
@@ -15,7 +14,7 @@ import {
   sendOnFirstChain,
   tokenTickersOfFirstChain,
 } from "../../multichainhelpers";
-import { loadProfile } from "../../profile";
+import { setSecretAndCreateIdentities } from "../../profile";
 import { HttpError } from "./httperror";
 import { RequestParser } from "./requestparser";
 
@@ -27,20 +26,19 @@ function getCount(): number {
 }
 
 export async function start(args: ReadonlyArray<string>): Promise<void> {
-  if (args.length < 4) {
+  if (args.length < 2) {
     throw Error(`Not enough arguments for action 'start'. See README for arguments`);
   }
-  const filename = args[0];
-  const password = args[1];
-  const codec = codecFromString(args[2]);
-  const blockchainBaseUrl: string = args[3];
+  const codec = codecFromString(args[0]);
+  const blockchainBaseUrl: string = args[1];
 
   const port = constants.port;
 
-  if (!fs.existsSync(filename)) {
-    throw Error("File does not exist on disk, did you mean to -init- your profile?");
+  const profile = new UserProfile();
+  if (!constants.mnemonic) {
+    throw new Error("The FAUCET_MNEMONIC environment variable is not set");
   }
-  const profile = await loadProfile(filename, password);
+  await setSecretAndCreateIdentities(profile, constants.mnemonic);
   const signer = new MultiChainSigner(profile);
 
   console.log("Connecting to blockchain ...");

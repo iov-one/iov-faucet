@@ -8,12 +8,10 @@
     "format": "prettier --write --loglevel warn \"./src/**/*.ts\"",
     "lint": "tslint -t verbose --project .",
     "prebuild": "yarn format && yarn lint",
-    "build": "tsc",
+    "build": "rm -rf build && tsc",
     "test": "mocha \"./build/**/*.spec.js\"",
-    "dev-init": "rm -rf db/test.db/ && ./bin/iov-faucet init db/test.db password bns \"degree tackle suggest window test behind mesh extra cover prepare oak script\"",
-    "dev-start": "./bin/iov-faucet start db/test.db password bns \"ws://localhost:22345\"",
-    "dev-lisk-init": "rm -rf db/dev-lisk.db/ && FAUCET_CONCURRENCY=2 ./bin/iov-faucet init db/dev-lisk.db password lisk \"wagon fashion notice rough dinosaur physical mind waste until gun glass mixed\"",
-    "dev-lisk-start": "./bin/iov-faucet start db/dev-lisk.db password lisk \"https://testnet.lisk.io\""
+    "dev-start": "FAUCET_MNEMONIC=\"degree tackle suggest window test behind mesh extra cover prepare oak script\" ./bin/iov-faucet start bns \"ws://localhost:22345\"",
+    "dev-lisk-start": "FAUCET_MNEMONIC=\"wagon fashion notice rough dinosaur physical mind waste until gun glass mixed\" ./bin/iov-faucet start lisk \"https://testnet.lisk.io\""
   },
   "bin": {
     "iov-faucet": "bin/iov-faucet"
@@ -34,8 +32,6 @@
     "@iov/lisk": "^0.7.0",
     "@types/koa-bodyparser": "^5.0.1",
     "koa": "^2.5.3",
-    "koa-bodyparser": "^4.2.1",
-    "leveldown": "^4.0.1",
-    "levelup": "^3.1.1"
+    "koa-bodyparser": "^4.2.1"
   }
 }

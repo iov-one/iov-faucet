@@ -15,13 +15,7 @@ node_modules/
 # IDE-specific
 .vscode/
 
-# Release dir
-tmp/
-
 # Working dirs
 build/
 dist/
 docs/
-
-# Database dirs
-db/*/

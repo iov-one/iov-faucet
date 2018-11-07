@@ -19,6 +19,9 @@ export function debugAccount(account: BcpAccount): string {
 }
 
 export function logAccountsState(accounts: ReadonlyArray<BcpAccount>): void {
+  if (accounts.length < 2) {
+    throw new Error("List of accounts must contain at least one token holder and one distributor");
+  }
   const holder = accounts[0];
   const distributors = accounts.slice(1);
   console.log("Holder:\n" + `  ${debugAccount(holder)}`);
