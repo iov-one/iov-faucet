@@ -59,7 +59,7 @@ export interface SendJob {
   readonly sender: PublicIdentity;
   readonly recipient: Address;
   readonly tokenTicker: TokenTicker;
-  readonly amount: number; // whole numbers only
+  readonly wholeAmount: number; // whole numbers only
 }
 
 export async function sendOnFirstChain(signer: MultiChainSigner, job: SendJob): Promise<void> {
@@ -72,7 +72,7 @@ export async function sendOnFirstChain(signer: MultiChainSigner, job: SendJob): 
     recipient: job.recipient,
     memo: "We ❤️ developers – iov.one",
     amount: {
-      whole: Math.floor(job.amount),
+      whole: Math.floor(job.wholeAmount),
       fractional: 0,
       tokenTicker: job.tokenTicker,
     },
@@ -111,7 +111,7 @@ export async function refillFirstChain(signer: MultiChainSigner): Promise<void> 
         sender: holderIdentity,
         recipient: refillDistibutor.address,
         tokenTicker: token,
-        amount: creditAmount(token) * constants.refillAmount,
+        wholeAmount: creditAmount(token) * constants.refillAmount,
       });
     }
   }

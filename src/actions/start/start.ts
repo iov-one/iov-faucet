@@ -110,7 +110,7 @@ export async function start(args: ReadonlyArray<string>): Promise<void> {
           const job: SendJob = {
             sender: sender,
             recipient: address,
-            amount: creditAmount(ticker),
+            wholeAmount: creditAmount(ticker),
             tokenTicker: ticker,
           };
           logSendJob(signer, job);
