@@ -3,6 +3,7 @@ import bodyParser from "koa-bodyparser";
 
 import { MultiChainSigner, UserProfile } from "@iov/core";
 
+import { creditAmount } from "../../cashflow";
 import { chainConnector, codecFromString, codecImplementation } from "../../codec";
 import * as constants from "../../constants";
 import { logAccountsState, logSendJob } from "../../debugging";
@@ -109,7 +110,7 @@ export async function start(args: ReadonlyArray<string>): Promise<void> {
           const job: SendJob = {
             sender: sender,
             recipient: address,
-            amount: 1,
+            amount: creditAmount(ticker),
             tokenTicker: ticker,
           };
           logSendJob(signer, job);
