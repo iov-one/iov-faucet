@@ -1,5 +1,8 @@
 # IOV-Faucet
 
+[![Build Status](https://travis-ci.com/iov-one/iov-faucet.svg?branch=master)](https://travis-ci.com/iov-one/iov-faucet)
+[![Docker Pulls](https://img.shields.io/docker/pulls/iov1/iov-faucet.svg)](https://hub.docker.com/r/iov1/iov-faucet/)
+
 The usage of this faucet is very simple, to install it, run:
 
 ```
