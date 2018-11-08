@@ -122,7 +122,10 @@ export async function refillFirstChain(signer: MultiChainSigner): Promise<void> 
       await sendOnFirstChain(signer, job);
     }
 
-    console.log("Done refilling accounts.");
+    console.log(
+      // TODO: log something clever when we have https://github.com/iov-one/iov-core/issues/413
+      "Done refilling accounts. Depending on the chain, the transactions may take some time to be processed.",
+    );
     logAccountsState(await accountsOfFirstChain(signer));
   } else {
     console.log("Nothing to be done. Anyways, thanks for checking.");
