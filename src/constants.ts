@@ -6,5 +6,4 @@ export const concurrency: number = Number.parseInt(process.env.FAUCET_CONCURRENC
 export const port: number = Number.parseInt(process.env.FAUCET_PORT || "", 10) || 8000;
 export const mnemonic: string | undefined = process.env.FAUCET_MNEMONIC;
 
-export const refillThreshold = 8; // refill when balance gets below `n` times credit amount
 export const refillAmount = 20; // Send `n` times credit amount on refilling
