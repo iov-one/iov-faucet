@@ -43,12 +43,18 @@ start     Starts the faucet
 
 Environment variables
 
-FAUCET_COIN_TYPE      Coin type of the faucet (see README). Defaults to 1.
-FAUCET_INSTANCE       Instance number of the faucet for load balancing. Defaults to 0.
-FAUCET_CONCURRENCY    Number of distributor accounts. Defaults to 5.
-FAUCET_PORT           Port of the webserver. Defaults to 8000.
-FAUCET_MNEMONIC       Secret mnemonic that serves as the base secret for the
-                      faucet HD accounts
+FAUCET_COIN_TYPE          Coin type of the faucet (see README). Defaults to 1.
+FAUCET_INSTANCE           Instance number of the faucet for load balancing.
+                          Defaults to 0.
+FAUCET_CONCURRENCY        Number of distributor accounts. Defaults to 5.
+FAUCET_PORT               Port of the webserver. Defaults to 8000.
+FAUCET_MNEMONIC           Secret mnemonic that serves as the base secret for the
+                          faucet HD accounts
+FAUCET_CREDIT_AMOUNT_TKN  Send this amount of TKN to a user requesting TKN. TKN is
+                          a placeholder for the token ticker. Defaults to 10.
+FAUCET_REFILL_FACTOR      Send factor times credit amount on refilling. Defauls to 8.
+FAUCET_REFILL_THRESHOLD   Refill when balance gets below factor times credit amount.
+                          Defaults to 20.
 ```
 
 ### Development

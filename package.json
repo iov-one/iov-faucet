@@ -11,7 +11,7 @@
     "build": "rm -rf build && tsc",
     "test": "mocha \"./build/**/*.spec.js\"",
     "dev-start": "FAUCET_MNEMONIC=\"degree tackle suggest window test behind mesh extra cover prepare oak script\" ./bin/iov-faucet start bns \"ws://localhost:22345\"",
-    "dev-lisk-start": "FAUCET_CONCURRENCY=1 FAUCET_MNEMONIC=\"wagon fashion notice rough dinosaur physical mind waste until gun glass mixed\" ./bin/iov-faucet start lisk \"https://testnet.lisk.io\""
+    "dev-lisk-start": "FAUCET_CREDIT_AMOUNT_LSK=5 FAUCET_CONCURRENCY=1 FAUCET_MNEMONIC=\"wagon fashion notice rough dinosaur physical mind waste until gun glass mixed\" ./bin/iov-faucet start lisk \"https://testnet.lisk.io\""
   },
   "bin": {
     "iov-faucet": "bin/iov-faucet"

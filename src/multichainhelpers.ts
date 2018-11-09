@@ -3,8 +3,7 @@ import { Address, MultiChainSigner } from "@iov/core";
 import { PublicIdentity } from "@iov/keycontrol";
 import { ChainId, PublicKeyBundle } from "@iov/tendermint-types";
 
-import { creditAmount, needsRefill } from "./cashflow";
-import * as constants from "./constants";
+import { needsRefill, refillAmount } from "./cashflow";
 import { debugAccount, logAccountsState, logSendJob } from "./debugging";
 
 export function identitiesOfFirstChain(signer: MultiChainSigner): ReadonlyArray<PublicIdentity> {
@@ -111,7 +110,7 @@ export async function refillFirstChain(signer: MultiChainSigner): Promise<void> 
         sender: holderIdentity,
         recipient: refillDistibutor.address,
         tokenTicker: token,
-        wholeAmount: creditAmount(token) * constants.refillAmount,
+        wholeAmount: refillAmount(token),
       });
     }
   }
