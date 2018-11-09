@@ -2,7 +2,7 @@ import { expect } from "chai";
 
 import { TokenTicker } from "@iov/core";
 
-import { creditAmount, refillThreshold } from "./cashflow";
+import { creditAmount, refillAmount, refillThreshold } from "./cashflow";
 
 describe("Cashflow", () => {
   describe("creditAmount", () => {
@@ -21,6 +21,32 @@ describe("Cashflow", () => {
       // tslint:disable-next-line:no-object-mutation
       process.env.FAUCET_CREDIT_AMOUNT_WTF = "";
       expect(creditAmount("WTF" as TokenTicker)).to.eql(10);
+    });
+  });
+
+  describe("refillAmount", () => {
+    it("returns 20*10 by default", () => {
+      expect(refillAmount("TOKENZ" as TokenTicker)).to.eql(200);
+    });
+
+    it("returns 20*22 when credit amount is 22", () => {
+      // tslint:disable-next-line:no-object-mutation
+      process.env.FAUCET_CREDIT_AMOUNT_WTF = "22";
+      expect(refillAmount("WTF" as TokenTicker)).to.eql(440);
+    });
+
+    it("returns 30*10 when refill factor is 30", () => {
+      // tslint:disable-next-line:no-object-mutation
+      process.env.FAUCET_REFILL_FACTOR = "30";
+      expect(refillAmount("TOKENZ" as TokenTicker)).to.eql(300);
+    });
+
+    it("returns 30*22 when refill factor is 30 and credit amount is 22", () => {
+      // tslint:disable-next-line:no-object-mutation
+      process.env.FAUCET_REFILL_FACTOR = "30";
+      // tslint:disable-next-line:no-object-mutation
+      process.env.FAUCET_CREDIT_AMOUNT_WTF = "22";
+      expect(refillAmount("WTF" as TokenTicker)).to.eql(660);
     });
   });
 
