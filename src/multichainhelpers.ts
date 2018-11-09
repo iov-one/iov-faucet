@@ -3,6 +3,7 @@ import { Address, MultiChainSigner } from "@iov/core";
 import { PublicIdentity } from "@iov/keycontrol";
 import { ChainId, PublicKeyBundle } from "@iov/tendermint-types";
 
+import { creditAmount, needsRefill } from "./cashflow";
 import * as constants from "./constants";
 import { debugAccount, logAccountsState, logSendJob } from "./debugging";
 
@@ -78,18 +79,6 @@ export async function sendOnFirstChain(signer: MultiChainSigner, job: SendJob): 
   };
 
   await signer.signAndCommit(sendTx, wallet.id);
-}
-
-function creditAmount(token: TokenTicker): number {
-  return constants.creditAmounts.get(token) || constants.creditAmountDefault;
-}
-
-function needsRefill(account: BcpAccount, token: TokenTicker): boolean {
-  const coin = account.balance.find(balance => balance.tokenTicker === token);
-
-  const tokenBalance = coin ? coin.whole : 0; // truncates fractional
-
-  return tokenBalance < creditAmount(token) * constants.refillThreshold;
 }
 
 export async function refillFirstChain(signer: MultiChainSigner): Promise<void> {
