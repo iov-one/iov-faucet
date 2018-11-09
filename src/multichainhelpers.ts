@@ -59,7 +59,7 @@ export interface SendJob {
   readonly sender: PublicIdentity;
   readonly recipient: Address;
   readonly tokenTicker: TokenTicker;
-  readonly amount: number; // whole numbers only
+  readonly wholeAmount: number; // whole numbers only
 }
 
 export async function sendOnFirstChain(signer: MultiChainSigner, job: SendJob): Promise<void> {
@@ -72,7 +72,7 @@ export async function sendOnFirstChain(signer: MultiChainSigner, job: SendJob): 
     recipient: job.recipient,
     memo: "We ❤️ developers – iov.one",
     amount: {
-      whole: Math.floor(job.amount),
+      whole: Math.floor(job.wholeAmount),
       fractional: 0,
       tokenTicker: job.tokenTicker,
     },
@@ -111,7 +111,7 @@ export async function refillFirstChain(signer: MultiChainSigner): Promise<void> 
         sender: holderIdentity,
         recipient: refillDistibutor.address,
         tokenTicker: token,
-        amount: creditAmount(token) * constants.refillAmount,
+        wholeAmount: creditAmount(token) * constants.refillAmount,
       });
     }
   }
@@ -122,7 +122,10 @@ export async function refillFirstChain(signer: MultiChainSigner): Promise<void> 
       await sendOnFirstChain(signer, job);
     }
 
-    console.log("Done refilling accounts.");
+    console.log(
+      // TODO: log something clever when we have https://github.com/iov-one/iov-core/issues/413
+      "Done refilling accounts. Depending on the chain, the transactions may take some time to be processed.",
+    );
     logAccountsState(await accountsOfFirstChain(signer));
   } else {
     console.log("Nothing to be done. Anyways, thanks for checking.");

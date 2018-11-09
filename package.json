@@ -11,10 +11,17 @@
     "build": "rm -rf build && tsc",
     "test": "mocha \"./build/**/*.spec.js\"",
     "dev-start": "FAUCET_MNEMONIC=\"degree tackle suggest window test behind mesh extra cover prepare oak script\" ./bin/iov-faucet start bns \"ws://localhost:22345\"",
-    "dev-lisk-start": "FAUCET_MNEMONIC=\"wagon fashion notice rough dinosaur physical mind waste until gun glass mixed\" ./bin/iov-faucet start lisk \"https://testnet.lisk.io\""
+    "dev-lisk-start": "FAUCET_CONCURRENCY=1 FAUCET_MNEMONIC=\"wagon fashion notice rough dinosaur physical mind waste until gun glass mixed\" ./bin/iov-faucet start lisk \"https://testnet.lisk.io\""
   },
   "bin": {
     "iov-faucet": "bin/iov-faucet"
+  },
+  "dependencies": {
+    "@iov/core": "^0.8.1",
+    "@iov/lisk": "^0.8.1",
+    "@types/koa-bodyparser": "^5.0.1",
+    "koa": "^2.5.3",
+    "koa-bodyparser": "^4.2.1"
   },
   "devDependencies": {
     "@types/chai": "^4.1.7",
@@ -26,12 +33,5 @@
     "tslint": "^5.11.0",
     "tslint-immutable": "^4.8.0",
     "typescript": "^3.1.3"
-  },
-  "dependencies": {
-    "@iov/core": "^0.7.0",
-    "@iov/lisk": "^0.7.0",
-    "@types/koa-bodyparser": "^5.0.1",
-    "koa": "^2.5.3",
-    "koa-bodyparser": "^4.2.1"
   }
 }

@@ -31,5 +31,5 @@ export function logAccountsState(accounts: ReadonlyArray<BcpAccount>): void {
 export function logSendJob(signer: MultiChainSigner, job: SendJob): void {
   const from = identityToAddress(signer, job.sender);
   const to = job.recipient;
-  console.log(`Sending ${job.tokenTicker} from ${from} to ${to} ...`);
+  console.log(`Sending ${job.wholeAmount} ${job.tokenTicker} from ${from} to ${to} ...`);
 }
