@@ -17,8 +17,8 @@
     "iov-faucet": "bin/iov-faucet"
   },
   "dependencies": {
-    "@iov/core": "^0.8.1",
-    "@iov/lisk": "^0.8.1",
+    "@iov/core": "^0.9",
+    "@iov/lisk": "^0.9",
     "@types/koa-bodyparser": "^5.0.1",
     "koa": "^2.5.3",
     "koa-bodyparser": "^4.2.1"
