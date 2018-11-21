@@ -1,7 +1,7 @@
+import { ChainId, PublicKeyBundle } from "@iov/base-types";
 import { BcpAccount, SendTx, TokenTicker, TransactionKind } from "@iov/bcp-types";
 import { Address, MultiChainSigner } from "@iov/core";
 import { PublicIdentity } from "@iov/keycontrol";
-import { ChainId, PublicKeyBundle } from "@iov/tendermint-types";
 
 import { needsRefill, refillAmount } from "./cashflow";
 import { debugAccount, logAccountsState, logSendJob } from "./debugging";
