@@ -1,5 +1,4 @@
 import { Ed25519HdWallet, UserProfile } from "@iov/core";
-import { LocalIdentity } from "@iov/keycontrol";
 
 import * as constants from "./constants";
 import { faucetHdPath } from "./crypto";
