@@ -1,3 +1,4 @@
+import cors = require("@koa/cors");
 import Koa from "koa";
 import bodyParser from "koa-bodyparser";
 
@@ -66,6 +67,7 @@ export async function start(args: ReadonlyArray<string>): Promise<void> {
 
   console.log("Creating webserver ...");
   const api = new Koa();
+  api.use(cors());
   api.use(bodyParser());
 
   api.use(async context => {
