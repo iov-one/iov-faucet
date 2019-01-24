@@ -55,6 +55,7 @@ FAUCET_CREDIT_AMOUNT_TKN  Send this amount of TKN to a user requesting TKN. TKN 
 FAUCET_REFILL_FACTOR      Send factor times credit amount on refilling. Defauls to 8.
 FAUCET_REFILL_THRESHOLD   Refill when balance gets below factor times credit amount.
                           Defaults to 20.
+FAUCET_FRACTIONAL_DIGITS  Fractional Digits from Coin. Defaults to 0.
 ```
 
 ### Development
