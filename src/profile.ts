@@ -1,9 +1,14 @@
+import { ChainId } from "@iov/bcp-types";
 import { Ed25519HdWallet, UserProfile } from "@iov/core";
 
 import * as constants from "./constants";
 import { faucetHdPath } from "./crypto";
 
-export async function setSecretAndCreateIdentities(profile: UserProfile, mnemonic: string): Promise<void> {
+export async function setSecretAndCreateIdentities(
+  profile: UserProfile,
+  mnemonic: string,
+  chainId: ChainId,
+): Promise<void> {
   if (profile.wallets.value.length !== 0) {
     throw new Error("Profile already contains wallets");
   }
@@ -19,6 +24,6 @@ export async function setSecretAndCreateIdentities(profile: UserProfile, mnemoni
 
     console.log(`Creating identity m/${purpose}'/${coin}'/${instance}'/${i}' ...`);
     const path = faucetHdPath(purpose, coin, instance, i);
-    await profile.createIdentity(wallet.id, path);
+    await profile.createIdentity(wallet.id, chainId, path);
   }
 }

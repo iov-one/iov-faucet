@@ -5,7 +5,7 @@ import { identityToAddress, SendJob } from "./multichainhelpers";
 
 /** A string representation of a coin in a human-readable format that can change at any time */
 export function debugCoin(coin: BcpCoin): string {
-  return `${coin.whole + coin.fractional / 10 ** coin.sigFigs} ${coin.tokenTicker}`;
+  return `${coin.quantity} ${coin.tokenTicker}`;
 }
 
 /** A string representation of a balance in a human-readable format that can change at any time */
@@ -31,5 +31,5 @@ export function logAccountsState(accounts: ReadonlyArray<BcpAccount>): void {
 export function logSendJob(signer: MultiChainSigner, job: SendJob): void {
   const from = identityToAddress(signer, job.sender);
   const to = job.recipient;
-  console.log(`Sending ${job.wholeAmount} ${job.tokenTicker} from ${from} to ${to} ...`);
+  console.log(`Sending ${job.amount} ${job.tokenTicker} from ${from} to ${to} ...`);
 }
