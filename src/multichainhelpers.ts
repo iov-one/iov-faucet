@@ -32,10 +32,12 @@ export async function accountsOfFirstChain(
   for (const address of addresses) {
     const responsesPromise = signer.connection(chainId).getAccount({ address: address });
     const responseData = (await responsesPromise)!;
-    out.push({
-      address: responseData!.address,
-      balance: responseData!.balance,
-    });
+    if (responseData) {
+      out.push({
+        address: responseData!.address,
+        balance: responseData!.balance,
+      });
+    }
   }
 
   return out;

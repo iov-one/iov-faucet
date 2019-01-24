@@ -18,7 +18,6 @@ export function creditAmount(token: TokenTicker, factor: number = 1): Amount {
   const wholeNumber = amountFromEnv ? Int53.fromString(amountFromEnv).toNumber() : 10;
   const total = wholeNumber * factor;
   // replace BN with BigInt with TypeScript 3.2 and node 11
-  console.log(`total ${total}, factor: ${factor}, wholeNumber ${wholeNumber}`);
   const quantity = new BN(total).imul(new BN(10 ** fractionalDigits)).toString();
 
   return {
