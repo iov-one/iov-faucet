@@ -4,13 +4,18 @@ import bodyParser from "koa-bodyparser";
 
 import { MultiChainSigner, UserProfile } from "@iov/core";
 
-import { creditAmount } from "../../cashflow";
-import { chainConnector, codecFromString, codecImplementation } from "../../codec";
+import { creditAmount, setFractionalDigits } from "../../cashflow";
+import {
+  chainConnector,
+  codecDefaultFractionalDigits,
+  codecFromString,
+  codecImplementation,
+} from "../../codec";
 import * as constants from "../../constants";
 import { logAccountsState, logSendJob } from "../../debugging";
 import {
   accountsOfFirstChain,
-  identitiesOfFirstChain,
+  identitiesOfFirstWallet,
   refillFirstChain,
   SendJob,
   sendOnFirstChain,
@@ -40,16 +45,18 @@ export async function start(args: ReadonlyArray<string>): Promise<void> {
   if (!constants.mnemonic) {
     throw new Error("The FAUCET_MNEMONIC environment variable is not set");
   }
-  await setSecretAndCreateIdentities(profile, constants.mnemonic);
   const signer = new MultiChainSigner(profile);
-
   console.log("Connecting to blockchain ...");
   const connection = (await signer.addChain(chainConnector(codec, blockchainBaseUrl))).connection;
 
   const connectedChainId = connection.chainId();
   console.log(`Connected to network: ${connectedChainId}`);
 
-  const accounts = await accountsOfFirstChain(signer);
+  setFractionalDigits(codecDefaultFractionalDigits(codec));
+
+  await setSecretAndCreateIdentities(profile, constants.mnemonic, connectedChainId);
+
+  const accounts = await accountsOfFirstChain(profile, signer);
   logAccountsState(accounts);
   const holderAccount = accounts[0];
 
@@ -60,10 +67,10 @@ export async function start(args: ReadonlyArray<string>): Promise<void> {
   const availableTokens = holderAccount.balance.map(coin => coin.tokenTicker);
   console.log("Available tokens:", availableTokens);
 
-  const distibutorIdentities = identitiesOfFirstChain(signer).slice(1);
+  const distibutorIdentities = identitiesOfFirstWallet(profile).slice(1);
 
-  await refillFirstChain(signer);
-  setInterval(() => refillFirstChain(signer), 60_000); // ever 60 seconds
+  await refillFirstChain(profile, signer);
+  setInterval(() => refillFirstChain(profile, signer), 60_000); // ever 60 seconds
 
   console.log("Creating webserver ...");
   const api = new Koa();
@@ -74,7 +81,7 @@ export async function start(args: ReadonlyArray<string>): Promise<void> {
     switch (context.path) {
       case "/healthz":
       case "/status":
-        const updatedAccounts = await accountsOfFirstChain(signer);
+        const updatedAccounts = await accountsOfFirstChain(profile, signer);
         // tslint:disable-next-line:no-object-mutation
         context.response.body = {
           status: "ok",
@@ -112,11 +119,11 @@ export async function start(args: ReadonlyArray<string>): Promise<void> {
           const job: SendJob = {
             sender: sender,
             recipient: address,
-            wholeAmount: creditAmount(ticker),
+            amount: creditAmount(ticker),
             tokenTicker: ticker,
           };
           logSendJob(signer, job);
-          await sendOnFirstChain(signer, job);
+          await sendOnFirstChain(profile, signer, job);
         } catch (e) {
           console.log(e);
           throw new HttpError(500, "Sending tokens failed");
