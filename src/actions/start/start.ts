@@ -15,7 +15,7 @@ import * as constants from "../../constants";
 import { logAccountsState, logSendJob } from "../../debugging";
 import {
   accountsOfFirstChain,
-  identitiesOfFirstChain,
+  identitiesOfFirstWallet,
   refillFirstChain,
   SendJob,
   sendOnFirstChain,
@@ -67,7 +67,7 @@ export async function start(args: ReadonlyArray<string>): Promise<void> {
   const availableTokens = holderAccount.balance.map(coin => coin.tokenTicker);
   console.log("Available tokens:", availableTokens);
 
-  const distibutorIdentities = identitiesOfFirstChain(profile).slice(1);
+  const distibutorIdentities = identitiesOfFirstWallet(profile).slice(1);
 
   await refillFirstChain(profile, signer);
   setInterval(() => refillFirstChain(profile, signer), 60_000); // ever 60 seconds

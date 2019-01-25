@@ -19,6 +19,10 @@ export function setFractionalDigits(input: number): void {
   fractionalDigits = input;
 }
 
+export function getFractionalDigits(): number {
+  return fractionalDigits;
+}
+
 /** The amount of tokens that will be sent to the user */
 export function creditAmount(token: TokenTicker, factor: number = 1): Amount {
   const amountFromEnv = process.env[`FAUCET_CREDIT_AMOUNT_${token}`];
