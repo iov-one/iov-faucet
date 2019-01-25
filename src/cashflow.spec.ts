@@ -2,7 +2,7 @@ import { expect } from "chai";
 
 import { TokenTicker } from "@iov/core";
 
-import { creditAmount, refillAmount, refillThreshold } from "./cashflow";
+import { creditAmount, refillAmount, refillThreshold, setFractionalDigits } from "./cashflow";
 
 describe("Cashflow", () => {
   describe("When fractional digits is not set", () => {
@@ -128,13 +128,9 @@ describe("Cashflow", () => {
 
   describe("When fractional digits is set to 3", () => {
     before(() => {
-      // tslint:disable-next-line:no-object-mutation
-      process.env.FAUCET_FRACTIONAL_DIGITS = "3";
+      setFractionalDigits(3);
     });
-    after(() => {
-      // tslint:disable-next-line:no-object-mutation
-      process.env.FAUCET_FRACTIONAL_DIGITS = "";
-    });
+
     describe("creditAmount", () => {
       it("returns '10' + '000' by default", () => {
         expect(creditAmount("TOKENZ" as TokenTicker)).to.eql({

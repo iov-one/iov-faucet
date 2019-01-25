@@ -4,8 +4,13 @@ import bodyParser from "koa-bodyparser";
 
 import { MultiChainSigner, UserProfile } from "@iov/core";
 
-import { creditAmount } from "../../cashflow";
-import { chainConnector, codecFromString, codecImplementation } from "../../codec";
+import { creditAmount, setFractionalDigits } from "../../cashflow";
+import {
+  chainConnector,
+  codecDefaultFractionalDigits,
+  codecFromString,
+  codecImplementation,
+} from "../../codec";
 import * as constants from "../../constants";
 import { logAccountsState, logSendJob } from "../../debugging";
 import {
@@ -47,9 +52,9 @@ export async function start(args: ReadonlyArray<string>): Promise<void> {
   const connectedChainId = connection.chainId();
   console.log(`Connected to network: ${connectedChainId}`);
 
-  await setSecretAndCreateIdentities(profile, constants.mnemonic, connectedChainId);
+  setFractionalDigits(codecDefaultFractionalDigits(codec));
 
-  const firstWalletId = profile.wallets.value[0].id;
+  await setSecretAndCreateIdentities(profile, constants.mnemonic, connectedChainId);
 
   const accounts = await accountsOfFirstChain(profile, signer);
   logAccountsState(accounts);

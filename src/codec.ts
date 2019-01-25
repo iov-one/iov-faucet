@@ -39,3 +39,14 @@ export function chainConnector(codec: Codec, url: string): ChainConnector {
       throw new Error("No connector for this codec found");
   }
 }
+
+export function codecDefaultFractionalDigits(codec: Codec): number {
+  switch (codec) {
+    case Codec.Bns:
+      return 9; // fixed for all weave tokens
+    case Codec.Lisk:
+      return 8; // only LSK supported
+    default:
+      throw new Error("Unknown codec");
+  }
+}
