@@ -1,6 +1,7 @@
 import {
   Amount,
   BcpAccount,
+  BcpTransactionState,
   PublicIdentity,
   PublicKeyBundle,
   SendTransaction,
@@ -10,6 +11,10 @@ import { Address, MultiChainSigner, UserProfile } from "@iov/core";
 
 import { needsRefill, refillAmount } from "./cashflow";
 import { debugAccount, logAccountsState, logSendJob } from "./debugging";
+
+function sleep(ms: number): Promise<void> {
+  return new Promise(resolve => setTimeout(resolve, ms));
+}
 
 export function identitiesOfFirstWallet(profile: UserProfile): ReadonlyArray<PublicIdentity> {
   const wallet = profile.wallets.value[0];
@@ -79,7 +84,8 @@ export async function sendOnFirstChain(
     amount: job.amount,
   };
 
-  await signer.signAndPost(sendTxJson, wallet.id);
+  const post = await signer.signAndPost(sendTxJson, wallet.id);
+  await post.blockInfo.waitFor(info => info.state === BcpTransactionState.InBlock);
 }
 
 export async function refillFirstChain(profile: UserProfile, signer: MultiChainSigner): Promise<void> {
@@ -116,11 +122,11 @@ export async function refillFirstChain(profile: UserProfile, signer: MultiChainS
       });
     }
   }
-
   if (jobs.length > 0) {
     for (const job of jobs) {
       logSendJob(signer, job);
       await sendOnFirstChain(profile, signer, job);
+      await sleep(50);
     }
 
     console.log(

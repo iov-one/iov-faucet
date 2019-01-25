@@ -4,8 +4,6 @@ import { Amount, BcpAccount } from "@iov/bcp-types";
 import { TokenTicker } from "@iov/core";
 import { Int53 } from "@iov/encoding";
 
-import { codecDefaultFractionalDigits } from "./codec";
-
 /** Send `factor` times credit amount on refilling */
 const defaultRefillFactor = 20;
 

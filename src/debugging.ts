@@ -54,5 +54,5 @@ export function logSendJob(signer: MultiChainSigner, job: SendJob): void {
   const from = identityToAddress(signer, job.sender);
   const to = job.recipient;
   const amount = debugCoin(job.amount);
-  console.log(`Sending ${amount} ${job.tokenTicker} from ${from} to ${to} ...`);
+  console.log(`Sending ${amount} from ${from} to ${to} ...`);
 }
