@@ -81,6 +81,25 @@
     bn.js "^4.11.8"
     readonly-date "^1.0.0"
 
+"@iov/ethereum@^0.11.0-alpha.0":
+  version "0.11.0-alpha.0"
+  resolved "https://registry.yarnpkg.com/@iov/ethereum/-/ethereum-0.11.0-alpha.0.tgz#e7341138f46f27bb74d67075913cec8d3a9b0074"
+  integrity sha512-p/TC2cU5U7hhzZvvDWPQyLWvlAYOPmLfqw/6hHPPCWLlOMserPI0IuX3PLSsdlhUqmy/7aqDc+MkT/Izvn+8SA==
+  dependencies:
+    "@iov/bcp-types" "^0.11.0-alpha.0"
+    "@iov/crypto" "^0.11.0-alpha.0"
+    "@iov/encoding" "^0.11.0-alpha.0"
+    "@iov/jsonrpc" "^0.11.0-alpha.0"
+    "@iov/keycontrol" "^0.11.0-alpha.0"
+    "@types/long" "^4.0.0"
+    axios "^0.18.0"
+    bn.js "^4.11.8"
+    fast-deep-equal "^2.0.1"
+    long "^4.0.0"
+    readonly-date "^1.0.0"
+    rlp "^2.2.2"
+    xstream "^11.10.0"
+
 "@iov/jsonrpc@^0.11.0-alpha.0":
   version "0.11.0-alpha.0"
   resolved "https://registry.yarnpkg.com/@iov/jsonrpc/-/jsonrpc-0.11.0-alpha.0.tgz#311df3f2a071bb6d2cec6da5b1791d81457be3e9"
@@ -471,7 +490,7 @@ bip39@^2.5.0:
     safe-buffer "^5.0.1"
     unorm "^1.3.3"
 
-bn.js@^4.11.8, bn.js@^4.4.0:
+bn.js@^4.11.1, bn.js@^4.11.8, bn.js@^4.4.0:
   version "4.11.8"
   resolved "https://registry.yarnpkg.com/bn.js/-/bn.js-4.11.8.tgz#2cde09eb5ee341f484746bb0309b3253b1b1442f"
   integrity sha512-ItfYfPLkWHUjckQCk8xC+LwxgK8NYcXywGigJgSwOP8Y2iyWT4f2vsZnoOXTTbo+o5yXmIUJ4gn5538SO5S3gA==
@@ -1274,7 +1293,15 @@ ripemd160@^2.0.0, ripemd160@^2.0.1:
     hash-base "^3.0.0"
     inherits "^2.0.1"
 
-safe-buffer@^5.0.1, safe-buffer@^5.1.0, safe-buffer@^5.1.2, safe-buffer@~5.1.0, safe-buffer@~5.1.1:
+rlp@^2.2.2:
+  version "2.2.2"
+  resolved "https://registry.yarnpkg.com/rlp/-/rlp-2.2.2.tgz#e6677b83cca9105371d930e01d8ffc1263139d05"
+  integrity sha512-Ng2kJEN731Sfv4ZAY2i0ytPMc0BbJKBsVNl0QZY8LxOWSwd+1xpg+fpSRfaMn0heHU447s6Kgy8qfHZR0XTyVw==
+  dependencies:
+    bn.js "^4.11.1"
+    safe-buffer "^5.1.1"
+
+safe-buffer@^5.0.1, safe-buffer@^5.1.0, safe-buffer@^5.1.1, safe-buffer@^5.1.2, safe-buffer@~5.1.0, safe-buffer@~5.1.1:
   version "5.1.2"
   resolved "https://registry.yarnpkg.com/safe-buffer/-/safe-buffer-5.1.2.tgz#991ec69d296e0313747d59bdfd2b745c35f8828d"
   integrity sha512-Gd2UZBJDkXlY7GbJxfsE8/nvKkUEU1G38c1siN6QP6a9PT9MmHB8GnpscSmMJSoF8LOIrt8ud/wPtojys4G6+g==

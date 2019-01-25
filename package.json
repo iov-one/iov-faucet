@@ -10,8 +10,9 @@
     "prebuild": "yarn format && yarn lint",
     "build": "rm -rf build && tsc",
     "test": "mocha \"./build/**/*.spec.js\"",
-    "dev-start": "FAUCET_MNEMONIC=\"degree tackle suggest window test behind mesh extra cover prepare oak script\" ./bin/iov-faucet start bns \"ws://localhost:23457\"",
-    "dev-lisk-start": "FAUCET_CREDIT_AMOUNT_LSK=5 FAUCET_CONCURRENCY=1 FAUCET_MNEMONIC=\"wagon fashion notice rough dinosaur physical mind waste until gun glass mixed\" ./bin/iov-faucet start lisk \"https://testnet.lisk.io\""
+    "dev-start": "FAUCET_MNEMONIC=\"degree tackle suggest window test behind mesh extra cover prepare oak script\" ./bin/iov-faucet start bns \"ws://localhost:22345\"",
+    "dev-lisk-start": "FAUCET_CREDIT_AMOUNT_LSK=5 FAUCET_CONCURRENCY=1 FAUCET_MNEMONIC=\"wagon fashion notice rough dinosaur physical mind waste until gun glass mixed\" ./bin/iov-faucet start lisk \"https://testnet.lisk.io\"",
+    "dev-ethereum-start": "FAUCET_COIN_TYPE=60 FAUCET_CREDIT_AMOUNT_ETH=8 FAUCET_CONCURRENCY=1 FAUCET_MNEMONIC=\"oxygen fall sure lava energy veteran enroll frown question detail include maximum\" ./bin/iov-faucet start ethereum \"http://localhost:8545\""
   },
   "bin": {
     "iov-faucet": "bin/iov-faucet"
@@ -19,6 +20,7 @@
   "dependencies": {
     "@iov/bns": "^0.11.0-alpha.0",
     "@iov/core": "^0.11.0-alpha.0",
+    "@iov/ethereum": "^0.11.0-alpha.0",
     "@iov/lisk": "^0.11.0-alpha.0",
     "@koa/cors": "^2.2.2",
     "@types/koa-bodyparser": "^5.0.1",
