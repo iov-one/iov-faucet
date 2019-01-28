@@ -53,8 +53,7 @@ export async function start(args: ReadonlyArray<string>): Promise<void> {
   console.log(`Connected to network: ${connectedChainId}`);
 
   setFractionalDigits(codecDefaultFractionalDigits(codec));
-
-  await setSecretAndCreateIdentities(profile, constants.mnemonic, connectedChainId);
+  await setSecretAndCreateIdentities(profile, constants.mnemonic, connectedChainId, codec);
 
   const accounts = await accountsOfFirstChain(profile, signer);
   logAccountsState(accounts);

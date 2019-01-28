@@ -1,7 +1,7 @@
 import {
   Amount,
   BcpAccount,
-  BcpTransactionState,
+  isBlockInfoPending,
   PublicIdentity,
   PublicKeyBundle,
   SendTransaction,
@@ -85,7 +85,7 @@ export async function sendOnFirstChain(
   };
 
   const post = await signer.signAndPost(sendTxJson, wallet.id);
-  await post.blockInfo.waitFor(info => info.state === BcpTransactionState.InBlock);
+  await post.blockInfo.waitFor(info => !isBlockInfoPending(info));
 }
 
 export async function refillFirstChain(profile: UserProfile, signer: MultiChainSigner): Promise<void> {
