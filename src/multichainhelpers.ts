@@ -1,6 +1,7 @@
 import {
   Amount,
   BcpAccount,
+  isBlockInfoFailed,
   isBlockInfoPending,
   PublicIdentity,
   PublicKeyBundle,
@@ -90,7 +91,10 @@ export async function sendOnFirstChain(
   };
 
   const post = await signer.signAndPost(sendTxJson, wallet.id);
-  await post.blockInfo.waitFor(info => !isBlockInfoPending(info));
+  const blockInfo = await post.blockInfo.waitFor(info => !isBlockInfoPending(info));
+  if (isBlockInfoFailed(blockInfo)) {
+    throw new Error(`Sending tokens failed. Code: ${blockInfo.code}, message: ${blockInfo.message}`);
+  }
 }
 
 export async function refillFirstChain(
