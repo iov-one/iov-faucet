@@ -70,6 +70,9 @@ export interface SendJob {
   readonly gasLimit?: Amount;
 }
 
+/**
+ * Creates and posts a send transaction. Then waits until the transaction is in a block.
+ */
 export async function sendOnFirstChain(
   profile: UserProfile,
   signer: MultiChainSigner,
@@ -144,10 +147,7 @@ export async function refillFirstChain(
       await sleep(50);
     }
 
-    console.log(
-      // TODO: log something clever when we have https://github.com/iov-one/iov-core/issues/413
-      "Done refilling accounts. Depending on the chain, the transactions may take some time to be processed.",
-    );
+    console.log("Done refilling accounts.");
     logAccountsState(await accountsOfFirstChain(profile, signer));
   } else {
     console.log("Nothing to be done. Anyways, thanks for checking.");
