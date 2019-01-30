@@ -134,6 +134,10 @@ The faucet provides a simple status check in the form of an http GET request. As
 curl http://localhost:8000/status
 ```
 
-### Future Support
+## Versions and compatibility overview
 
-In the future, it will be possible to tell the faucet to only use specific networks. Right now it automatically connects to all known chains.
+| iov-faucet | IOV-Core | BNSd support    | New features     |
+|------------|----------|-----------------|------------------|
+| 0.5.x      | 0.12.x   | 0.10.x – 0.11.x |                  |
+| 0.4.x      | 0.11.x   | 0.4.x – 0.9.x   | Ethereum support |
+| 0.3.x      | 0.9.x    | 0.4.x – 0.9.x   |                  |
