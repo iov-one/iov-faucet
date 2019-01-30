@@ -1,8 +1,17 @@
+// tslint:disable:no-unused-expression
 import { expect } from "chai";
 
 import { TokenTicker } from "@iov/core";
 
-import { creditAmount, refillAmount, refillThreshold, setFractionalDigits } from "./cashflow";
+import {
+  creditAmount,
+  gasLimit,
+  gasPrice,
+  refillAmount,
+  refillThreshold,
+  setFractionalDigits,
+} from "./cashflow";
+import { Codec } from "./codec";
 
 describe("Cashflow", () => {
   describe("When fractional digits is not set", () => {
@@ -255,6 +264,36 @@ describe("Cashflow", () => {
           fractionalDigits: 3,
           tokenTicker: "WTF",
         });
+      });
+    });
+  });
+
+  describe("gasPrice", () => {
+    it("returns undefined for non-Ethereum codecs", () => {
+      expect(gasPrice(Codec.Lisk)).to.be.undefined;
+      expect(gasPrice(Codec.Bns)).to.be.undefined;
+    });
+
+    it("returns amount for Ethereum codec", () => {
+      expect(gasPrice(Codec.Ethereum)).to.be.eql({
+        quantity: "20000000000",
+        fractionalDigits: 18,
+        tokenTicker: "ETH",
+      });
+    });
+  });
+
+  describe("gasLimit", () => {
+    it("returns undefined for non-Ethereum codecs", () => {
+      expect(gasLimit(Codec.Lisk)).to.be.undefined;
+      expect(gasLimit(Codec.Bns)).to.be.undefined;
+    });
+
+    it("returns amount for Ethereum codec", () => {
+      expect(gasLimit(Codec.Ethereum)).to.be.eql({
+        quantity: "2100000",
+        fractionalDigits: 18,
+        tokenTicker: "ETH",
       });
     });
   });

@@ -4,6 +4,9 @@ import { Amount, BcpAccount } from "@iov/bcp-types";
 import { TokenTicker } from "@iov/core";
 import { Int53 } from "@iov/encoding";
 
+import { Codec } from "./codec";
+import * as constants from "./constants";
+
 /** Send `factor` times credit amount on refilling */
 const defaultRefillFactor = 20;
 
@@ -54,4 +57,36 @@ export function needsRefill(account: BcpAccount, token: TokenTicker): boolean {
   const tokenBalance = coin ? coin.quantity : "0";
   const refillQty = new BN(refillThreshold(token).quantity);
   return new BN(tokenBalance).lt(refillQty);
+}
+
+export function gasPrice(codec: Codec): Amount | undefined {
+  switch (codec) {
+    case Codec.Bns:
+    case Codec.Lisk:
+      return undefined;
+    case Codec.Ethereum:
+      return {
+        quantity: constants.ethereum.gasPrice,
+        fractionalDigits: 18,
+        tokenTicker: "ETH" as TokenTicker,
+      };
+    default:
+      throw new Error("No codec imlementation for this codec found");
+  }
+}
+
+export function gasLimit(codec: Codec): Amount | undefined {
+  switch (codec) {
+    case Codec.Bns:
+    case Codec.Lisk:
+      return undefined;
+    case Codec.Ethereum:
+      return {
+        quantity: constants.ethereum.gasLimit,
+        fractionalDigits: 18,
+        tokenTicker: "ETH" as TokenTicker,
+      };
+    default:
+      throw new Error("Codec not supported");
+  }
 }

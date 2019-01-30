@@ -4,7 +4,7 @@ import bodyParser from "koa-bodyparser";
 
 import { MultiChainSigner, UserProfile } from "@iov/core";
 
-import { creditAmount, setFractionalDigits } from "../../cashflow";
+import { creditAmount, gasLimit, gasPrice, setFractionalDigits } from "../../cashflow";
 import {
   chainConnector,
   codecDefaultFractionalDigits,
@@ -68,8 +68,8 @@ export async function start(args: ReadonlyArray<string>): Promise<void> {
 
   const distibutorIdentities = identitiesOfFirstWallet(profile).slice(1);
 
-  await refillFirstChain(profile, signer);
-  setInterval(() => refillFirstChain(profile, signer), 60_000); // ever 60 seconds
+  await refillFirstChain(profile, signer, codec);
+  setInterval(() => refillFirstChain(profile, signer, codec), 60_000); // ever 60 seconds
 
   console.log("Creating webserver ...");
   const api = new Koa();
@@ -122,6 +122,8 @@ export async function start(args: ReadonlyArray<string>): Promise<void> {
             recipient: address,
             amount: creditAmount(ticker),
             tokenTicker: ticker,
+            gasPrice: gasPrice(codec),
+            gasLimit: gasLimit(codec),
           };
           logSendJob(signer, job);
           await sendOnFirstChain(profile, signer, job);
