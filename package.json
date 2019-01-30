@@ -1,6 +1,6 @@
 {
   "name": "iov-faucet",
-  "version": "0.3.1",
+  "version": "0.4.0",
   "description": "Typescript demo faucet",
   "author": "IOV SAS <admin@iov.one>",
   "license": "Apache-2.0",
