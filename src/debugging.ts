@@ -1,4 +1,4 @@
-import { Amount, BcpAccount } from "@iov/bcp-types";
+import { Account, Amount } from "@iov/bcp-types";
 import { MultiChainSigner } from "@iov/core";
 
 import { identityToAddress, SendJob } from "./multichainhelpers";
@@ -36,11 +36,11 @@ export function debugBalance(data: ReadonlyArray<Amount>): string {
 }
 
 /** A string representation of an account in a human-readable format that can change at any time */
-export function debugAccount(account: BcpAccount): string {
+export function debugAccount(account: Account): string {
   return `${account.address}: ${debugBalance(account.balance)}`;
 }
 
-export function logAccountsState(accounts: ReadonlyArray<BcpAccount>): void {
+export function logAccountsState(accounts: ReadonlyArray<Account>): void {
   if (accounts.length < 2) {
     throw new Error("List of accounts must contain at least one token holder and one distributor");
   }
