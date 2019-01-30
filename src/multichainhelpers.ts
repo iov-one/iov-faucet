@@ -1,6 +1,7 @@
 import {
   Amount,
   BcpAccount,
+  isBlockInfoFailed,
   isBlockInfoPending,
   PublicIdentity,
   PublicKeyBundle,
@@ -9,7 +10,8 @@ import {
 } from "@iov/bcp-types";
 import { Address, MultiChainSigner, UserProfile } from "@iov/core";
 
-import { needsRefill, refillAmount } from "./cashflow";
+import { gasLimit, gasPrice, needsRefill, refillAmount } from "./cashflow";
+import { Codec } from "./codec";
 import { debugAccount, logAccountsState, logSendJob } from "./debugging";
 
 function sleep(ms: number): Promise<void> {
@@ -64,8 +66,13 @@ export interface SendJob {
   readonly recipient: Address;
   readonly tokenTicker: TokenTicker;
   readonly amount: Amount;
+  readonly gasPrice?: Amount;
+  readonly gasLimit?: Amount;
 }
 
+/**
+ * Creates and posts a send transaction. Then waits until the transaction is in a block.
+ */
 export async function sendOnFirstChain(
   profile: UserProfile,
   signer: MultiChainSigner,
@@ -82,13 +89,22 @@ export async function sendOnFirstChain(
     recipient: job.recipient,
     memo: "We ❤️ developers – iov.one",
     amount: job.amount,
+    gasPrice: job.gasPrice,
+    gasLimit: job.gasLimit,
   };
 
   const post = await signer.signAndPost(sendTxJson, wallet.id);
-  await post.blockInfo.waitFor(info => !isBlockInfoPending(info));
+  const blockInfo = await post.blockInfo.waitFor(info => !isBlockInfoPending(info));
+  if (isBlockInfoFailed(blockInfo)) {
+    throw new Error(`Sending tokens failed. Code: ${blockInfo.code}, message: ${blockInfo.message}`);
+  }
 }
 
-export async function refillFirstChain(profile: UserProfile, signer: MultiChainSigner): Promise<void> {
+export async function refillFirstChain(
+  profile: UserProfile,
+  signer: MultiChainSigner,
+  codec: Codec,
+): Promise<void> {
   const chainId = signer.chainIds()[0];
 
   console.log(`Connected to network: ${chainId}`);
@@ -119,6 +135,8 @@ export async function refillFirstChain(profile: UserProfile, signer: MultiChainS
         recipient: refillDistibutor.address,
         tokenTicker: token,
         amount: refillAmount(token),
+        gasPrice: gasPrice(codec),
+        gasLimit: gasLimit(codec),
       });
     }
   }
@@ -129,10 +147,7 @@ export async function refillFirstChain(profile: UserProfile, signer: MultiChainS
       await sleep(50);
     }
 
-    console.log(
-      // TODO: log something clever when we have https://github.com/iov-one/iov-core/issues/413
-      "Done refilling accounts. Depending on the chain, the transactions may take some time to be processed.",
-    );
+    console.log("Done refilling accounts.");
     logAccountsState(await accountsOfFirstChain(profile, signer));
   } else {
     console.log("Nothing to be done. Anyways, thanks for checking.");

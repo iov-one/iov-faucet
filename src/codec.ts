@@ -1,4 +1,4 @@
-import { ChainConnector, TxCodec } from "@iov/bcp-types";
+import { Amount, ChainConnector, TokenTicker, TxCodec } from "@iov/bcp-types";
 import { bnsCodec, bnsConnector } from "@iov/bns";
 import { ethereumCodec, ethereumConnector } from "@iov/ethereum";
 import { liskCodec, liskConnector } from "@iov/lisk";
