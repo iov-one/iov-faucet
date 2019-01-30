@@ -1,6 +1,6 @@
 import BN = require("bn.js");
 
-import { Amount, BcpAccount } from "@iov/bcp-types";
+import { Account, Amount } from "@iov/bcp-types";
 import { TokenTicker } from "@iov/core";
 import { Int53 } from "@iov/encoding";
 
@@ -51,7 +51,7 @@ export function refillThreshold(token: TokenTicker): Amount {
 }
 
 /** true iff the distributor account needs a refill */
-export function needsRefill(account: BcpAccount, token: TokenTicker): boolean {
+export function needsRefill(account: Account, token: TokenTicker): boolean {
   const coin = account.balance.find(balance => balance.tokenTicker === token);
 
   const tokenBalance = coin ? coin.quantity : "0";

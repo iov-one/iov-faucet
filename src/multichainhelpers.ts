@@ -1,6 +1,6 @@
 import {
+  Account,
   Amount,
-  BcpAccount,
   isBlockInfoFailed,
   isBlockInfoPending,
   PublicIdentity,
@@ -30,12 +30,12 @@ export function identityToAddress(signer: MultiChainSigner, identity: PublicIden
 export async function accountsOfFirstChain(
   profile: UserProfile,
   signer: MultiChainSigner,
-): Promise<ReadonlyArray<BcpAccount>> {
+): Promise<ReadonlyArray<Account>> {
   const addresses = identitiesOfFirstWallet(profile).map(identity => signer.identityToAddress(identity));
   const chainId = signer.chainIds()[0];
 
   // tslint:disable-next-line:readonly-array
-  const out: BcpAccount[] = [];
+  const out: Account[] = [];
   for (const address of addresses) {
     const response = await signer.connection(chainId).getAccount({ address: address });
     if (response) {
