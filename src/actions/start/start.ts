@@ -101,7 +101,9 @@ export async function start(args: ReadonlyArray<string>): Promise<void> {
           throw new HttpError(415, "Content-type application/json expected");
         }
 
-        const { address, ticker } = RequestParser.parseCreditBody(context.request.body);
+        // context.request.body is set by the bodyParser() plugin
+        const requestBody = (context.request as any).body;
+        const { address, ticker } = RequestParser.parseCreditBody(requestBody);
 
         if (!codecImplementation(codec).isValidAddress(address)) {
           throw new HttpError(400, "Address is not in the expected format for this chain.");
