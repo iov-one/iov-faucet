@@ -78,7 +78,16 @@ export async function start(args: ReadonlyArray<string>): Promise<void> {
 
   api.use(async context => {
     switch (context.path) {
+      case "/":
       case "/healthz":
+        // tslint:disable-next-line:no-object-mutation
+        context.response.body =
+          "Welcome to the faucet!\n" +
+          "\n" +
+          "Check the full status via the /status endpoint.\n" +
+          "You can get tokens from here by POSTing to /credit.\n" +
+          "See https://github.com/iov-one/iov-faucet for all further information.\n";
+        break;
       case "/status":
         const updatedAccounts = await accountsOfFirstChain(profile, signer);
         // tslint:disable-next-line:no-object-mutation
