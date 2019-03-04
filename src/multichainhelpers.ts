@@ -117,7 +117,7 @@ export async function refillFirstChain(
   const holderAccount = accounts[0];
   const distributorAccounts = accounts.slice(1);
 
-  const availableTokens = holderAccount.balance.map(coin => coin.tokenTicker);
+  const availableTokens = availableTokensFromHolder(holderAccount);
   console.log("Available tokens:", availableTokens);
 
   // tslint:disable-next-line:readonly-array
@@ -152,4 +152,8 @@ export async function refillFirstChain(
   } else {
     console.log("Nothing to be done. Anyways, thanks for checking.");
   }
+}
+
+export function availableTokensFromHolder(holderAccount: Account): ReadonlyArray<TokenTicker> {
+  return holderAccount.balance.map(coin => coin.tokenTicker);
 }

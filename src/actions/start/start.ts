@@ -15,6 +15,7 @@ import * as constants from "../../constants";
 import { logAccountsState, logSendJob } from "../../debugging";
 import {
   accountsOfFirstChain,
+  availableTokensFromHolder,
   identitiesOfFirstWallet,
   refillFirstChain,
   SendJob,
@@ -55,16 +56,19 @@ export async function start(args: ReadonlyArray<string>): Promise<void> {
   setFractionalDigits(codecDefaultFractionalDigits(codec));
   await setSecretAndCreateIdentities(profile, constants.mnemonic, connectedChainId, codec);
 
-  const accounts = await accountsOfFirstChain(profile, signer);
-  logAccountsState(accounts);
-  const holderAccount = accounts[0];
-
   const chainTokens = await tokenTickersOfFirstChain(signer);
   console.log("Chain tokens:", chainTokens);
 
-  // TODO: availableTokens value is never updated during runtime of the server
-  const availableTokens = holderAccount.balance.map(coin => coin.tokenTicker);
+  const accounts = await accountsOfFirstChain(profile, signer);
+  logAccountsState(accounts);
+
+  let availableTokens = availableTokensFromHolder(accounts[0]);
   console.log("Available tokens:", availableTokens);
+  setInterval(async () => {
+    const updatedAccounts = await accountsOfFirstChain(profile, signer);
+    availableTokens = availableTokensFromHolder(updatedAccounts[0]);
+    console.log("Available tokens:", availableTokens);
+  }, 60_000);
 
   const distibutorIdentities = identitiesOfFirstWallet(profile).slice(1);
 
