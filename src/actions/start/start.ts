@@ -69,7 +69,7 @@ export async function start(args: ReadonlyArray<string>): Promise<void> {
   const distibutorIdentities = identitiesOfFirstWallet(profile).slice(1);
 
   await refillFirstChain(profile, signer, codec);
-  setInterval(() => refillFirstChain(profile, signer, codec), 60_000); // ever 60 seconds
+  setInterval(async () => refillFirstChain(profile, signer, codec), 60_000); // ever 60 seconds
 
   console.log("Creating webserver ...");
   const api = new Koa();
