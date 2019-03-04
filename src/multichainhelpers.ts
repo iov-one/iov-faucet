@@ -14,7 +14,7 @@ import { gasLimit, gasPrice, needsRefill, refillAmount } from "./cashflow";
 import { Codec } from "./codec";
 import { debugAccount, logAccountsState, logSendJob } from "./debugging";
 
-function sleep(ms: number): Promise<void> {
+async function sleep(ms: number): Promise<void> {
   return new Promise(resolve => setTimeout(resolve, ms));
 }
 
@@ -84,7 +84,7 @@ export async function sendOnFirstChain(
     kind: "bcp/send",
     creator: {
       chainId: chainId,
-      pubkey: job.sender.pubkey as PublicKeyBundle,
+      pubkey: job.sender.pubkey,
     },
     recipient: job.recipient,
     memo: "We ❤️ developers – iov.one",
