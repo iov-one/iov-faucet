@@ -46,7 +46,7 @@ export async function start(args: ReadonlyArray<string>): Promise<void> {
     throw new Error("The FAUCET_MNEMONIC environment variable is not set");
   }
   const signer = new MultiChainSigner(profile);
-  console.log("Connecting to blockchain ...");
+  console.log(`Connecting to blockchain ${blockchainBaseUrl} ...`);
   const connection = (await signer.addChain(chainConnector(codec, blockchainBaseUrl))).connection;
 
   const connectedChainId = connection.chainId();
