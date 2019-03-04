@@ -62,9 +62,13 @@ export async function start(args: ReadonlyArray<string>): Promise<void> {
   const accounts = await accountsOfFirstChain(profile, signer);
   logAccountsState(accounts);
 
-  // TODO: availableTokens value is never updated during runtime of the server
-  const availableTokens = availableTokensFromHolder(accounts[0]);
+  let availableTokens = availableTokensFromHolder(accounts[0]);
   console.log("Available tokens:", availableTokens);
+  setInterval(async () => {
+    const updatedAccounts = await accountsOfFirstChain(profile, signer);
+    availableTokens = availableTokensFromHolder(updatedAccounts[0]);
+    console.log("Available tokens:", availableTokens);
+  }, 60_000);
 
   const distibutorIdentities = identitiesOfFirstWallet(profile).slice(1);
 
