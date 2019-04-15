@@ -59,11 +59,35 @@ fi
 fold_end
 
 #
-# Test
+# Unit tests
 #
 
-fold_start "commandline-tests"
+fold_start "unit-tests"
 yarn test
+fold_end
+
+#
+# Start blockchains
+#
+
+fold_start "bnsd-start"
+./scripts/bnsd/start.sh
+fold_end
+
+#
+# Integration tests
+#
+
+fold_start "integration-tests"
+yarn dev-start &
+# observe logs of background faucet a bit
+sleep 20
+curl --fail -sS http://localhost:8000/status
+curl --fail -sS \
+  --header "Content-Type: application/json" \
+  --request POST \
+  --data '{"ticker":"CASH","address":"tiov1k898u78hgs36uqw68dg7va5nfkgstu5z0fhz3f"}' \
+  http://localhost:8000/credit
 fold_end
 
 #

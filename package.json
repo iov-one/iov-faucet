@@ -10,7 +10,7 @@
     "prebuild": "yarn format && yarn lint",
     "build": "rm -rf build && tsc",
     "test": "mocha \"./build/**/*.spec.js\"",
-    "dev-start": "FAUCET_MNEMONIC=\"degree tackle suggest window test behind mesh extra cover prepare oak script\" ./bin/iov-faucet start bns \"ws://localhost:22345\"",
+    "dev-start": "FAUCET_MNEMONIC=\"degree tackle suggest window test behind mesh extra cover prepare oak script\" ./bin/iov-faucet start bns \"ws://localhost:23456\"",
     "dev-lisk-start": "FAUCET_CREDIT_AMOUNT_LSK=5 FAUCET_CONCURRENCY=1 FAUCET_MNEMONIC=\"wagon fashion notice rough dinosaur physical mind waste until gun glass mixed\" ./bin/iov-faucet start lisk \"https://testnet.lisk.io\"",
     "dev-ethereum-start": "FAUCET_CREDIT_AMOUNT_ETH=8 FAUCET_CONCURRENCY=3 FAUCET_MNEMONIC=\"oxygen fall sure lava energy veteran enroll frown question detail include maximum\" ./bin/iov-faucet start ethereum \"http://localhost:8545\""
   },
@@ -39,6 +39,6 @@
     "tslint": "^5.11.0",
     "tslint-config-prettier": "^1.18.0",
     "tslint-immutable": "^5",
-    "typescript": "~3.2"
+    "typescript": "~3.4"
   }
 }

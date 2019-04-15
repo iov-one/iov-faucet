@@ -1,10 +1,10 @@
-FROM node:10.12.0-alpine AS build-env
+FROM node:10.15-alpine AS build-env
 
 ADD . /app
 WORKDIR /app
 RUN yarn install; yarn run build
 
-FROM node:10.12.0-alpine
+FROM node:10.15-alpine
 
 COPY --from=build-env /app/bin /app/bin
 COPY --from=build-env /app/build /app/build

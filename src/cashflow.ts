@@ -14,14 +14,17 @@ const defaultRefillFactor = 20;
 const defaultRefillThresholdFactor = 8;
 
 // Load this from connection?
-let fractionalDigits: number = 0;
+let globalFractionalDigits: number | undefined;
 
 export function setFractionalDigits(input: number): void {
-  fractionalDigits = input;
+  globalFractionalDigits = input;
 }
 
 export function getFractionalDigits(): number {
-  return fractionalDigits;
+  if (globalFractionalDigits === undefined) {
+    throw new Error("Fractional digits not set");
+  }
+  return globalFractionalDigits;
 }
 
 /** The amount of tokens that will be sent to the user */
@@ -29,6 +32,7 @@ export function creditAmount(token: TokenTicker, factor: number = 1): Amount {
   const amountFromEnv = process.env[`FAUCET_CREDIT_AMOUNT_${token}`];
   const wholeNumber = amountFromEnv ? Int53.fromString(amountFromEnv).toNumber() : 10;
   const total = wholeNumber * factor;
+  const fractionalDigits = getFractionalDigits();
   // replace BN with BigInt with TypeScript 3.2 and node 11
   const quantity = new BN(total).imul(new BN(10).pow(new BN(fractionalDigits))).toString();
   return {
