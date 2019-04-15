@@ -61,7 +61,7 @@ FAUCET_REFILL_THRESHOLD   Refill when balance gets below factor times credit amo
 
 The yarn script `dev-start` calls `start` with
 a set of default options for local development. It uses a development mnemonic,
-the BNS codec and the node `ws://localhost:22345`.
+the BNS codec and the node `ws://localhost:23456`.
 
 ```
 yarn install

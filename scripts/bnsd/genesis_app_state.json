@@ -1,0 +1,47 @@
+{
+  "cash": [
+    {
+      "address": "b1ca7e78f74423ae01da3b51e676934d9105f282",
+      "coins": [
+        {
+          "whole": 123456789,
+          "ticker": "CASH"
+        }
+      ]
+    },
+    {
+      "address": "053e4ffbb040d4dc3b201dfe9264c00d918e087b",
+      "coins": [
+        {
+          "whole": 1000000,
+          "ticker": "CASH"
+        },
+        {
+          "whole": 2000000,
+          "ticker": "BASH"
+        }
+      ]
+    }
+  ],
+  "currencies": [
+    {
+      "ticker": "CASH",
+      "name": "Main token of this chain",
+      "sig_figs": 6
+    },
+    {
+      "ticker": "BASH",
+      "name": "Another token of this chain",
+      "sig_figs": 6
+    },
+    {
+      "ticker": "ASH",
+      "name": "Let the Phoenix arise",
+      "sig_figs": 6
+    }
+  ],
+  "gconf": {
+    "cash:minimal_fee": {},
+    "cash:collector_address": "0000000000000000000000000000000000000000"
+  }
+}
