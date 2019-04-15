@@ -4,10 +4,9 @@ import {
   isBlockInfoFailed,
   isBlockInfoPending,
   PublicIdentity,
-  PublicKeyBundle,
   SendTransaction,
   TokenTicker,
-} from "@iov/bcp-types";
+} from "@iov/bcp";
 import { Address, MultiChainSigner, UserProfile } from "@iov/core";
 
 import { gasLimit, gasPrice, needsRefill, refillAmount } from "./cashflow";
@@ -58,7 +57,7 @@ export async function tokenTickersOfFirstChain(
   signer: MultiChainSigner,
 ): Promise<ReadonlyArray<TokenTicker>> {
   const chainId = signer.chainIds()[0];
-  return (await signer.connection(chainId).getAllTickers()).map(token => token.tokenTicker);
+  return (await signer.connection(chainId).getAllTokens()).map(token => token.tokenTicker);
 }
 
 export interface SendJob {
@@ -79,8 +78,9 @@ export async function sendOnFirstChain(
   job: SendJob,
 ): Promise<void> {
   const chainId = signer.chainIds()[0];
-  const wallet = profile.wallets.value[0];
-  const sendTxJson: SendTransaction = {
+  const connection = signer.connection(chainId);
+
+  const sendWithFee = await connection.withDefaultFee<SendTransaction>({
     kind: "bcp/send",
     creator: {
       chainId: chainId,
@@ -89,11 +89,9 @@ export async function sendOnFirstChain(
     recipient: job.recipient,
     memo: "We ❤️ developers – iov.one",
     amount: job.amount,
-    gasPrice: job.gasPrice,
-    gasLimit: job.gasLimit,
-  };
+  });
 
-  const post = await signer.signAndPost(sendTxJson, wallet.id);
+  const post = await signer.signAndPost(sendWithFee);
   const blockInfo = await post.blockInfo.waitFor(info => !isBlockInfoPending(info));
   if (isBlockInfoFailed(blockInfo)) {
     throw new Error(`Sending tokens failed. Code: ${blockInfo.code}, message: ${blockInfo.message}`);

@@ -1,6 +1,6 @@
 import BN = require("bn.js");
 
-import { Account, Amount } from "@iov/bcp-types";
+import { Account, Amount } from "@iov/bcp";
 import { TokenTicker } from "@iov/core";
 import { Int53 } from "@iov/encoding";
 

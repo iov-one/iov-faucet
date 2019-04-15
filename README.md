@@ -138,6 +138,7 @@ curl http://localhost:8000/status
 
 | iov-faucet | IOV-Core | BNSd support    | New features     |
 |------------|----------|-----------------|------------------|
+| 0.6.x      | 0.14.x   | 0.14.x          | BNS fee support  |
 | 0.5.x      | 0.12.x   | 0.10.x – 0.11.x |                  |
 | 0.4.x      | 0.11.x   | 0.4.x – 0.9.x   | Ethereum support |
 | 0.3.x      | 0.9.x    | 0.4.x – 0.9.x   |                  |

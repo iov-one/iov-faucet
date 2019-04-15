@@ -1,4 +1,4 @@
-import { Address, TokenTicker } from "@iov/bcp-types";
+import { Address, TokenTicker } from "@iov/bcp";
 
 import { HttpError } from "./httperror";
 

@@ -1,7 +1,7 @@
 // tslint:disable:no-unused-expression
 import { expect } from "chai";
 
-import { Algorithm, PublicKeyBundle, PublicKeyBytes, TokenTicker } from "@iov/bcp-types";
+import { Algorithm, PublicKeyBundle, PublicKeyBytes, TokenTicker } from "@iov/bcp";
 import { Address } from "@iov/core";
 
 import { availableTokensFromHolder } from "./multichainhelpers";
@@ -31,7 +31,6 @@ describe("multichainhelpers", () => {
             quantity: "1",
             fractionalDigits: 9,
             tokenTicker: "CASH" as TokenTicker,
-            tokenName: "Cash token",
           },
         ],
       });
@@ -47,13 +46,11 @@ describe("multichainhelpers", () => {
             quantity: "1",
             fractionalDigits: 9,
             tokenTicker: "CASH" as TokenTicker,
-            tokenName: "Cash token",
           },
           {
             quantity: "1",
             fractionalDigits: 9,
             tokenTicker: "TRASH" as TokenTicker,
-            tokenName: "Trash token",
           },
         ],
       });

@@ -1,4 +1,4 @@
-import { Amount, ChainConnector, TokenTicker, TxCodec } from "@iov/bcp-types";
+import { ChainConnector, TxCodec } from "@iov/bcp";
 import { bnsCodec, bnsConnector } from "@iov/bns";
 import { ethereumCodec, ethereumConnector } from "@iov/ethereum";
 import { liskCodec, liskConnector } from "@iov/lisk";
@@ -42,7 +42,7 @@ export function chainConnector(codec: Codec, url: string): ChainConnector {
     case Codec.Lisk:
       return liskConnector(url);
     case Codec.Ethereum:
-      return ethereumConnector(url, undefined);
+      return ethereumConnector(url, {});
     default:
       throw new Error("No connector for this codec found");
   }

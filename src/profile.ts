@@ -1,4 +1,4 @@
-import { ChainId } from "@iov/bcp-types";
+import { ChainId } from "@iov/bcp";
 import { UserProfile } from "@iov/core";
 
 import { Codec } from "./codec";
