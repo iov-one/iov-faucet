@@ -59,6 +59,14 @@ fi
 fold_end
 
 #
+# Unit tests
+#
+
+fold_start "unit-tests"
+yarn test
+fold_end
+
+#
 # Start blockchains
 #
 
@@ -67,17 +75,13 @@ fold_start "bnsd-start"
 fold_end
 
 #
-# Test
+# Integration tests
 #
-
-fold_start "commandline-tests"
-yarn test
-fold_end
 
 fold_start "integration-tests"
 yarn dev-start &
 # observe logs of background faucet a bit
-sleep 5
+sleep 10
 curl --fail -sS http://localhost:8000/status
 fold_end
 
