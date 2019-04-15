@@ -81,7 +81,7 @@ fold_end
 fold_start "integration-tests"
 yarn dev-start &
 # observe logs of background faucet a bit
-sleep 10
+sleep 20
 curl --fail -sS http://localhost:8000/status
 fold_end
 
