@@ -1,6 +1,8 @@
 os:
   - linux
 
+dist: xenial
+
 sudo: required
 
 services:
