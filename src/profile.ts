@@ -3,7 +3,7 @@ import { UserProfile } from "@iov/core";
 
 import { Codec } from "./codec";
 import * as constants from "./constants";
-import { faucetHdPath, walletFromCodec } from "./crypto";
+import { createWalletForCodec, faucetHdPath } from "./crypto";
 
 export async function setSecretAndCreateIdentities(
   profile: UserProfile,
@@ -14,8 +14,7 @@ export async function setSecretAndCreateIdentities(
   if (profile.wallets.value.length !== 0) {
     throw new Error("Profile already contains wallets");
   }
-  const wallet = walletFromCodec(blockchain, mnemonic);
-  const walletInfo = profile.addWallet(wallet);
+  const wallet = profile.addWallet(createWalletForCodec(blockchain, mnemonic));
 
   // first account is the token holder
   const numberOfIdentities = 1 + constants.concurrency;
@@ -26,6 +25,6 @@ export async function setSecretAndCreateIdentities(
 
     console.log(`Creating identity m/${purpose}'/${coin}'/${instance}'/${i}' ...`);
     const path = faucetHdPath(purpose, coin, instance, i);
-    await profile.createIdentity(walletInfo.id, chainId, path);
+    await profile.createIdentity(wallet.id, chainId, path);
   }
 }
