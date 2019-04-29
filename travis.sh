@@ -101,6 +101,7 @@ fold_end
 fold_start "docker-run-tests"
 docker run --read-only --rm "iov1/iov-faucet:${BUILD_VERSION}" version
 docker run --read-only --rm "iov1/iov-faucet:${BUILD_VERSION}" help
+docker run --read-only --rm "iov1/iov-faucet:${BUILD_VERSION}" generate bns some-test-chain-id
 fold_end
 
 fold_start "dockerhub-upload"
