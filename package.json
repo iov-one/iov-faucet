@@ -21,6 +21,7 @@
     "@iov/bns": "^0.14.0",
     "@iov/core": "^0.14.0",
     "@iov/ethereum": "^0.14.0",
+    "@iov/keycontrol": "^0.14.0",
     "@iov/lisk": "^0.14.0",
     "@koa/cors": "^2.2.2",
     "@types/koa-bodyparser": "^4.2.1",
