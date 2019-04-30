@@ -7,7 +7,7 @@ import { setSecretAndCreateIdentities } from "../profile";
 
 export async function generate(args: ReadonlyArray<string>): Promise<void> {
   if (args.length < 2) {
-    throw Error(`Not enough arguments for action 'generate'. See README for arguments.`);
+    throw Error(`Not enough arguments for action 'generate'. See 'iov-faucet help' or README for arguments.`);
   }
   const codecName = codecFromString(args[0]);
   const chainId = args[1] as ChainId;
