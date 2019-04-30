@@ -1,4 +1,4 @@
-import { help, start, version } from "./actions";
+import { generate, help, start, version } from "./actions";
 
 export function main(args: ReadonlyArray<string>): void {
   if (args.length < 1) {
@@ -11,6 +11,12 @@ export function main(args: ReadonlyArray<string>): void {
   const restArgs = args.slice(1);
 
   switch (action) {
+    case "generate":
+      generate(restArgs).catch(error => {
+        console.error(error);
+        process.exit(1);
+      });
+      break;
     case "help":
       help();
       break;

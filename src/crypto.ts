@@ -18,7 +18,7 @@ export function faucetHdPath(
   ];
 }
 
-export function walletFromCodec(input: Codec, mnemonic: string): Wallet {
+export function createWalletForCodec(input: Codec, mnemonic: string): Wallet {
   switch (input) {
     case Codec.Bns:
     case Codec.Lisk:
