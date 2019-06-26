@@ -37,9 +37,9 @@
     "chai": "^4.2.0",
     "mocha": "^5.2.0",
     "prettier": "^1.18.2",
-    "tslint": "^5.11.0",
+    "tslint": "^5.18.0",
     "tslint-config-prettier": "^1.18.0",
-    "tslint-immutable": "^5",
+    "tslint-immutable": "^6",
     "typescript": "~3.4"
   }
 }
