@@ -18,11 +18,11 @@
     "iov-faucet": "bin/iov-faucet"
   },
   "dependencies": {
-    "@iov/bns": "^0.14.5",
-    "@iov/core": "^0.14.5",
-    "@iov/ethereum": "^0.14.5",
-    "@iov/keycontrol": "^0.14.5",
-    "@iov/lisk": "^0.14.5",
+    "@iov/bns": "^0.15.0",
+    "@iov/core": "^0.15.0",
+    "@iov/ethereum": "^0.15.0",
+    "@iov/keycontrol": "^0.15.0",
+    "@iov/lisk": "^0.15.0",
     "@koa/cors": "^2.2.2",
     "@types/koa-bodyparser": "^4.2.1",
     "bn.js": "^4.11.8",

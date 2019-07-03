@@ -1,5 +1,5 @@
 import { ChainId } from "@iov/bcp";
-import { UserProfile } from "@iov/core";
+import { UserProfile } from "@iov/keycontrol";
 
 import { Codec, codecImplementation } from "./codec";
 import * as constants from "./constants";

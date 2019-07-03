@@ -1,13 +1,16 @@
 import {
   Account,
+  Address,
   Amount,
+  Identity,
   isBlockInfoFailed,
   isBlockInfoPending,
-  PublicIdentity,
   SendTransaction,
   TokenTicker,
+  WithCreator,
 } from "@iov/bcp";
-import { Address, MultiChainSigner, UserProfile } from "@iov/core";
+import { MultiChainSigner } from "@iov/core";
+import { UserProfile } from "@iov/keycontrol";
 
 import { gasLimit, gasPrice, needsRefill, refillAmount } from "./cashflow";
 import { Codec } from "./codec";
@@ -17,12 +20,12 @@ async function sleep(ms: number): Promise<void> {
   return new Promise(resolve => setTimeout(resolve, ms));
 }
 
-export function identitiesOfFirstWallet(profile: UserProfile): ReadonlyArray<PublicIdentity> {
+export function identitiesOfFirstWallet(profile: UserProfile): ReadonlyArray<Identity> {
   const wallet = profile.wallets.value[0];
   return profile.getIdentities(wallet.id);
 }
 
-export function identityToAddress(signer: MultiChainSigner, identity: PublicIdentity): Address {
+export function identityToAddress(signer: MultiChainSigner, identity: Identity): Address {
   return signer.identityToAddress(identity);
 }
 
@@ -61,7 +64,7 @@ export async function tokenTickersOfFirstChain(
 }
 
 export interface SendJob {
-  readonly sender: PublicIdentity;
+  readonly sender: Identity;
   readonly recipient: Address;
   readonly tokenTicker: TokenTicker;
   readonly amount: Amount;
@@ -80,12 +83,13 @@ export async function sendOnFirstChain(
   const chainId = signer.chainIds()[0];
   const connection = signer.connection(chainId);
 
-  const sendWithFee = await connection.withDefaultFee<SendTransaction>({
+  const sendWithFee = await connection.withDefaultFee<SendTransaction & WithCreator>({
     kind: "bcp/send",
     creator: {
       chainId: chainId,
       pubkey: job.sender.pubkey,
     },
+    sender: signer.identityToAddress(job.sender),
     recipient: job.recipient,
     memo: "We ❤️ developers – iov.one",
     amount: job.amount,
