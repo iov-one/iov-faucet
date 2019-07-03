@@ -1,16 +1,15 @@
 // tslint:disable:no-unused-expression
 import { expect } from "chai";
 
-import { Algorithm, PublicKeyBundle, PublicKeyBytes, TokenTicker } from "@iov/bcp";
-import { Address } from "@iov/core";
+import { Address, Algorithm, PubkeyBundle, PubkeyBytes, TokenTicker } from "@iov/bcp";
 
 import { availableTokensFromHolder } from "./multichainhelpers";
 
 describe("multichainhelpers", () => {
   describe("availableTokensFromHolder", () => {
-    const defaultPubkey: PublicKeyBundle = {
+    const defaultPubkey: PubkeyBundle = {
       algo: Algorithm.Ed25519,
-      data: new Uint8Array([0, 1, 2, 3]) as PublicKeyBytes,
+      data: new Uint8Array([0, 1, 2, 3]) as PubkeyBytes,
     };
 
     it("works for an empty account", () => {

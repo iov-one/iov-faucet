@@ -1,5 +1,5 @@
-import { Ed25519HdWallet, Secp256k1HdWallet, Wallet } from "@iov/core";
 import { Slip10RawIndex } from "@iov/crypto";
+import { Ed25519HdWallet, Secp256k1HdWallet, Wallet } from "@iov/keycontrol";
 
 import { Codec } from "./codec";
 
