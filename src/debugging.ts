@@ -1,5 +1,5 @@
 import { Account, Amount } from "@iov/bcp";
-import { MultiChainSigner } from "@iov/core";
+import { MultiChainSigner } from "@iov/multichain";
 
 import { identityToAddress, SendJob } from "./multichainhelpers";
 
