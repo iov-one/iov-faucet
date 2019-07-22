@@ -9,8 +9,8 @@ import {
   TokenTicker,
   WithCreator,
 } from "@iov/bcp";
-import { MultiChainSigner } from "@iov/core";
 import { UserProfile } from "@iov/keycontrol";
+import { MultiChainSigner } from "@iov/multichain";
 
 import { gasLimit, gasPrice, needsRefill, refillAmount } from "./cashflow";
 import { Codec } from "./codec";
