@@ -18,27 +18,27 @@
     esutils "^2.0.2"
     js-tokens "^4.0.0"
 
-"@iov/bcp@^0.16.0-alpha.0":
-  version "0.16.0-alpha.0"
-  resolved "https://registry.yarnpkg.com/@iov/bcp/-/bcp-0.16.0-alpha.0.tgz#97cb08729304514ce58db48cb5931872819ecd9a"
-  integrity sha512-kaxxkz7Oes+++udfYxTEgrLaVVNlShbR1846XGYEbbt9rL1isLyIBmIwWTm6l2aqWbMBE+X+7SYnLQkmO9kK4g==
+"@iov/bcp@^0.16.0-alpha.3":
+  version "0.16.0-alpha.3"
+  resolved "https://registry.yarnpkg.com/@iov/bcp/-/bcp-0.16.0-alpha.3.tgz#1281ee0c9a748723c297bbcc7cf35ee4168036b5"
+  integrity sha512-suMrbAPrz39b2gBl3NLnReAMRzPPoZJHlHi7Klf6ZVUG0cGZ/oT3bE++YtiKvZONsdZ3FILv9Ywdx9tGnfQxXw==
   dependencies:
-    "@iov/crypto" "^0.16.0-alpha.0"
-    "@iov/encoding" "^0.16.0-alpha.0"
-    "@iov/stream" "^0.16.0-alpha.0"
+    "@iov/crypto" "^0.16.0-alpha.3"
+    "@iov/encoding" "^0.16.0-alpha.3"
+    "@iov/stream" "^0.16.0-alpha.3"
     type-tagger "^1.0.0"
     xstream "^11.10.0"
 
-"@iov/bns@^0.16.0-alpha.0":
-  version "0.16.0-alpha.0"
-  resolved "https://registry.yarnpkg.com/@iov/bns/-/bns-0.16.0-alpha.0.tgz#b43fd9bfb16acc6f5c2834886a34eee4ba163913"
-  integrity sha512-ceIClYN8eu06rBfOqo0mV1CdLau+wdVKrT17wm4w+R4d1SpdkNm0D/ngEgUC17+I1SWpSVZD0/rIIsUXE2vYHA==
+"@iov/bns@^0.16.0-alpha.3":
+  version "0.16.0-alpha.3"
+  resolved "https://registry.yarnpkg.com/@iov/bns/-/bns-0.16.0-alpha.3.tgz#7673290b18620c9ff82e42ff155d777dc962769d"
+  integrity sha512-CZOK+hUf00mfxg5PRDXkibABzPq5IWzyWNUQgCJNQ8D+xJ1WTovnQoWhsQf1O8VYXZKxSFbl8h15W1rWv/l4wA==
   dependencies:
-    "@iov/bcp" "^0.16.0-alpha.0"
-    "@iov/crypto" "^0.16.0-alpha.0"
-    "@iov/encoding" "^0.16.0-alpha.0"
-    "@iov/stream" "^0.16.0-alpha.0"
-    "@iov/tendermint-rpc" "^0.16.0-alpha.0"
+    "@iov/bcp" "^0.16.0-alpha.3"
+    "@iov/crypto" "^0.16.0-alpha.3"
+    "@iov/encoding" "^0.16.0-alpha.3"
+    "@iov/stream" "^0.16.0-alpha.3"
+    "@iov/tendermint-rpc" "^0.16.0-alpha.3"
     "@types/long" "^4.0.0"
     "@types/node" "^10.12.18"
     bn.js "^4.11.8"
@@ -48,12 +48,12 @@
     type-tagger "^1.0.0"
     xstream "^11.10.0"
 
-"@iov/crypto@^0.16.0-alpha.0":
-  version "0.16.0-alpha.0"
-  resolved "https://registry.yarnpkg.com/@iov/crypto/-/crypto-0.16.0-alpha.0.tgz#63559a2d7a870ba2c11b2beea1ff73910503c06f"
-  integrity sha512-Zvnp1BYWzEzEPOg79tmZbC44JkGFa+j/NMoea45khPfMjL7M8IWJda17OesWFCUljxr1V8qdRPXxHeq6zPjYHA==
+"@iov/crypto@^0.16.0-alpha.3":
+  version "0.16.0-alpha.3"
+  resolved "https://registry.yarnpkg.com/@iov/crypto/-/crypto-0.16.0-alpha.3.tgz#ac585494d5fadb3f162ef78190230268a06fe094"
+  integrity sha512-U/+QtqqHxu2WdFeQKq5k5lDAQ8PesWneqZQhxLCzljY+8fHPC/+bbXAs/iVqejn00Ze3wZqlxbC6Z34q97ojWw==
   dependencies:
-    "@iov/encoding" "^0.16.0-alpha.0"
+    "@iov/encoding" "^0.16.0-alpha.3"
     bip39 "^2.5.0"
     bn.js "^4.11.8"
     elliptic "^6.4.0"
@@ -64,40 +64,40 @@
     type-tagger "^1.0.0"
     unorm "^1.5.0"
 
-"@iov/dpos@^0.16.0-alpha.0":
-  version "0.16.0-alpha.0"
-  resolved "https://registry.yarnpkg.com/@iov/dpos/-/dpos-0.16.0-alpha.0.tgz#ff50b3e91e82257d7ca4dc49050c00c4fa85d705"
-  integrity sha512-lHVeY6tNuPSwGMsNO/gnr+L/LOyZpWFks/g3qxjfHAI4f/ncXzRZg64AjFxuMHz9mkmQb4KyXotZKgNsGGE6LA==
+"@iov/dpos@^0.16.0-alpha.3":
+  version "0.16.0-alpha.3"
+  resolved "https://registry.yarnpkg.com/@iov/dpos/-/dpos-0.16.0-alpha.3.tgz#8a3df3ee7e6b1711b30f7996ed36d01cd33139f8"
+  integrity sha512-dPtCzmsNoAlOxhbXou4Jgsmdg+C9CbXxuhSKODRR/Vn9mKa32Ve6fH6qNSa76oFcLw1q6v4J6Eq7M8ykhxCJYg==
   dependencies:
-    "@iov/bcp" "^0.16.0-alpha.0"
-    "@iov/crypto" "^0.16.0-alpha.0"
-    "@iov/encoding" "^0.16.0-alpha.0"
+    "@iov/bcp" "^0.16.0-alpha.3"
+    "@iov/crypto" "^0.16.0-alpha.3"
+    "@iov/encoding" "^0.16.0-alpha.3"
     "@types/long" "^4.0.0"
     long "^4.0.0"
     readonly-date "^1.0.0"
 
-"@iov/encoding@^0.16.0-alpha.0":
-  version "0.16.0-alpha.0"
-  resolved "https://registry.yarnpkg.com/@iov/encoding/-/encoding-0.16.0-alpha.0.tgz#2987d266c1162b1497d69adbda858094c17d637a"
-  integrity sha512-ewXTJRaJdG2UnTYLaT+oV3vbsASmQWrsDeqgLEHiF1dgSHQfBC5zYEY+NtmM6M/Q2VwMv34/P60LeV3uU72Wnw==
+"@iov/encoding@^0.16.0-alpha.3":
+  version "0.16.0-alpha.3"
+  resolved "https://registry.yarnpkg.com/@iov/encoding/-/encoding-0.16.0-alpha.3.tgz#97889c3a223561381d241a915778477474e9de72"
+  integrity sha512-herYnx8aXM34q8ncS5qiof1WEgNziMWBd0RUBPu05meOMmXByWYRx12r//r78YXscftyYnN7qjULNwv6P+TwBQ==
   dependencies:
     base64-js "^1.3.0"
     bech32 "^1.1.3"
     bn.js "^4.11.8"
     readonly-date "^1.0.0"
 
-"@iov/ethereum@^0.16.0-alpha.0":
-  version "0.16.0-alpha.0"
-  resolved "https://registry.yarnpkg.com/@iov/ethereum/-/ethereum-0.16.0-alpha.0.tgz#0c0c95aa0459e6b4ec68b3f2263144a62d02485e"
-  integrity sha512-yj9gnGzZDPx5l1xzzT8LlNQRAMT2XHjN5EcG1RHnCgxCA//OHuM5rgkIDIJgQ/dMQ17aKuG4/eQhx2XRCen5aQ==
+"@iov/ethereum@^0.16.0-alpha.3":
+  version "0.16.0-alpha.3"
+  resolved "https://registry.yarnpkg.com/@iov/ethereum/-/ethereum-0.16.0-alpha.3.tgz#fa8fb13dc056133c15778b49ab2f60311849a86a"
+  integrity sha512-S15qp8yfBOi18Yh6jkpSRHuQh06Rw0UxqMNaXHezPlRaB75BOzyRopCcq9RD2vIA6/+YahWtDvDR4EHSUak6NA==
   dependencies:
-    "@iov/bcp" "^0.16.0-alpha.0"
-    "@iov/crypto" "^0.16.0-alpha.0"
-    "@iov/encoding" "^0.16.0-alpha.0"
-    "@iov/jsonrpc" "^0.16.0-alpha.0"
-    "@iov/keycontrol" "^0.16.0-alpha.0"
-    "@iov/socket" "^0.16.0-alpha.0"
-    "@iov/stream" "^0.16.0-alpha.0"
+    "@iov/bcp" "^0.16.0-alpha.3"
+    "@iov/crypto" "^0.16.0-alpha.3"
+    "@iov/encoding" "^0.16.0-alpha.3"
+    "@iov/jsonrpc" "^0.16.0-alpha.3"
+    "@iov/keycontrol" "^0.16.0-alpha.3"
+    "@iov/socket" "^0.16.0-alpha.3"
+    "@iov/stream" "^0.16.0-alpha.3"
     "@types/long" "^4.0.0"
     axios "^0.19.0"
     bn.js "^4.11.8"
@@ -107,23 +107,24 @@
     rlp "^2.2.3"
     xstream "^11.10.0"
 
-"@iov/jsonrpc@^0.16.0-alpha.0":
-  version "0.16.0-alpha.0"
-  resolved "https://registry.yarnpkg.com/@iov/jsonrpc/-/jsonrpc-0.16.0-alpha.0.tgz#93fd317c3107710f119f5b10db540ea8af7e0e59"
-  integrity sha512-rpqFZtVEi6p5VDen8cyT3mA7jiWKQ6Fxe+5H5u+GEb3LlYt2Hc4KP+WDGY2eDcswDGeKaYHsSdJ4F1gXK8/KpQ==
+"@iov/jsonrpc@^0.16.0-alpha.3":
+  version "0.16.0-alpha.3"
+  resolved "https://registry.yarnpkg.com/@iov/jsonrpc/-/jsonrpc-0.16.0-alpha.3.tgz#452666a34e3b63d04f70654b20dd37e70adad33f"
+  integrity sha512-7n7IpGECz3ByPednrZpR99jFrSKdGtjvCGkyfRXS1El6FADCsIwUgaNijkIh2M2SwPTE+up2nLwQ0xHmVwuP9Q==
   dependencies:
-    "@iov/stream" "^0.16.0-alpha.0"
+    "@iov/encoding" "^0.16.0-alpha.3"
+    "@iov/stream" "^0.16.0-alpha.3"
     xstream "^11.10.0"
 
-"@iov/keycontrol@^0.16.0-alpha.0":
-  version "0.16.0-alpha.0"
-  resolved "https://registry.yarnpkg.com/@iov/keycontrol/-/keycontrol-0.16.0-alpha.0.tgz#e50f341867cf8bfac199707be09d75e7ad0fee4e"
-  integrity sha512-nMYWWyq3lm/k/lCgqdDfVOQv85hwliiRZE/zABlzi5WpDfpKOJqw+mi1zrlmocoLce5KHb38aji/vWsZ+A1aQA==
+"@iov/keycontrol@^0.16.0-alpha.3":
+  version "0.16.0-alpha.3"
+  resolved "https://registry.yarnpkg.com/@iov/keycontrol/-/keycontrol-0.16.0-alpha.3.tgz#30eaccf82c82af1d196b1f0c420b5715af851269"
+  integrity sha512-+B9hTQ8J9dfQwaJ1HGA4UnNwsfkd3PIrCLEHIGjXR+dv+XHacI56sP9aMBzF7oldGVNOzSeh4MX17tJdcrVMnQ==
   dependencies:
-    "@iov/bcp" "^0.16.0-alpha.0"
-    "@iov/crypto" "^0.16.0-alpha.0"
-    "@iov/encoding" "^0.16.0-alpha.0"
-    "@iov/stream" "^0.16.0-alpha.0"
+    "@iov/bcp" "^0.16.0-alpha.3"
+    "@iov/crypto" "^0.16.0-alpha.3"
+    "@iov/encoding" "^0.16.0-alpha.3"
+    "@iov/stream" "^0.16.0-alpha.3"
     "@types/abstract-leveldown" "^5.0.1"
     "@types/levelup" "^3.1.0"
     "@types/node" "^10.12.18"
@@ -135,17 +136,17 @@
     type-tagger "^1.0.0"
     xstream "^11.10.0"
 
-"@iov/lisk@^0.16.0-alpha.0":
-  version "0.16.0-alpha.0"
-  resolved "https://registry.yarnpkg.com/@iov/lisk/-/lisk-0.16.0-alpha.0.tgz#9ea3da0f49d3e7e878a4e9c831497fb4adca13e6"
-  integrity sha512-+Qw8LgMgFrofHEW1e3y1b6F+DFF/LNxz9ieA/Ieb6sPGqZR1g0qega21MwRDoKDH/xzpjetKDNRqMsGnm4oLEw==
+"@iov/lisk@^0.16.0-alpha.3":
+  version "0.16.0-alpha.3"
+  resolved "https://registry.yarnpkg.com/@iov/lisk/-/lisk-0.16.0-alpha.3.tgz#f15b8e9dac9552de0e2e519ed903c99606a10a75"
+  integrity sha512-9ffl5024qiBKnm3uWOR+HaPbw1nNKkmxWvClD0J8bLJBqrmtdhcOnFS3oTSv7tfxQOgXSNu+jryTIQDiLJ7N/A==
   dependencies:
-    "@iov/bcp" "^0.16.0-alpha.0"
-    "@iov/crypto" "^0.16.0-alpha.0"
-    "@iov/dpos" "^0.16.0-alpha.0"
-    "@iov/encoding" "^0.16.0-alpha.0"
-    "@iov/keycontrol" "^0.16.0-alpha.0"
-    "@iov/stream" "^0.16.0-alpha.0"
+    "@iov/bcp" "^0.16.0-alpha.3"
+    "@iov/crypto" "^0.16.0-alpha.3"
+    "@iov/dpos" "^0.16.0-alpha.3"
+    "@iov/encoding" "^0.16.0-alpha.3"
+    "@iov/keycontrol" "^0.16.0-alpha.3"
+    "@iov/stream" "^0.16.0-alpha.3"
     "@types/long" "^4.0.0"
     axios "^0.19.0"
     fast-deep-equal "^2.0.1"
@@ -153,44 +154,44 @@
     readonly-date "^1.0.0"
     xstream "^11.10.0"
 
-"@iov/multichain@^0.16.0-alpha.0":
-  version "0.16.0-alpha.0"
-  resolved "https://registry.yarnpkg.com/@iov/multichain/-/multichain-0.16.0-alpha.0.tgz#088ec6776c11db80c599773c6d990072c15f1783"
-  integrity sha512-g/AC+49ANX1mwLKmgQMOKJodOtm5Wa0qaiM1yiTuafdY4kGQ+TCXHnNQBrWSEUDWlQwoilkQDT5xXBMtVyaLsA==
+"@iov/multichain@^0.16.0-alpha.3":
+  version "0.16.0-alpha.3"
+  resolved "https://registry.yarnpkg.com/@iov/multichain/-/multichain-0.16.0-alpha.3.tgz#fed21d335a3cce00ce3c24b55368968ff0bd8339"
+  integrity sha512-bTumUQaQ8s7I9t1cEFEmXxLOoxxqhdWD/rtNJZnIdgBE67yDkcYiDelIapW2g/Yxu26i6pWHu2eq6VociVsTjA==
   dependencies:
-    "@iov/bcp" "^0.16.0-alpha.0"
-    "@iov/encoding" "^0.16.0-alpha.0"
-    "@iov/jsonrpc" "^0.16.0-alpha.0"
-    "@iov/keycontrol" "^0.16.0-alpha.0"
+    "@iov/bcp" "^0.16.0-alpha.3"
+    "@iov/encoding" "^0.16.0-alpha.3"
+    "@iov/jsonrpc" "^0.16.0-alpha.3"
+    "@iov/keycontrol" "^0.16.0-alpha.3"
     "@types/long" "^4.0.0"
     long "^4.0.0"
 
-"@iov/socket@^0.16.0-alpha.0":
-  version "0.16.0-alpha.0"
-  resolved "https://registry.yarnpkg.com/@iov/socket/-/socket-0.16.0-alpha.0.tgz#e76d66d4d403faa5241b8de72e09e26cb3f8e7a2"
-  integrity sha512-4fVBUW6/vePuqGQ0CZrXc8bKH5lyLlV50zeqAX5oAQwSylfgrRb01gf0pDvD6ddkUea6ADrJbMGoSjcOraG7Ow==
+"@iov/socket@^0.16.0-alpha.3":
+  version "0.16.0-alpha.3"
+  resolved "https://registry.yarnpkg.com/@iov/socket/-/socket-0.16.0-alpha.3.tgz#c73cc7c1fcb57d97193c3dd506fd102d16cc086d"
+  integrity sha512-MjtJvWQCy+tT3p+Hn+uTCJPf+In4pB6FuQ6O8Uli1fOrm5A9EIhfUISJWOsH/0JE631QPpIWMbj1o+S84Gsg3w==
   dependencies:
-    "@iov/stream" "^0.16.0-alpha.0"
+    "@iov/stream" "^0.16.0-alpha.3"
     isomorphic-ws "^4.0.1"
     ws "^6.2.0"
     xstream "^11.10.0"
 
-"@iov/stream@^0.16.0-alpha.0":
-  version "0.16.0-alpha.0"
-  resolved "https://registry.yarnpkg.com/@iov/stream/-/stream-0.16.0-alpha.0.tgz#85bca41c231a30f7922d0dbbfbe70368c82681d2"
-  integrity sha512-bKagKRGWEgUhzFytBLRrYnBZP5/LsO7KS/4IesoFoNEy0aI5yZjZyCQcnslmVYTBpTN7WQVvIrURSXDRSE+L5A==
+"@iov/stream@^0.16.0-alpha.3":
+  version "0.16.0-alpha.3"
+  resolved "https://registry.yarnpkg.com/@iov/stream/-/stream-0.16.0-alpha.3.tgz#f0ec68dde46745e341a73d694ab72a999454e70d"
+  integrity sha512-IhzSnkoZcHPI/M4H4LEfFzqTdPfWdkggOLW1TpK/aLs6d4fNxo24oaIWWRmkkUT7HDF/iVjWAE6rBRf/54cAjA==
   dependencies:
     xstream "^11.10.0"
 
-"@iov/tendermint-rpc@^0.16.0-alpha.0":
-  version "0.16.0-alpha.0"
-  resolved "https://registry.yarnpkg.com/@iov/tendermint-rpc/-/tendermint-rpc-0.16.0-alpha.0.tgz#3b991754adf33e2ab554b68ffd7168d48e5bd3f9"
-  integrity sha512-N5R1d6k0eyvEbNHS0ve9/Ls/IQSOnYwFYKsdmxle7orhNJoliW9AORiY2kYSPgoj1HbwsHKpyJHQ7vxsagOayA==
+"@iov/tendermint-rpc@^0.16.0-alpha.3":
+  version "0.16.0-alpha.3"
+  resolved "https://registry.yarnpkg.com/@iov/tendermint-rpc/-/tendermint-rpc-0.16.0-alpha.3.tgz#54ccb347cf5836c189bdfe8bf242ea740f45c61c"
+  integrity sha512-Q0IQLEbwaIoVAjUWfyULmTQudrsGK2MiqjOfT577DXenI4LjPcVfeLgyDJxycJRElr1lMEpjzR7F/3QIE9efIQ==
   dependencies:
-    "@iov/crypto" "^0.16.0-alpha.0"
-    "@iov/encoding" "^0.16.0-alpha.0"
-    "@iov/jsonrpc" "^0.16.0-alpha.0"
-    "@iov/socket" "^0.16.0-alpha.0"
+    "@iov/crypto" "^0.16.0-alpha.3"
+    "@iov/encoding" "^0.16.0-alpha.3"
+    "@iov/jsonrpc" "^0.16.0-alpha.3"
+    "@iov/socket" "^0.16.0-alpha.3"
     axios "^0.19.0"
     readonly-date "^1.0.0"
     type-tagger "^1.0.0"
