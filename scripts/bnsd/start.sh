@@ -5,7 +5,7 @@ command -v shellcheck > /dev/null && shellcheck "$0"
 # Choose from https://hub.docker.com/r/iov1/tendermint/tags/
 export BNSD_TM_VERSION=v0.31.5
 # Choose from https://hub.docker.com/r/iov1/bnsd/tags/
-export BNSD_VERSION=v0.19.0
+export BNSD_VERSION=v0.21.0
 
 # get this files directory regardless of pwd when we run it
 SCRIPT_DIR="$( cd "$( dirname "${BASH_SOURCE[0]}" )" && pwd )"
@@ -25,3 +25,5 @@ sleep 3
 # for debug output
 cat "$LOGS_FILE_TM"
 cat "$LOGS_FILE_APP"
+
+"${SCRIPT_DIR}"/init.sh
