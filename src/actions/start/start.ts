@@ -7,10 +7,10 @@ import { MultiChainSigner } from "@iov/multichain";
 
 import { creditAmount, gasLimit, gasPrice, setFractionalDigits } from "../../cashflow";
 import {
-  chainConnector,
   codecDefaultFractionalDigits,
   codecFromString,
   codecImplementation,
+  createChainConnector,
 } from "../../codec";
 import * as constants from "../../constants";
 import { logAccountsState, logSendJob } from "../../debugging";
@@ -49,7 +49,7 @@ export async function start(args: ReadonlyArray<string>): Promise<void> {
   }
   const signer = new MultiChainSigner(profile);
   console.log(`Connecting to blockchain ${blockchainBaseUrl} ...`);
-  const connection = (await signer.addChain(chainConnector(codec, blockchainBaseUrl))).connection;
+  const connection = (await signer.addChain(createChainConnector(codec, blockchainBaseUrl))).connection;
 
   const connectedChainId = connection.chainId();
   console.log(`Connected to network: ${connectedChainId}`);
