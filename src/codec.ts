@@ -31,7 +31,7 @@ export function codecImplementation(codec: Codec): TxCodec {
     case Codec.Ethereum:
       return ethereumCodec;
     default:
-      throw new Error("No codec imlementation for this codec found");
+      throw new Error("No codec implementation for this codec found");
   }
 }
 
