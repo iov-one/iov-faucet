@@ -1,7 +1,7 @@
 import { ChainConnector, TxCodec } from "@iov/bcp";
-import { bnsCodec, bnsConnector } from "@iov/bns";
-import { ethereumCodec, ethereumConnector } from "@iov/ethereum";
-import { liskCodec, liskConnector } from "@iov/lisk";
+import { bnsCodec, createBnsConnector } from "@iov/bns";
+import { createEthereumConnector, ethereumCodec } from "@iov/ethereum";
+import { createLiskConnector, liskCodec } from "@iov/lisk";
 
 export const enum Codec {
   Bns,
@@ -35,14 +35,14 @@ export function codecImplementation(codec: Codec): TxCodec {
   }
 }
 
-export function chainConnector(codec: Codec, url: string): ChainConnector {
+export function createChainConnector(codec: Codec, url: string): ChainConnector {
   switch (codec) {
     case Codec.Bns:
-      return bnsConnector(url);
+      return createBnsConnector(url);
     case Codec.Lisk:
-      return liskConnector(url);
+      return createLiskConnector(url);
     case Codec.Ethereum:
-      return ethereumConnector(url, {});
+      return createEthereumConnector(url, {});
     default:
       throw new Error("No connector for this codec found");
   }
