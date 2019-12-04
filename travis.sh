@@ -6,22 +6,25 @@ command -v shellcheck > /dev/null && shellcheck "$0"
 #
 # Travis helpers
 #
+function fold_start() {
+  export CURRENT_FOLD_NAME="$1"
 
-if [[ "${TRAVIS_COMMIT:-}" != "" ]]; then
-  function fold_start() {
-    export CURRENT_FOLD_NAME="$1"
+  if [[ "${TRAVIS_COMMIT:-}" != "" ]]; then
     travis_fold start "$CURRENT_FOLD_NAME"
-    travis_time_start
-  }
+    travis_time_start "$CURRENT_FOLD_NAME"
+  else
+    echo "Starting $CURRENT_FOLD_NAME"
+  fi
+}
 
-  function fold_end() {
-    travis_time_finish
+function fold_end() {
+  if [[ "${TRAVIS_COMMIT:-}" != "" ]]; then
+    travis_time_finish "$CURRENT_FOLD_NAME"
     travis_fold end "$CURRENT_FOLD_NAME"
-  }
-else
-  function fold_start() { true; }
-  function fold_end() { true; }
-fi
+  else
+    echo "Done with $CURRENT_FOLD_NAME"
+  fi
+}
 
 #
 # Environment
