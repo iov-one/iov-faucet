@@ -86,30 +86,30 @@ m / purpose' / coin_type' / instance_index' / account_index'
 
 with
 
-* `purpose`: 1229936198 (big endian of ascii "IOVF")
-* `coin_type`: from SLIP-0044 or custom value. This describes the blockchain, not
+- `purpose`: 1229936198 (big endian of ascii "IOVF")
+- `coin_type`: from SLIP-0044 or custom value. This describes the blockchain, not
   the token. All tokens in one instance are served from a single coin type. Note that
   SLIP-0044 suggests value `1` for all testnets.
-* `instance_index`: 0-based index of the instance
-* `account_index`: 0-based index of the account. Account 0 is the token holder and
-   account 1...FAUCET_CONCURRENCY are the distributor accounts.
+- `instance_index`: 0-based index of the instance
+- `account_index`: 0-based index of the account. Account 0 is the token holder and
+  account 1...FAUCET_CONCURRENCY are the distributor accounts.
 
 ### Working with docker
 
-* Build an artifact
+- Build an artifact
 
 ```bash
 docker build -t iov1/iov-faucet:manual .
 ```
 
-* Version and help
+- Version and help
 
 ```bash
 docker run --read-only --rm iov1/iov-faucet:manual version
 docker run --read-only --rm iov1/iov-faucet:manual help
 ```
 
-* Run faucet
+- Run faucet
 
 ```bash
 FAUCET_MNEMONIC="degree tackle suggest window test behind mesh extra cover prepare oak script" docker run --read-only \
@@ -141,7 +141,9 @@ curl http://localhost:8000/status
 ## Versions and compatibility overview
 
 | iov-faucet | IOV-Core | BNSd support    | New features     |
-|------------|----------|-----------------|------------------|
+| ---------- | -------- | --------------- | ---------------- |
+| 0.10.x     | 1.2.x    | 0.22.x          |                  |
+| 0.9.x      | 0.17.x   | 0.21.x          |                  |
 | 0.8.x      | 0.16.x   | 0.19.x – 0.20.x |                  |
 | 0.7.x      | 0.15.x   | 0.16.x          |                  |
 | 0.6.x      | 0.14.x   | 0.14.x          | BNS fee support  |
