@@ -4,6 +4,7 @@ import { UserProfile } from "@iov/keycontrol";
 import { Codec, codecImplementation } from "./codec";
 import * as constants from "./constants";
 import { createWalletForCodec, faucetHdPath } from "./crypto";
+import { debugPath } from "./hdpaths";
 
 export async function setSecretAndCreateIdentities(
   profile: UserProfile,
@@ -29,6 +30,6 @@ export async function setSecretAndCreateIdentities(
     // log
     const role = i === 0 ? "token holder " : `distributor ${i}`;
     const address = codecImplementation(codecName).identityToAddress(identity);
-    console.log(`Created ${role} (m/${purpose}'/${coin}'/${instance}'/${i}'): ${address}`);
+    console.log(`Created ${role} (${debugPath(path)}): ${address}`);
   }
 }
