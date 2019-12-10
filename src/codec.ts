@@ -1,6 +1,8 @@
 import { ChainConnector, TxCodec } from "@iov/bcp";
 import { bnsCodec, createBnsConnector } from "@iov/bns";
+import { Slip10RawIndex } from "@iov/crypto";
 import { createEthereumConnector, ethereumCodec } from "@iov/ethereum";
+import { HdPaths } from "@iov/keycontrol";
 import { createLiskConnector, liskCodec } from "@iov/lisk";
 
 export const enum Codec {
@@ -33,6 +35,22 @@ export function codecImplementation(codec: Codec): TxCodec {
     default:
       throw new Error("No codec implementation for this codec found");
   }
+}
+
+export function createPathBuilderForCodec(codec: Codec): (derivation: number) => readonly Slip10RawIndex[] {
+  const pathBuilder = (accountIndex: number): readonly Slip10RawIndex[] => {
+    switch (codec) {
+      case Codec.Bns:
+        return HdPaths.iov(accountIndex);
+      case Codec.Lisk:
+        return HdPaths.bip44Like(134, accountIndex);
+      case Codec.Ethereum:
+        return HdPaths.ethereum(accountIndex);
+      default:
+        throw new Error("No path builder for this codec found");
+    }
+  };
+  return pathBuilder;
 }
 
 export function createChainConnector(codec: Codec, url: string): ChainConnector {

@@ -6,6 +6,7 @@
   "license": "Apache-2.0",
   "scripts": {
     "format": "prettier --write --loglevel warn \"./src/**/*.ts\"",
+    "format-text": "prettier --write --prose-wrap always --print-width 80 \"./*.md\"",
     "lint": "tslint -t verbose --project .",
     "prebuild": "yarn format && yarn lint",
     "build": "rm -rf build && tsc",
@@ -19,6 +20,7 @@
   },
   "dependencies": {
     "@iov/bns": "^1.2.0",
+    "@iov/crypto": "^1.2.0",
     "@iov/ethereum": "^1.2.0",
     "@iov/keycontrol": "^1.2.0",
     "@iov/lisk": "^1.2.0",
