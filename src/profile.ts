@@ -1,9 +1,9 @@
 import { ChainId } from "@iov/bcp";
 import { UserProfile } from "@iov/keycontrol";
 
-import { Codec, codecImplementation } from "./codec";
+import { Codec, codecImplementation, createPathBuilderForCodec } from "./codec";
 import * as constants from "./constants";
-import { createWalletForCodec, faucetHdPath } from "./crypto";
+import { createWalletForCodec } from "./crypto";
 import { debugPath } from "./hdpaths";
 
 export async function setSecretAndCreateIdentities(
@@ -17,14 +17,13 @@ export async function setSecretAndCreateIdentities(
   }
   const wallet = profile.addWallet(createWalletForCodec(codecName, mnemonic));
 
+  const pathBuilder = createPathBuilderForCodec(codecName);
+
   // first account is the token holder
   const numberOfIdentities = 1 + constants.concurrency;
   for (let i = 0; i < numberOfIdentities; i++) {
     // create
-    const purpose = 1229936198; // big endian of ascii "IOVF"
-    const coin = constants.coinType;
-    const instance = 0;
-    const path = faucetHdPath(purpose, coin, instance, i);
+    const path = pathBuilder(i);
     const identity = await profile.createIdentity(wallet.id, chainId, path);
 
     // log
