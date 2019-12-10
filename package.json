@@ -19,6 +19,7 @@
   },
   "dependencies": {
     "@iov/bns": "^1.2.0",
+    "@iov/crypto": "^1.2.0",
     "@iov/ethereum": "^1.2.0",
     "@iov/keycontrol": "^1.2.0",
     "@iov/lisk": "^1.2.0",
