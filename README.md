@@ -16,7 +16,8 @@ Then start it for a IOV development blockchain using:
 yarn dev-start
 ```
 
-Make sure to take note of the passphrase used, as this is the only time it will be displayed.
+Make sure to take note of the passphrase used, as this is the only time it will
+be displayed.
 
 Advanced users that want to provide their own passphrase can do so like this:
 
@@ -61,9 +62,9 @@ FAUCET_REFILL_THRESHOLD   Refill when balance gets below factor times credit amo
 
 ### Development
 
-The yarn script `dev-start` calls `start` with
-a set of default options for local development. It uses a development mnemonic,
-the BNS codec and the node `ws://localhost:23456`.
+The yarn script `dev-start` calls `start` with a set of default options for
+local development. It uses a development mnemonic, the BNS codec and the node
+`ws://localhost:23456`.
 
 ```
 yarn install
@@ -73,10 +74,10 @@ yarn dev-start
 
 ### Faucet HD wallet
 
-One instance of the faucet can serve multiple tokens on a single blockchain. Multiple
-instances can be created for load balaning. The faucet is powered by a SLIP-0010 wallet
-such that all chains and all instances can use a single secret mnemonic.
-The BIP43 compliant HD derivation path of faucet is
+One instance of the faucet can serve multiple tokens on a single blockchain.
+Multiple instances can be created for load balaning. The faucet is powered by a
+SLIP-0010 wallet such that all chains and all instances can use a single secret
+mnemonic. The BIP43 compliant HD derivation path of faucet is
 
 ```
 m / purpose' / coin_type' / 0' / account_index'
@@ -85,11 +86,11 @@ m / purpose' / coin_type' / 0' / account_index'
 with
 
 - `purpose`: 1229936198 (big endian of ascii "IOVF")
-- `coin_type`: from SLIP-0044 or custom value. This describes the blockchain, not
-  the token. All tokens in one instance are served from a single coin type. Note that
-  SLIP-0044 suggests value `1` for all testnets.
-- `account_index`: 0-based index of the account. Account 0 is the token holder and
-  account 1...FAUCET_CONCURRENCY are the distributor accounts.
+- `coin_type`: from SLIP-0044 or custom value. This describes the blockchain,
+  not the token. All tokens in one instance are served from a single coin type.
+  Note that SLIP-0044 suggests value `1` for all testnets.
+- `account_index`: 0-based index of the account. Account 0 is the token holder
+  and account 1...FAUCET_CONCURRENCY are the distributor accounts.
 
 ### Working with docker
 
@@ -118,7 +119,10 @@ FAUCET_MNEMONIC="degree tackle suggest window test behind mesh extra cover prepa
 
 ### Using the faucet
 
-Now that the faucet has been started up, you can send credit requests to it. This can be done with a simple http POST request. These commands assume the faucet is running locally, be sure to change it from `localhost` if your situation is different.
+Now that the faucet has been started up, you can send credit requests to it.
+This can be done with a simple http POST request. These commands assume the
+faucet is running locally, be sure to change it from `localhost` if your
+situation is different.
 
 ```
 curl --header "Content-Type: application/json" \
@@ -129,7 +133,8 @@ curl --header "Content-Type: application/json" \
 
 ### Checking the faucets status
 
-The faucet provides a simple status check in the form of an http GET request. As above, make sure to adjust the URL as necessary.
+The faucet provides a simple status check in the form of an http GET request. As
+above, make sure to adjust the URL as necessary.
 
 ```
 curl http://localhost:8000/status
