@@ -48,8 +48,6 @@ start     Starts the faucet
 Environment variables
 
 FAUCET_COIN_TYPE          Coin type of the faucet (see README). Defaults to 1.
-FAUCET_INSTANCE           Instance number of the faucet for load balancing.
-                          Defaults to 0.
 FAUCET_CONCURRENCY        Number of distributor accounts. Defaults to 5.
 FAUCET_PORT               Port of the webserver. Defaults to 8000.
 FAUCET_MNEMONIC           Secret mnemonic that serves as the base secret for the
@@ -81,7 +79,7 @@ such that all chains and all instances can use a single secret mnemonic.
 The BIP43 compliant HD derivation path of faucet is
 
 ```
-m / purpose' / coin_type' / instance_index' / account_index'
+m / purpose' / coin_type' / 0' / account_index'
 ```
 
 with
@@ -90,7 +88,6 @@ with
 - `coin_type`: from SLIP-0044 or custom value. This describes the blockchain, not
   the token. All tokens in one instance are served from a single coin type. Note that
   SLIP-0044 suggests value `1` for all testnets.
-- `instance_index`: 0-based index of the instance
 - `account_index`: 0-based index of the account. Account 0 is the token holder and
   account 1...FAUCET_CONCURRENCY are the distributor accounts.
 
@@ -140,13 +137,13 @@ curl http://localhost:8000/status
 
 ## Versions and compatibility overview
 
-| iov-faucet | IOV-Core | BNSd support    | New features     |
-| ---------- | -------- | --------------- | ---------------- |
-| 0.10.x     | 1.2.x    | 0.22.x          |                  |
-| 0.9.x      | 0.17.x   | 0.21.x          |                  |
-| 0.8.x      | 0.16.x   | 0.19.x – 0.20.x |                  |
-| 0.7.x      | 0.15.x   | 0.16.x          |                  |
-| 0.6.x      | 0.14.x   | 0.14.x          | BNS fee support  |
-| 0.5.x      | 0.12.x   | 0.10.x – 0.11.x |                  |
-| 0.4.x      | 0.11.x   | 0.4.x – 0.9.x   | Ethereum support |
-| 0.3.x      | 0.9.x    | 0.4.x – 0.9.x   |                  |
+| iov-faucet | IOV-Core | BNSd support    | New features                     |
+| ---------- | -------- | --------------- | -------------------------------- |
+| 0.10.x     | 1.2.x    | 0.22.x          | `FAUCET_INSTANCE` config removed |
+| 0.9.x      | 0.17.x   | 0.21.x          |                                  |
+| 0.8.x      | 0.16.x   | 0.19.x – 0.20.x |                                  |
+| 0.7.x      | 0.15.x   | 0.16.x          |                                  |
+| 0.6.x      | 0.14.x   | 0.14.x          | BNS fee support                  |
+| 0.5.x      | 0.12.x   | 0.10.x – 0.11.x |                                  |
+| 0.4.x      | 0.11.x   | 0.4.x – 0.9.x   | Ethereum support                 |
+| 0.3.x      | 0.9.x    | 0.4.x – 0.9.x   |                                  |

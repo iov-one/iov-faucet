@@ -22,7 +22,7 @@ export async function setSecretAndCreateIdentities(
     // create
     const purpose = 1229936198; // big endian of ascii "IOVF"
     const coin = constants.coinType;
-    const instance = constants.instance;
+    const instance = 0;
     const path = faucetHdPath(purpose, coin, instance, i);
     const identity = await profile.createIdentity(wallet.id, chainId, path);
 
