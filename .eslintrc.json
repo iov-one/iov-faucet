@@ -2,8 +2,7 @@
   "env": {
     "es6": true,
     "mocha": true,
-    "node": true,
-    "worker": true
+    "node": true
   },
   "parser": "@typescript-eslint/parser",
   "parserOptions": {
