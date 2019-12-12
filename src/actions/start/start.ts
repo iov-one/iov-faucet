@@ -1,3 +1,4 @@
+/* eslint-disable require-atomic-updates */
 import { UserProfile } from "@iov/keycontrol";
 import { MultiChainSigner } from "@iov/multichain";
 import cors = require("@koa/cors");
