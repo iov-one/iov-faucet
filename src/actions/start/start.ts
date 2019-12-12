@@ -85,7 +85,6 @@ export async function start(args: ReadonlyArray<string>): Promise<void> {
     switch (context.path) {
       case "/":
       case "/healthz":
-        // tslint:disable-next-line:no-object-mutation
         context.response.body =
           "Welcome to the faucet!\n" +
           "\n" +
@@ -95,7 +94,6 @@ export async function start(args: ReadonlyArray<string>): Promise<void> {
         break;
       case "/status": {
         const updatedAccounts = await accountsOfFirstChain(profile, signer);
-        // tslint:disable-next-line:no-object-mutation
         context.response.body = {
           status: "ok",
           nodeUrl: blockchainBaseUrl,
@@ -147,7 +145,6 @@ export async function start(args: ReadonlyArray<string>): Promise<void> {
           throw new HttpError(500, "Sending tokens failed");
         }
 
-        // tslint:disable-next-line:no-object-mutation
         context.response.body = "ok";
         break;
       }

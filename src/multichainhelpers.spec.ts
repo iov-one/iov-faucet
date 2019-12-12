@@ -1,4 +1,3 @@
-// tslint:disable:no-unused-expression
 import { Address, Algorithm, PubkeyBundle, PubkeyBytes, TokenTicker } from "@iov/bcp";
 import { expect } from "chai";
 
