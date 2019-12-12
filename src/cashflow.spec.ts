@@ -1,7 +1,5 @@
-// tslint:disable:no-unused-expression
-import { expect } from "chai";
-
 import { TokenTicker } from "@iov/bcp";
+import { expect } from "chai";
 
 import {
   creditAmount,
@@ -33,7 +31,6 @@ describe("Cashflow", () => {
     });
 
     it("returns value from env variable + '000' when set", () => {
-      // tslint:disable-next-line:no-object-mutation
       process.env.FAUCET_CREDIT_AMOUNT_WTF = "22";
       expect(creditAmount("WTF" as TokenTicker)).to.eql({
         quantity: "22000",
@@ -43,7 +40,6 @@ describe("Cashflow", () => {
     });
 
     it("returns default from env variable + '000' when set to empty", () => {
-      // tslint:disable-next-line:no-object-mutation
       process.env.FAUCET_CREDIT_AMOUNT_WTF = "";
       expect(creditAmount("WTF" as TokenTicker)).to.eql({
         quantity: "10000",
@@ -55,7 +51,6 @@ describe("Cashflow", () => {
 
   describe("refillAmount", () => {
     beforeEach(() => {
-      // tslint:disable-next-line:no-object-mutation
       process.env.FAUCET_REFILL_FACTOR = "";
     });
     it("returns 20*10 + '000' by default", () => {
@@ -67,7 +62,6 @@ describe("Cashflow", () => {
     });
 
     it("returns 20*22 + '000' when credit amount is 22", () => {
-      // tslint:disable-next-line:no-object-mutation
       process.env.FAUCET_CREDIT_AMOUNT_WTF = "22";
       expect(refillAmount("WTF" as TokenTicker)).to.eql({
         quantity: "440000",
@@ -77,7 +71,6 @@ describe("Cashflow", () => {
     });
 
     it("returns 30*10 + '000' when refill factor is 30", () => {
-      // tslint:disable-next-line:no-object-mutation
       process.env.FAUCET_REFILL_FACTOR = "30";
       expect(refillAmount("TOKENZ" as TokenTicker)).to.eql({
         quantity: "300000",
@@ -87,9 +80,7 @@ describe("Cashflow", () => {
     });
 
     it("returns 30*22 + '000' when refill factor is 30 and credit amount is 22", () => {
-      // tslint:disable-next-line:no-object-mutation
       process.env.FAUCET_REFILL_FACTOR = "30";
-      // tslint:disable-next-line:no-object-mutation
       process.env.FAUCET_CREDIT_AMOUNT_WTF = "22";
       expect(refillAmount("WTF" as TokenTicker)).to.eql({
         quantity: "660000",
@@ -101,7 +92,6 @@ describe("Cashflow", () => {
 
   describe("refillThreshold", () => {
     beforeEach(() => {
-      // tslint:disable-next-line:no-object-mutation
       process.env.FAUCET_REFILL_THRESHOLD = "";
     });
     it("returns 8*10 + '000' by default", () => {
@@ -113,7 +103,6 @@ describe("Cashflow", () => {
     });
 
     it("returns 8*22 + '000' when credit amount is 22", () => {
-      // tslint:disable-next-line:no-object-mutation
       process.env.FAUCET_CREDIT_AMOUNT_WTF = "22";
       expect(refillThreshold("WTF" as TokenTicker)).to.eql({
         quantity: "176000",
@@ -123,7 +112,6 @@ describe("Cashflow", () => {
     });
 
     it("returns 5*10 + '000' when refill threshold is 5", () => {
-      // tslint:disable-next-line:no-object-mutation
       process.env.FAUCET_REFILL_THRESHOLD = "5";
       expect(refillThreshold("TOKENZ" as TokenTicker)).to.eql({
         quantity: "50000",
@@ -133,9 +121,7 @@ describe("Cashflow", () => {
     });
 
     it("returns 5*22 + '000' when refill threshold is 5 and credit amount is 22", () => {
-      // tslint:disable-next-line:no-object-mutation
       process.env.FAUCET_REFILL_THRESHOLD = "5";
-      // tslint:disable-next-line:no-object-mutation
       process.env.FAUCET_CREDIT_AMOUNT_WTF = "22";
       expect(refillThreshold("WTF" as TokenTicker)).to.eql({
         quantity: "110000",

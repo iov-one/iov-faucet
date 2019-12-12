@@ -29,6 +29,6 @@ export async function setSecretAndCreateIdentities(
     // log
     const role = i === 0 ? "token holder " : `distributor ${i}`;
     const address = codecImplementation(codecName).identityToAddress(identity);
-    console.log(`Created ${role} (${debugPath(path)}): ${address}`);
+    console.info(`Created ${role} (${debugPath(path)}): ${address}`);
   }
 }

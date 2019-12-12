@@ -1,7 +1,7 @@
 import { Account, Amount } from "@iov/bcp";
 import { MultiChainSigner } from "@iov/multichain";
 
-import { identityToAddress, SendJob } from "./multichainhelpers";
+import { SendJob } from "./types";
 
 export function amountToNumber(amount: Amount): number {
   const { quantity, fractionalDigits } = amount;
@@ -46,13 +46,13 @@ export function logAccountsState(accounts: ReadonlyArray<Account>): void {
   }
   const holder = accounts[0];
   const distributors = accounts.slice(1);
-  console.log("Holder:\n" + `  ${debugAccount(holder)}`);
-  console.log("Distributors:\n" + distributors.map(r => `  ${debugAccount(r)}`).join("\n"));
+  console.info("Holder:\n" + `  ${debugAccount(holder)}`);
+  console.info("Distributors:\n" + distributors.map(r => `  ${debugAccount(r)}`).join("\n"));
 }
 
 export function logSendJob(signer: MultiChainSigner, job: SendJob): void {
-  const from = identityToAddress(signer, job.sender);
+  const from = signer.identityToAddress(job.sender);
   const to = job.recipient;
   const amount = debugCoin(job.amount);
-  console.log(`Sending ${amount} from ${from} to ${to} ...`);
+  console.info(`Sending ${amount} from ${from} to ${to} ...`);
 }

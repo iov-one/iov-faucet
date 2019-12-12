@@ -1,7 +1,5 @@
-// tslint:disable:no-unused-expression
-import { expect } from "chai";
-
 import { Slip10RawIndex } from "@iov/crypto";
+import { expect } from "chai";
 
 import { debugPath } from "./hdpaths";
 

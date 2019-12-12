@@ -1,7 +1,5 @@
 import {
   Account,
-  Address,
-  Amount,
   Identity,
   isBlockInfoFailed,
   isBlockInfoPending,
@@ -15,6 +13,7 @@ import { MultiChainSigner } from "@iov/multichain";
 import { gasLimit, gasPrice, needsRefill, refillAmount } from "./cashflow";
 import { Codec } from "./codec";
 import { debugAccount, logAccountsState, logSendJob } from "./debugging";
+import { SendJob } from "./types";
 
 async function sleep(ms: number): Promise<void> {
   return new Promise(resolve => setTimeout(resolve, ms));
@@ -25,10 +24,6 @@ export function identitiesOfFirstWallet(profile: UserProfile): ReadonlyArray<Ide
   return profile.getIdentities(wallet.id);
 }
 
-export function identityToAddress(signer: MultiChainSigner, identity: Identity): Address {
-  return signer.identityToAddress(identity);
-}
-
 export async function accountsOfFirstChain(
   profile: UserProfile,
   signer: MultiChainSigner,
@@ -36,7 +31,6 @@ export async function accountsOfFirstChain(
   const addresses = identitiesOfFirstWallet(profile).map(identity => signer.identityToAddress(identity));
   const chainId = signer.chainIds()[0];
 
-  // tslint:disable-next-line:readonly-array
   const out: Account[] = [];
   for (const address of addresses) {
     const response = await signer.connection(chainId).getAccount({ address: address });
@@ -61,15 +55,6 @@ export async function tokenTickersOfFirstChain(
 ): Promise<ReadonlyArray<TokenTicker>> {
   const chainId = signer.chainIds()[0];
   return (await signer.connection(chainId).getAllTokens()).map(token => token.tokenTicker);
-}
-
-export interface SendJob {
-  readonly sender: Identity;
-  readonly recipient: Address;
-  readonly tokenTicker: TokenTicker;
-  readonly amount: Amount;
-  readonly gasPrice?: Amount;
-  readonly gasLimit?: Amount;
 }
 
 /**
@@ -102,6 +87,10 @@ export async function sendOnFirstChain(
   }
 }
 
+export function availableTokensFromHolder(holderAccount: Account): ReadonlyArray<TokenTicker> {
+  return holderAccount.balance.map(coin => coin.tokenTicker);
+}
+
 export async function refillFirstChain(
   profile: UserProfile,
   signer: MultiChainSigner,
@@ -109,8 +98,8 @@ export async function refillFirstChain(
 ): Promise<void> {
   const chainId = signer.chainIds()[0];
 
-  console.log(`Connected to network: ${chainId}`);
-  console.log(`Tokens on network: ${(await tokenTickersOfFirstChain(signer)).join(", ")}`);
+  console.info(`Connected to network: ${chainId}`);
+  console.info(`Tokens on network: ${(await tokenTickersOfFirstChain(signer)).join(", ")}`);
 
   const holderIdentity = identitiesOfFirstWallet(profile)[0];
 
@@ -120,15 +109,14 @@ export async function refillFirstChain(
   const distributorAccounts = accounts.slice(1);
 
   const availableTokens = availableTokensFromHolder(holderAccount);
-  console.log("Available tokens:", availableTokens);
+  console.info("Available tokens:", availableTokens);
 
-  // tslint:disable-next-line:readonly-array
   const jobs: SendJob[] = [];
 
   for (const token of availableTokens) {
     const refillDistibutors = distributorAccounts.filter(account => needsRefill(account, token));
-    console.log(`Refilling ${token} of:`);
-    console.log(
+    console.info(`Refilling ${token} of:`);
+    console.info(
       refillDistibutors.length ? refillDistibutors.map(r => `  ${debugAccount(r)}`).join("\n") : "  none",
     );
     for (const refillDistibutor of refillDistibutors) {
@@ -149,13 +137,9 @@ export async function refillFirstChain(
       await sleep(50);
     }
 
-    console.log("Done refilling accounts.");
+    console.info("Done refilling accounts.");
     logAccountsState(await accountsOfFirstChain(profile, signer));
   } else {
-    console.log("Nothing to be done. Anyways, thanks for checking.");
+    console.info("Nothing to be done. Anyways, thanks for checking.");
   }
-}
-
-export function availableTokensFromHolder(holderAccount: Account): ReadonlyArray<TokenTicker> {
-  return holderAccount.balance.map(coin => coin.tokenTicker);
 }
