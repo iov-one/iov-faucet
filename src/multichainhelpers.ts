@@ -88,6 +88,10 @@ export async function sendOnFirstChain(
   }
 }
 
+export function availableTokensFromHolder(holderAccount: Account): ReadonlyArray<TokenTicker> {
+  return holderAccount.balance.map(coin => coin.tokenTicker);
+}
+
 export async function refillFirstChain(
   profile: UserProfile,
   signer: MultiChainSigner,
@@ -140,8 +144,4 @@ export async function refillFirstChain(
   } else {
     console.info("Nothing to be done. Anyways, thanks for checking.");
   }
-}
-
-export function availableTokensFromHolder(holderAccount: Account): ReadonlyArray<TokenTicker> {
-  return holderAccount.balance.map(coin => coin.tokenTicker);
 }
