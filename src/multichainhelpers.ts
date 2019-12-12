@@ -109,8 +109,8 @@ export async function refillFirstChain(
 ): Promise<void> {
   const chainId = signer.chainIds()[0];
 
-  console.log(`Connected to network: ${chainId}`);
-  console.log(`Tokens on network: ${(await tokenTickersOfFirstChain(signer)).join(", ")}`);
+  console.info(`Connected to network: ${chainId}`);
+  console.info(`Tokens on network: ${(await tokenTickersOfFirstChain(signer)).join(", ")}`);
 
   const holderIdentity = identitiesOfFirstWallet(profile)[0];
 
@@ -120,15 +120,15 @@ export async function refillFirstChain(
   const distributorAccounts = accounts.slice(1);
 
   const availableTokens = availableTokensFromHolder(holderAccount);
-  console.log("Available tokens:", availableTokens);
+  console.info("Available tokens:", availableTokens);
 
   // tslint:disable-next-line:readonly-array
   const jobs: SendJob[] = [];
 
   for (const token of availableTokens) {
     const refillDistibutors = distributorAccounts.filter(account => needsRefill(account, token));
-    console.log(`Refilling ${token} of:`);
-    console.log(
+    console.info(`Refilling ${token} of:`);
+    console.info(
       refillDistibutors.length ? refillDistibutors.map(r => `  ${debugAccount(r)}`).join("\n") : "  none",
     );
     for (const refillDistibutor of refillDistibutors) {
@@ -149,10 +149,10 @@ export async function refillFirstChain(
       await sleep(50);
     }
 
-    console.log("Done refilling accounts.");
+    console.info("Done refilling accounts.");
     logAccountsState(await accountsOfFirstChain(profile, signer));
   } else {
-    console.log("Nothing to be done. Anyways, thanks for checking.");
+    console.info("Nothing to be done. Anyways, thanks for checking.");
   }
 }
 

@@ -47,27 +47,27 @@ export async function start(args: ReadonlyArray<string>): Promise<void> {
     throw new Error("The FAUCET_MNEMONIC environment variable is not set");
   }
   const signer = new MultiChainSigner(profile);
-  console.log(`Connecting to blockchain ${blockchainBaseUrl} ...`);
+  console.info(`Connecting to blockchain ${blockchainBaseUrl} ...`);
   const connection = (await signer.addChain(createChainConnector(codec, blockchainBaseUrl))).connection;
 
   const connectedChainId = connection.chainId();
-  console.log(`Connected to network: ${connectedChainId}`);
+  console.info(`Connected to network: ${connectedChainId}`);
 
   setFractionalDigits(codecDefaultFractionalDigits(codec));
   await setSecretAndCreateIdentities(profile, constants.mnemonic, connectedChainId, codec);
 
   const chainTokens = await tokenTickersOfFirstChain(signer);
-  console.log("Chain tokens:", chainTokens);
+  console.info("Chain tokens:", chainTokens);
 
   const accounts = await accountsOfFirstChain(profile, signer);
   logAccountsState(accounts);
 
   let availableTokens = availableTokensFromHolder(accounts[0]);
-  console.log("Available tokens:", availableTokens);
+  console.info("Available tokens:", availableTokens);
   setInterval(async () => {
     const updatedAccounts = await accountsOfFirstChain(profile, signer);
     availableTokens = availableTokensFromHolder(updatedAccounts[0]);
-    console.log("Available tokens:", availableTokens);
+    console.info("Available tokens:", availableTokens);
   }, 60_000);
 
   const distibutorIdentities = identitiesOfFirstWallet(profile).slice(1);
@@ -75,7 +75,7 @@ export async function start(args: ReadonlyArray<string>): Promise<void> {
   await refillFirstChain(profile, signer, codec);
   setInterval(async () => refillFirstChain(profile, signer, codec), 60_000); // ever 60 seconds
 
-  console.log("Creating webserver ...");
+  console.info("Creating webserver ...");
   const api = new Koa();
   api.use(cors());
   api.use(bodyParser());
@@ -141,7 +141,7 @@ export async function start(args: ReadonlyArray<string>): Promise<void> {
           logSendJob(signer, job);
           await sendOnFirstChain(profile, signer, job);
         } catch (e) {
-          console.log(e);
+          console.error(e);
           throw new HttpError(500, "Sending tokens failed");
         }
 
@@ -152,6 +152,6 @@ export async function start(args: ReadonlyArray<string>): Promise<void> {
       // koa sends 404 by default
     }
   });
-  console.log(`Starting webserver on port ${port} ...`);
+  console.info(`Starting webserver on port ${port} ...`);
   api.listen(port);
 }
