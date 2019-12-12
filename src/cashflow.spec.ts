@@ -1,7 +1,6 @@
 // tslint:disable:no-unused-expression
-import { expect } from "chai";
-
 import { TokenTicker } from "@iov/bcp";
+import { expect } from "chai";
 
 import {
   creditAmount,

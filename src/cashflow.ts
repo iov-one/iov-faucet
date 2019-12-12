@@ -27,7 +27,7 @@ export function getFractionalDigits(): number {
 }
 
 /** The amount of tokens that will be sent to the user */
-export function creditAmount(token: TokenTicker, factor: number = 1): Amount {
+export function creditAmount(token: TokenTicker, factor = 1): Amount {
   const amountFromEnv = process.env[`FAUCET_CREDIT_AMOUNT_${token}`];
   const wholeNumber = amountFromEnv ? Int53.fromString(amountFromEnv).toNumber() : 10;
   const total = wholeNumber * factor;

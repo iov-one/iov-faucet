@@ -1,9 +1,8 @@
 import cors = require("@koa/cors");
-import Koa from "koa";
-import bodyParser from "koa-bodyparser";
-
 import { UserProfile } from "@iov/keycontrol";
 import { MultiChainSigner } from "@iov/multichain";
+import Koa from "koa";
+import bodyParser from "koa-bodyparser";
 
 import { creditAmount, gasLimit, gasPrice, setFractionalDigits } from "../../cashflow";
 import {
