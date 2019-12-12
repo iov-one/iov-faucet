@@ -92,7 +92,7 @@ export async function start(args: ReadonlyArray<string>): Promise<void> {
           "You can get tokens from here by POSTing to /credit.\n" +
           "See https://github.com/iov-one/iov-faucet for all further information.\n";
         break;
-      case "/status":
+      case "/status": {
         const updatedAccounts = await accountsOfFirstChain(profile, signer);
         // tslint:disable-next-line:no-object-mutation
         context.response.body = {
@@ -105,7 +105,8 @@ export async function start(args: ReadonlyArray<string>): Promise<void> {
           distributors: updatedAccounts.slice(1),
         };
         break;
-      case "/credit":
+      }
+      case "/credit": {
         if (context.request.method !== "POST") {
           throw new HttpError(405, "This endpoint requires a POST request");
         }
@@ -148,6 +149,7 @@ export async function start(args: ReadonlyArray<string>): Promise<void> {
         // tslint:disable-next-line:no-object-mutation
         context.response.body = "ok";
         break;
+      }
       default:
       // koa sends 404 by default
     }
