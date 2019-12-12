@@ -18,11 +18,11 @@ import {
   availableTokensFromHolder,
   identitiesOfFirstWallet,
   refillFirstChain,
-  SendJob,
   sendOnFirstChain,
   tokenTickersOfFirstChain,
 } from "../../multichainhelpers";
 import { setSecretAndCreateIdentities } from "../../profile";
+import { SendJob } from "../../types";
 import { HttpError } from "./httperror";
 import { RequestParser } from "./requestparser";
 

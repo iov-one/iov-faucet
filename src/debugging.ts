@@ -1,7 +1,7 @@
 import { Account, Amount } from "@iov/bcp";
 import { MultiChainSigner } from "@iov/multichain";
 
-import { identityToAddress, SendJob } from "./multichainhelpers";
+import { SendJob } from "./types";
 
 export function amountToNumber(amount: Amount): number {
   const { quantity, fractionalDigits } = amount;
@@ -51,7 +51,7 @@ export function logAccountsState(accounts: ReadonlyArray<Account>): void {
 }
 
 export function logSendJob(signer: MultiChainSigner, job: SendJob): void {
-  const from = identityToAddress(signer, job.sender);
+  const from = signer.identityToAddress(job.sender);
   const to = job.recipient;
   const amount = debugCoin(job.amount);
   console.info(`Sending ${amount} from ${from} to ${to} ...`);

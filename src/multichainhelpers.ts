@@ -1,7 +1,5 @@
 import {
   Account,
-  Address,
-  Amount,
   Identity,
   isBlockInfoFailed,
   isBlockInfoPending,
@@ -15,6 +13,7 @@ import { MultiChainSigner } from "@iov/multichain";
 import { gasLimit, gasPrice, needsRefill, refillAmount } from "./cashflow";
 import { Codec } from "./codec";
 import { debugAccount, logAccountsState, logSendJob } from "./debugging";
+import { SendJob } from "./types";
 
 async function sleep(ms: number): Promise<void> {
   return new Promise(resolve => setTimeout(resolve, ms));
@@ -23,10 +22,6 @@ async function sleep(ms: number): Promise<void> {
 export function identitiesOfFirstWallet(profile: UserProfile): ReadonlyArray<Identity> {
   const wallet = profile.wallets.value[0];
   return profile.getIdentities(wallet.id);
-}
-
-export function identityToAddress(signer: MultiChainSigner, identity: Identity): Address {
-  return signer.identityToAddress(identity);
 }
 
 export async function accountsOfFirstChain(
@@ -61,15 +56,6 @@ export async function tokenTickersOfFirstChain(
 ): Promise<ReadonlyArray<TokenTicker>> {
   const chainId = signer.chainIds()[0];
   return (await signer.connection(chainId).getAllTokens()).map(token => token.tokenTicker);
-}
-
-export interface SendJob {
-  readonly sender: Identity;
-  readonly recipient: Address;
-  readonly tokenTicker: TokenTicker;
-  readonly amount: Amount;
-  readonly gasPrice?: Amount;
-  readonly gasLimit?: Amount;
 }
 
 /**
