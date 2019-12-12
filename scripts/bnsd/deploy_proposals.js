@@ -1,4 +1,3 @@
-/* eslint-disable @typescript-eslint/no-var-requires */
 const { isBlockInfoPending, isBlockInfoSucceeded } = require("@iov/bcp");
 const { bnsCodec, BnsConnection, VoteOption } = require("@iov/bns");
 const { /* committeeIds, guaranteeFundEscrowIds, */ Governor, ProposalType } = require("@iov/bns-governance");
